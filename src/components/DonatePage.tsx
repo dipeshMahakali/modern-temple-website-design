@@ -7,17 +7,17 @@ export default function DonatePage() {
   const bankDetails = [
     {
       label: "General Mandir Development Fund",
-      bank: "Bank of Baroda",
-      account: "10290100003482",
-      ifsc: "BARB0PAVAGA", // Sample IFSC
-      branch: "Pavagadh, Panchmahal, Gujarat"
+      bank: "State Bank of India",
+      account: "30012345678",
+      ifsc: "SBIN0000366",
+      branch: "Dongargarh, Chhattisgarh"
     },
     {
       label: "Annakshetra Fund (Free Devotee Meals)",
-      bank: "Bank of Baroda",
-      account: "10290100005721",
-      ifsc: "BARB0PAVAGA",
-      branch: "Pavagadh, Panchmahal, Gujarat"
+      bank: "State Bank of India",
+      account: "30012345999",
+      ifsc: "SBIN0000366",
+      branch: "Dongargarh, Chhattisgarh"
     }
   ];
 
@@ -35,7 +35,7 @@ export default function DonatePage() {
         <h1 className="font-serif font-extrabold text-4xl md:text-5xl text-deep-maroon">Online Donation Portal</h1>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          Support the development of Shree Kalika Mataji Temple and contribute to our pilgrim welfare services.
+          Support the development of Dongargarh Maa Bamleshwari Temple and contribute to our pilgrim welfare services.
         </p>
       </div>
 
@@ -52,7 +52,7 @@ export default function DonatePage() {
             </div>
             <h3 className="font-serif font-bold text-2xl mb-2">Income Tax Deduction Under Section 80G</h3>
             <p className="text-xs text-white/80 leading-relaxed max-w-xl">
-              All donations made to the Shree Kalika Mataji Mandir Trust, Pavagadh, are eligible for a 50% tax exemption under Section 80G of the Indian Income Tax Act. A receipt containing the 80G registration number will be dispatched to your registered email address.
+              All donations made to the Shri Bamleshwari Mandir Trust Samiti, Dongargarh, are eligible for a 50% tax exemption under Section 80G of the Indian Income Tax Act. A receipt containing the 80G registration number will be dispatched to your registered email address.
             </p>
           </div>
 

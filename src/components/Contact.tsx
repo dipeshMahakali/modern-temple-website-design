@@ -42,11 +42,11 @@ export default function Contact() {
           {/* Google Map Embed */}
           <div className="rounded-[28px] overflow-hidden shadow-lg border border-light-gold-border/20 h-80 relative">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3680.1293671239843!2d73.52303037604473!3d22.46174783705915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3960efcaaaaaaaab%3A0xb35a0bf64396b1b4!2sKalika%20Mata%20Temple!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3714.4984241774845!2d80.74971847600863!3d21.179213982845624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a297e6855555555%3A0x6b7bb8d3b844ad3c!2sMaa%20Bamleshwari%20Temple!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
               className="w-full h-full border-0 absolute inset-0"
               allowFullScreen
               loading="lazy"
-              title="Shree Kalika Mataji Temple Google Maps Location"
+              title="Dongargarh Maa Bamleshwari Temple Google Maps Location"
             />
           </div>
 
@@ -59,7 +59,7 @@ export default function Contact() {
               <div>
                 <h4 className="font-serif font-bold text-deep-maroon text-sm mb-1">Temple Location</h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  Shri Kalika Mataji Temple, Pavagadh, Panchmahal, Gujarat – 389360
+                  Shri Bamleshwari Mandir Trust Samiti, Chhirpani Parisar, Dongargarh, Rajnandgaon, Chhattisgarh – 491445
                 </p>
               </div>
             </div>
@@ -71,8 +71,8 @@ export default function Contact() {
               <div>
                 <h4 className="font-serif font-bold text-deep-maroon text-sm mb-1">Phone Numbers</h4>
                 <p className="text-xs text-text-muted leading-relaxed">
-                  +91 9099091042<br />
-                  02676-228888 / 228899
+                  Lower Temple: +91 94252 04990<br />
+                  Upper Temple: +91 94252 05899
                 </p>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function Contact() {
               <div>
                 <h4 className="font-serif font-bold text-deep-maroon text-sm mb-1">Official Email</h4>
                 <p className="text-xs text-text-muted leading-relaxed select-all">
-                  pavagadh.mandirtrust@gmail.com
+                  bmtsd72@gmail.com
                 </p>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function Contact() {
                 <Award className="w-10 h-10 text-emerald-600 mx-auto" />
                 <h4 className="font-serif font-bold text-lg">Message Submitted Successfully</h4>
                 <p className="text-xs leading-relaxed">
-                  Thank you for contacting the Pavagadh Temple Trust. Our office will review your request and get back to you shortly.
+                  Thank you for contacting the Shri Bamleshwari Mandir Trust Samiti. Our office will review your request and get back to you shortly.
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}

@@ -4,43 +4,43 @@ import { Sun, Flame, Sparkles, BookOpen, Coffee, Moon, Briefcase, HelpCircle } f
 export default function Timings() {
   const events = [
     {
-      time: "6:00 AM",
-      title: "Temple Opening & Morning Aarti",
+      time: "4:00 AM",
+      title: "Temple Opening & Mangala Aarti",
       icon: <Sun className="w-5 h-5 text-amber-500" />,
       bg: "from-amber-50 to-orange-50",
       border: "border-amber-200"
     },
     {
-      time: "10:00 AM",
-      title: "Paduka Puja",
+      time: "5:30 AM",
+      title: "Morning Shringar & Aarti",
       icon: <Sparkles className="w-5 h-5 text-yellow-500" />,
       bg: "from-yellow-50 to-amber-50",
       border: "border-yellow-200"
     },
     {
-      time: "11:00 AM",
-      title: "Chandi Path Recital",
-      icon: <BookOpen className="w-5 h-5 text-emerald-500" />,
-      bg: "from-emerald-50 to-teal-50",
-      border: "border-emerald-200"
-    },
-    {
-      time: "12:00 PM",
-      title: "Rajbhog Offering",
+      time: "1:00 PM - 2:00 PM",
+      title: "Mid-day Temple Closing",
       icon: <Coffee className="w-5 h-5 text-red-500" />,
       bg: "from-red-50 to-orange-50",
       border: "border-red-200"
     },
     {
       time: "7:00 PM",
-      title: "Evening Aarti",
+      title: "Evening Aarti (Sandhya Aarti)",
       icon: <Flame className="w-5 h-5 text-orange-500 animate-pulse" />,
       bg: "from-orange-50 to-rose-50",
       border: "border-orange-200"
     },
     {
-      time: "8:00 PM",
-      title: "Flower Decoration (Shringar)",
+      time: "7:00 AM - 7:00 PM",
+      title: "Passenger Ropeway Hours",
+      icon: <BookOpen className="w-5 h-5 text-emerald-500" />,
+      bg: "from-emerald-50 to-teal-50",
+      border: "border-emerald-200"
+    },
+    {
+      time: "10:00 PM",
+      title: "Temple Closing (Shayan)",
       icon: <Moon className="w-5 h-5 text-indigo-500" />,
       bg: "from-indigo-50 to-purple-50",
       border: "border-indigo-200"
@@ -53,8 +53,8 @@ export default function Timings() {
       border: "border-blue-200"
     },
     {
-      time: "6:00 AM – 7:30 PM",
-      title: "General Darshan Timings",
+      time: "Open 24 Hours",
+      title: "Navratri Special Darshan",
       icon: <HelpCircle className="w-5 h-5 text-rose-500" />,
       bg: "from-rose-50 to-pink-50",
       border: "border-rose-200"
@@ -93,7 +93,7 @@ export default function Timings() {
                 <h4 className="font-serif font-bold text-deep-maroon text-base md:text-lg leading-snug">
                   {event.title}
                 </h4>
-                <p className="text-xs text-text-muted mt-1 font-medium">Official Pavagadh Trust Schedule</p>
+                <p className="text-xs text-text-muted mt-1 font-medium">Shri Bamleshwari Trust Schedule</p>
               </div>
             </div>
           ))}

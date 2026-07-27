@@ -6,21 +6,21 @@ export default function Testimonials() {
 
   const reviews = [
     {
-      name: "Rajesh Patel",
-      location: "Ahmedabad, Gujarat",
-      text: "The new redevelopment of Pavagadh is mind-blowing! Walking up the steps feels incredibly clean and organized. Witnessing the sacred flag hoisting after years is a blessing. The trust has done a wonderful job.",
+      name: "Rajesh Sahu",
+      location: "Raipur, Chhattisgarh",
+      text: "The spiritual vibe of Dongargarh is mind-blowing! Climbing the 1,000 steps during early morning feels incredibly serene and organized. Witnessing the continuous Jyoti Kalash flames in Navratri is a blessing. The trust has done a wonderful job.",
       rating: 5
     },
     {
       name: "Dr. Deepa Sharma",
-      location: "Mumbai, Maharashtra",
-      text: "Visiting Shree Kalika Mataji Temple during Chaitra Navratri was a divine experience. The ropeway facility makes it very accessible for elderly parents. The view of the valleys below from the peak is magical.",
+      location: "Bhilai, Chhattisgarh",
+      text: "Visiting Maa Bamleshwari Temple during Chaitra Navratri was a divine experience. The ropeway facility makes it very accessible for elderly parents. The view of Dongargarh town and the surrounding hills from the peak is magical.",
       rating: 5
     },
     {
-      name: "Vikram Khichi",
-      location: "Vadodara, Gujarat",
-      text: "I visit every month. The online booking portal for Darshan and Flag hosting is extremely smooth. It saves hours of waiting in line. The temple trust provides clean drinking water and resting shelters all along the stairs.",
+      name: "Vikram Dewangan",
+      location: "Bilaspur, Chhattisgarh",
+      text: "I visit every month. The online booking portal for Darshan and donations is extremely smooth. It saves hours of waiting in line during heavy rush. The temple trust provides clean drinking water, medical camps, and resting shelters all along the stairs.",
       rating: 5
     }
   ];

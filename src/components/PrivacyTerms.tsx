@@ -43,7 +43,7 @@ export default function PrivacyTerms({ initialTab }: PrivacyTermsProps) {
           <p className="text-xs text-text-muted">Last Updated: July 2026</p>
           
           <p>
-            Shree Kalika Mataji Mandir Trust, Pavagadh, is committed to respecting and protecting the privacy of our devotees and portal users. This privacy statement outlines the type of data we collect and how we utilize it.
+            Shri Bamleshwari Mandir Trust Samiti, Dongargarh, is committed to respecting and protecting the privacy of our devotees and portal users. This privacy statement outlines the type of data we collect and how we utilize it.
           </p>
 
           <h3 className="font-serif font-bold text-deep-maroon text-lg">1. Information Collection</h3>
@@ -67,12 +67,12 @@ export default function PrivacyTerms({ initialTab }: PrivacyTermsProps) {
           <p className="text-xs text-text-muted">Last Updated: July 2026</p>
 
           <p>
-            Welcome to the official portal of Shree Kalika Mataji Mandir Trust, Pavagadh. By accessing this portal, you agree to comply with the terms and conditions outlined below.
+            Welcome to the official portal of Shri Bamleshwari Mandir Trust Samiti, Dongargarh. By accessing this portal, you agree to comply with the terms and conditions outlined below.
           </p>
 
           <h3 className="font-serif font-bold text-deep-maroon text-lg">1. Online Services & Refunds</h3>
           <p>
-            All online bookings, including Flag bookings (*Dhwaja*), special pooja offerings, and online room reservations at Machi Bhawan are final. Payments are non-refundable and dates cannot be rescheduled once transaction receipts are generated.
+            All online bookings, including Flag bookings (*Dhwaja*), special pooja offerings, and online room reservations at Trust Dharamshalas are final. Payments are non-refundable and dates cannot be rescheduled once transaction receipts are generated.
           </p>
 
           <h3 className="font-serif font-bold text-deep-maroon text-lg">2. Donation Policy</h3>

@@ -18,8 +18,8 @@ export default function Gallery() {
       id: 1,
       url: "/assets/hero-bg.png",
       category: "temple",
-      title: "Pavagadh Hilltop Temple",
-      desc: "An aerial illustration of Shree Kalika Mataji Mandir crowning the hill crest at sunrise."
+      title: "Dongargarh Hilltop Temple",
+      desc: "An aerial illustration of Maa Bamleshwari Devi Mandir crowning the hill crest at sunrise."
     },
     {
       id: 2,
@@ -39,8 +39,8 @@ export default function Gallery() {
       id: 4,
       url: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop",
       category: "architecture",
-      title: "Ancient Stone Carvings",
-      desc: "Intricate sandstone pillars showcasing the heritage structure of Champaner-Pavagadh."
+      title: "Pragyagiri Buddha Statue",
+      desc: "The monumental Buddha statue located on Pragyagiri Hill, a spiritual landmark of Dongargarh."
     },
     {
       id: 5,
@@ -53,22 +53,22 @@ export default function Gallery() {
       id: 6,
       url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
       category: "nature",
-      title: "Pavagadh Misty Peaks",
-      desc: "Spectacular view of Pavagadh Hill engulfed in monsoon clouds and lush greenery."
+      title: "Dongargarh Misty Peaks",
+      desc: "Spectacular view of Dongargarh Hill engulfed in monsoon clouds and lush greenery."
     },
     {
       id: 7,
       url: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop",
       category: "temple",
-      title: "Machi Base Camp",
-      desc: "The ropeway lower station and trust resthouses nestled on the plateau."
+      title: "Chhoti Bamleshwari Temple",
+      desc: "The beautiful Chhoti Bamleshwari temple located at the base of the hill."
     },
     {
       id: 8,
       url: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop",
       category: "festivals",
       title: "Navratri Celebration",
-      desc: "Thousands of lamps illuminating the temple stairs during Garba festival nights."
+      desc: "Thousands of Jyoti Kalash lamps illuminating the temple complex during the Navratri festival."
     }
   ];
 
@@ -103,7 +103,7 @@ export default function Gallery() {
         <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Temple Gallery</h2>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          Explore the spiritual aura, ancient architecture, and beautiful seasons of Pavagadh Hill through our curated photo collection.
+          Explore the spiritual aura, historic landmarks, and beautiful seasons of Dongargarh through our curated photo collection.
         </p>
       </div>
 

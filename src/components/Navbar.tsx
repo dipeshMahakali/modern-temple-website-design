@@ -59,10 +59,10 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
           </div>
           <div>
             <span className="font-serif font-bold text-lg md:text-xl text-deep-maroon block leading-tight tracking-wide">
-              શ્રી મહાકાળી મંદિર
+              माँ बम्लेश्वरी मंदिर
             </span>
             <span className="text-xs uppercase tracking-widest text-temple-brown font-medium block">
-              Pavagadh Temple
+              Dongargarh Temple
             </span>
           </div>
         </button>

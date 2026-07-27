@@ -16,7 +16,7 @@ export default function Services({ setActivePage }: ServicesProps) {
     },
     {
       title: "Flag Booking (Dhwaj)",
-      desc: "Reserve dates to host the sacred red flag (dhwaja) atop the high-altitude temple spire.",
+      desc: "Reserve dates to host the sacred red flag (dhwaja) atop the high-altitude temple spire of Maa Bamleshwari.",
       icon: <Flag className="w-6 h-6" />,
       color: "from-red-600 to-rose-800",
       actionPage: "donate" // Flag booking goes to Donate page for details
@@ -30,14 +30,14 @@ export default function Services({ setActivePage }: ServicesProps) {
     },
     {
       title: "Special Pooja",
-      desc: "Register for Chandi Path, Maha Aarti, and custom family rituals performed by trust pandits.",
+      desc: "Register for custom Pujas, Jyoti Kalash booking during Navratri, and special rituals.",
       icon: <Flame className="w-6 h-6" />,
       color: "from-orange-500 to-red-700",
       actionPage: "donate"
     },
     {
       title: "Accommodation",
-      desc: "Reserve a clean room, dormitory bed, or family suite at the official Machi Trust Bhavan.",
+      desc: "Reserve a clean room, dormitory bed, or family suite at the official Bamleshwari Trust Dharamshala.",
       icon: <Home className="w-6 h-6" />,
       color: "from-emerald-500 to-teal-700",
       actionPage: "contact"
@@ -51,14 +51,14 @@ export default function Services({ setActivePage }: ServicesProps) {
     },
     {
       title: "Temple History",
-      desc: "Read detailed notes on ancient origins, Solanki dynasty, and the 2004 UNESCO listing.",
+      desc: "Read detailed notes on the 2200-year origins, Raja Veersen's dynasty, and Vikramaditya's legend.",
       icon: <BookOpen className="w-6 h-6" />,
       color: "from-purple-500 to-pink-700",
       actionPage: "history"
     },
     {
       title: "Upcoming Events",
-      desc: "View schedules for Chaitra Navratri, Ashwin Navratri, and Trust board meetings.",
+      desc: "View schedules for Chaitra Navratri, Sharadiya Navratri, and annual celebrations.",
       icon: <Calendar className="w-6 h-6" />,
       color: "from-teal-500 to-cyan-700",
       actionPage: "events"
@@ -88,7 +88,7 @@ export default function Services({ setActivePage }: ServicesProps) {
           <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Devotee Online Services</h2>
           <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
           <p className="text-text-muted text-sm leading-relaxed">
-            Convenient and secure portals managed by the Shree Kalika Mataji Mandir Trust to facilitate your pilgrimage and contributions.
+            Convenient and secure portals managed by the Shri Bamleshwari Mandir Trust Samiti to facilitate your pilgrimage and contributions.
           </p>
         </div>
 

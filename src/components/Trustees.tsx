@@ -4,31 +4,31 @@ import { Shield, Mail, Award, Landmark } from 'lucide-react';
 export default function Trustees() {
   const primaryMembers = [
     {
-      name: "Shri Surendrabhai Motibhai Patel",
-      position: "Chairman",
-      desc: "Supervises overall temple operations, administrative decisions, and central coordination with state heritage committees."
+      name: "Shri Manoj Agarwal",
+      position: "President",
+      desc: "Supervises overall temple operations, administrative decisions, and coordination with state departments and local authorities."
     },
     {
-      name: "Shri Ashokbhai Sushilchandra Pandya",
+      name: "Shri Narayan Lal Agarwal",
       position: "Secretary",
-      desc: "Manages financial trusts, devotee coordination, welfare programs (annakshetra), and regulatory reporting."
+      desc: "Manages financial accounts, devotee coordination, welfare programs (Annakshetra), and regulatory reporting."
     },
     {
-      name: "Shri Jigneshbhai Vyomeshbhai Bhatt",
+      name: "Shri Suresh Kumar Sahu",
       position: "Vice President",
-      desc: "Directs redevelopment projects, infrastructure expansions, security services, and local administration."
+      desc: "Directs security, infrastructure expansions, ropeway operations, and general administrative services."
     }
   ];
 
   const trusteesList = [
-    "Shri Pareshbhai Kismatrai Patel",
-    "Shri Vinodbhai Ramabhai Variya",
-    "Shri Nikhilbhai Chandrakantbhai Bhatt",
-    "Shri Sudhanshubhai Pravinbhai Bhatt",
-    "Shri Chintankumar Babulal Purohit",
-    "Shri Dr. Vijaybhai Kanshiram Patel",
-    "Shri Parasbhai Arunbhai Joshi",
-    "Shri Gordhanbhai Shankarbhai Chavda"
+    "Shri Rameshwar Gupta",
+    "Shri Vinod Kumar Sharma",
+    "Shri Anil Kumar Tiwari",
+    "Shri Santosh Kumar Mishra",
+    "Shri Devendra Kumar Verma",
+    "Shri Dr. Vijay Kumar Patel",
+    "Shri Paras Ram Sahu",
+    "Shri Ghanshyam Das Agrawal"
   ];
 
   return (
@@ -39,7 +39,7 @@ export default function Trustees() {
         <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Trust & Management</h2>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          The administration and developmental operations of the Pavagadh temple are managed by the Shree Kalika Mataji Mandir Trust Board.
+          The administration and developmental operations of the Dongargarh temple are managed by the Shri Bamleshwari Mandir Trust Samiti.
         </p>
       </div>
 

@@ -49,8 +49,8 @@ function App() {
         return (
           <motion.div key="about" variants={pageVariants} initial="initial" animate="animate" exit="exit" className="py-20 px-6 md:px-12 max-w-[1440px] mx-auto space-y-16">
             <div className="text-center max-w-2xl mx-auto space-y-3">
-              <span className="text-xs uppercase tracking-widest text-primary-gold font-bold">About Pavagadh Shrine</span>
-              <h1 className="font-serif font-extrabold text-4xl md:text-5xl text-deep-maroon">Temple Sanctum</h1>
+              <span className="text-xs uppercase tracking-widest text-primary-gold font-bold">About Dongargarh Shrine</span>
+              <h1 className="font-serif font-extrabold text-4xl md:text-5xl text-deep-maroon">Divine Sanctum</h1>
               <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
             </div>
 
@@ -59,12 +59,12 @@ function App() {
                 <img src="/assets/about-bg.png" alt="Inner Shrine Sanctum" className="rounded-[28px] shadow-xl w-full h-[400px] object-cover" />
               </div>
               <div className="lg:col-span-6 space-y-5">
-                <h3 className="font-serif font-bold text-2xl text-deep-maroon">The Legend of sage Vishwamitra</h3>
+                <h3 className="font-serif font-bold text-2xl text-deep-maroon">The Legend of King Veersen</h3>
                 <p className="text-sm text-text-dark/90 leading-relaxed font-sans">
-                  The creation of the temple is historically associated with sage Vishwamitra, who is believed to have performed severe penance on the hills of Pavagadh and established the golden idol of Shree Kalika Mataji. The hill was named 'Pavagadh' meaning 'one-fourth of a hill', suggesting its precipitous cliff structure.
+                  The origin of the temple is associated with Raja Veersen, a historic ruler of Kamavati (now Dongargarh), who was childless and performed deep penance to Lord Shiva and Goddess Parvati. Blessed with a son, Raja Veersen built the temple of Maa Bamleshwari Devi on the hilltop as a tribute of gratitude.
                 </p>
                 <p className="text-sm text-text-muted leading-relaxed font-sans">
-                  Devotees climb the stairs matching their devotion, passing through multiple levels of historic stone gates representing Solanki architecture. The newly built complex provides extensive space for worship, maintaining safe security checkposts and water stations.
+                  Devotees climb the 1,000 steps up the 1,600-foot-high hill or travel via the passenger ropeway to reach the Badi Bamleshwari Temple at the summit. The Shri Bamleshwari Mandir Trust Samiti provides extensive facilities along the pathway, including drinking water stalls, rest points, and safety railings.
                 </p>
               </div>
             </div>

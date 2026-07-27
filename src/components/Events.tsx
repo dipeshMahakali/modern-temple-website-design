@@ -4,23 +4,23 @@ import { Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
 export default function Events() {
   const events = [
     {
-      title: "Ashwin Navratri Mahotsav",
+      title: "Sharadiya Navratri Mahotsav",
       date: "Oct 12 - Oct 20, 2026",
-      desc: "The largest annual festival at Pavagadh. The temple is kept open 24 hours for darshan. Special security, lighting, and transportation are arranged by the Gujarat Government and Trust.",
+      desc: "The largest annual festival at Dongargarh. The temple is kept open 24 hours for darshan. Millions of pilgrims visit, lighting thousands of Jyoti Kalash. Special trains, security, and medical camps are arranged by the Chhattisgarh Government and the Trust.",
       image: "/assets/gallery-festival.png",
       tag: "Mega Event"
     },
     {
       title: "Chaitra Navratri Utsav",
       date: "Mar 28 - Apr 05, 2026",
-      desc: "Celebrate the sacred spring Navratri with continuous Chandi Path, special Maha Aarti, and Havan ceremonies performed daily by expert shastriji pandits.",
+      desc: "Celebrate the sacred spring Navratri with Jyoti Kalash lighting, special Maha Aarti, and Shringar ceremonies performed daily on the hilltop shrine of Maa Bamleshwari.",
       image: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
       tag: "Vasant Utsav"
     },
     {
       title: "Mandir Patotsav (Foundation Day)",
       date: "Jyeshtha Sud Pancham",
-      desc: "An annual commemoration of the temple's reconstruction. Features special flag-hoisting (*Dhwaj Arohan*) atop the golden peak and distributing Mahaprasad to all pilgrims.",
+      desc: "Annual Patotsav festival commemorating the temple's sacred foundation. Features special flag-hoisting (Dhwaj Arohan) atop the Badi Bamleshwari temple spire and grand Mahaprasad distribution.",
       image: "/assets/hero-bg.png",
       tag: "Annual Ritual"
     }
@@ -78,7 +78,7 @@ export default function Events() {
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="w-3.5 h-3.5" />
-                    <span>Pavagadh Spire</span>
+                    <span>Dongargarh Hill</span>
                   </div>
                 </div>
               </div>

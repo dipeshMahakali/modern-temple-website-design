@@ -10,17 +10,17 @@ export default function About({ setActivePage }: AboutProps) {
     {
       icon: <MapPin className="w-5 h-5 text-primary-gold" />,
       title: "Sacred Location",
-      desc: "Pavagadh Hill, Panchmahal, Gujarat. Height of 762 meters (2,500 ft)."
+      desc: "Dongargarh Hill, Rajnandgaon, Chhattisgarh. Height of 1,600 feet (488 m)."
     },
     {
       icon: <Compass className="w-5 h-5 text-primary-gold" />,
       title: "Shakti Peeth",
-      desc: "Veneration of the divine feminine where the toe of Sati fell."
+      desc: "Veneration of Maa Bamleshwari Devi, a powerful manifestation of Durga."
     },
     {
       icon: <ShieldCheck className="w-5 h-5 text-primary-gold" />,
-      title: "UNESCO Heritage Site",
-      desc: "Inscribed in 2004 under Champaner-Pavagadh Archaeological Park."
+      title: "Passenger Ropeway",
+      desc: "Chhattisgarh's only passenger ropeway, carrying pilgrims to the summit."
     }
   ];
 
@@ -34,7 +34,7 @@ export default function About({ setActivePage }: AboutProps) {
           <div className="overflow-hidden rounded-[28px] shadow-2xl">
             <img
               src="/assets/about-bg.png"
-              alt="Shree Kalika Mataji Temple Sanctuary"
+              alt="Shri Bamleshwari Mandir Sanctuary"
               className="w-full h-[500px] object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
@@ -43,8 +43,8 @@ export default function About({ setActivePage }: AboutProps) {
               <Landmark className="w-6 h-6" />
             </div>
             <div>
-              <h4 className="font-serif font-bold text-deep-maroon text-sm">Shree Kalika Mataji Mandir Trust</h4>
-              <p className="text-xs text-text-muted">Preserving historical values & offering pilgrim welfare services.</p>
+              <h4 className="font-serif font-bold text-deep-maroon text-sm">Shri Bamleshwari Mandir Trust Samiti</h4>
+              <p className="text-xs text-text-muted">Preserving spiritual heritage & offering welfare services for devotees.</p>
             </div>
           </div>
         </div>
@@ -56,16 +56,16 @@ export default function About({ setActivePage }: AboutProps) {
               Divine Grace Since Time Immemorial
             </span>
             <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon leading-tight">
-              Shree Kalika Mataji Temple
+              Maa Bamleshwari Temple
             </h2>
           </div>
 
           <p className="text-text-dark/95 leading-relaxed text-sm md:text-base">
-            Perched atop the majestic Pavagadh Hill, the temple of Shree Kalika Mataji (Mahakali) is one of India's most celebrated and ancient Shakti Peethas. The hill itself represents a volcanic formation rising precipitously from the surrounding plains, acting as a spiritual beacon visible from miles away.
+            Perched atop the majestic Dongargarh Hill, the temple of Badi Bamleshwari Devi is one of Chhattisgarh's most celebrated and ancient Shakti Peeths. The hill itself rises 1,600 feet, acting as a spiritual landmark visible from miles across the Rajnandgaon district.
           </p>
 
           <p className="text-text-muted leading-relaxed text-sm">
-            For generations, the temple has drawn millions of devotees from Gujarat and across India. Sage Vishwamitra is believed to have installed the deity here. In June 2022, a major redevelopment plan saw Prime Minister Narendra Modi hoist the sacred flag atop the newly built Shikhar—a ceremony that was missing for almost 500 years.
+            For generations, the temple has drawn millions of devotees from Chhattisgarh and all over India. Believed to have been established over 2,200 years ago by Raja Veersen, the shrine features Badi Bamleshwari at the summit and Chhoti Bamleshwari at the base, creating a beautiful and sacred pilgrimage experience.
           </p>
 
           {/* Quick Facts Grid */}

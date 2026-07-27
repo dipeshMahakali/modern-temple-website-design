@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Sparkles, Award, ShieldAlert, History, MapPin, 
-  BookOpen, Landmark, Camera, Calendar, ArrowUpRight, 
-  HelpCircle, Eye, ChevronDown, Check, Globe
+  BookOpen, Landmark, Camera, Calendar, ArrowRight, 
+  HelpCircle, Eye, ChevronDown, Check, Globe,
+  ChevronLeft, ChevronRight
 } from 'lucide-react';
 
 interface Milestone {
@@ -23,615 +24,718 @@ interface Milestone {
 }
 
 export default function Timeline() {
+  const [activeTab, setActiveTab] = useState<'chronicle' | 'map' | 'gallery'>('chronicle');
   const [activeEraIdx, setActiveEraIdx] = useState(0);
   const [expandedEra, setExpandedEra] = useState<number | null>(null);
   const [selectedMapPoint, setSelectedMapPoint] = useState<string | null>("temple");
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
 
-  // Stats Counters
-  const [historyYears, setHistoryYears] = useState(0);
-  const [pilgrims, setPilgrims] = useState(0);
-  const [elevation, setElevation] = useState(0);
-
+  // Resize listener
   useEffect(() => {
-    // Quick count-up effect
-    const interval = setInterval(() => {
-      setHistoryYears(prev => (prev < 1500 ? prev + 30 : 1500));
-      setPilgrims(prev => (prev < 20 ? prev + 1 : 20));
-      setElevation(prev => (prev < 762 ? prev + 15 : 762));
-    }, 20);
-    return () => clearInterval(interval);
+    const handleResize = () => {
+      setIsMobileOrTablet(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const milestones: Milestone[] = [
     {
       id: 0,
-      year: "3000 BC",
-      dynasty: "Pre-Historic Era",
-      title: "Ancient Volcanic Origins",
-      event: "Volcanic formation of Pavagadh Hill",
-      importance: "The hill is a volcanic plate dating back millions of years, standing out sharply from the plains.",
-      culturalImpact: "Becomes a natural fortress and a sacred hill, appearing in Hindu scriptures as part of the Himalaya ranges.",
-      shortDesc: "Creation of the towering Pavagadh volcanic plate, setting the stage for ancient sages and legends.",
-      detailedDesc: "Formed during a massive volcanic eruption millions of years ago, Pavagadh stands as a solitary sentinel over the plains of Panchmahal. According to legendary lore, the hill was placed here by the gods at the request of Sage Vishwamitra to fill a deep valley, creating a holy sanctuary for severe penance.",
-      fact: "The rock formation of Pavagadh is rhyolite, indicating explosive volcanic history.",
+      year: "Ancient Origins",
+      dynasty: "Pre-Historic",
+      title: "Volcanic Hills of Dongargarh",
+      event: "Formation of the igneous rocky hills of Dongargarh millions of years ago, rising high above the Chhattisgarhi plains.",
+      importance: "The topography features steep cliffs, rock caves, and scenic heights that became prime spiritual sanctuaries.",
+      culturalImpact: "Known historically as 'Dongar' (mountain/hill) and 'Garh' (fortress) in the Gond dialect.",
+      shortDesc: "The natural elevation of the Dongargarh mountain sets a majestic physical stage for ancient shrines and spiritual seekers.",
+      detailedDesc: "Formed millions of years ago, the hills of Dongargarh rise abruptly to 1,600 feet from the surrounding plains of Rajnandgaon, Chhattisgarh. The rocky terrain, rich with natural caves and springs, attracted sages and tribal communities who recognized it as a seat of intense spiritual energy (Shakti).",
+      fact: "Dongargarh's rocks are predominantly igneous formations, giving them a rugged, durable texture.",
       icon: <Sparkles className="w-5 h-5" />,
       color: "from-orange-500 to-amber-600",
-      imgUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop"
+      imgUrl: "/assets/hero-bg.png"
     },
     {
       id: 1,
-      year: "Mythology",
-      dynasty: "Vedic Period",
-      title: "The Sacred Shakti Peeth",
-      event: "Daksha Yajna Mythology",
-      importance: "Venerated as one of the 51 Shakti Peeths where Sati's right toe fell.",
-      culturalImpact: "Establishes Pavagadh as a supreme pilgrimage center for Shakti worshippers across India.",
-      shortDesc: "Deep mythological association where the right toe of Goddess Sati sanctified the peak.",
-      detailedDesc: "When Lord Shiva performed the Tandava carrying Sati's charred body, Lord Vishnu used his Sudarshana Chakra to divide the body into 51 parts to calm Shiva. The right toe fell on the summit of Pavagadh, transforming it into a holy Shakti Peeth where Goddess Mahakali resides in her most powerful form.",
-      fact: "It is one of the three main Shakti Peeths of Gujarat, along with Ambaji and Bahucharaji.",
+      year: "200 BC",
+      dynasty: "Kamavati Kingdom",
+      title: "Reign of Raja Veersen",
+      event: "Raja Veersen establishes the Kamavati Nagari and builds the temple of Maa Bamleshwari.",
+      importance: "Raja Veersen was childless and prayed to Lord Shiva and Goddess Parvati. After his prayers were answered with a son named Madansen, he built the shrine as a tribute of gratitude.",
+      culturalImpact: "Establishes Maa Bamleshwari Devi as the patron guardian deity of the kingdom.",
+      shortDesc: "King Veersen establishes the temple in Kamavati (now Dongargarh) after being blessed with a son, Madansen.",
+      detailedDesc: "According to ancient records, the city was ruled by Raja Veersen around 2,200 years ago. Being childless, he conducted severe prayers. Upon being blessed with a son, whom he named Madansen, he built a temple for Goddess Bamleshwari Devi (originally called Bambleshwari) on the high summit as an offering of eternal gratitude.",
+      fact: "The name 'Bamleshwari' is believed to derive from 'Bambleshwari' or the source of cosmic power and prosperity.",
       icon: <Award className="w-5 h-5" />,
       color: "from-red-600 to-rose-700",
       imgUrl: "/assets/about-bg.png"
     },
     {
       id: 2,
-      year: "5th Century AD",
-      dynasty: "Early Kshatrapa Era",
-      title: "First Hilltop Shrine Established",
-      event: "Establishment of the primary stone altar",
-      importance: "First structured stone worship area recognized by local forest sages and rulers.",
-      culturalImpact: "The mount became a key spot for tantric and spiritual worship in Western India.",
-      shortDesc: "Archaeological records point to early worship altars and stone steps built on the summit.",
-      detailedDesc: "Archaeological excavations indicate early worship activity dating back to the 5th century. Hermits and ascetics carved simple rock shelters near the summit, establishing the first permanent daily worship rituals for Goddess Kalika.",
-      fact: "Ancient rock carvings near the temple caves depict early Hindu and Jain iconographies.",
+      year: "100 BC",
+      dynasty: "Kamavati Dynasty",
+      title: "Era of King Kamasen",
+      event: "Raja Kamasen succeeds the throne and renames the capital Kamavati Nagari.",
+      importance: "The city flourishes into a major art and music hub, attracting legendary dancers and musicians.",
+      culturalImpact: "Enhances the fame of the hilltop shrine across central India.",
+      shortDesc: "The kingdom expands under Madansen's son, Raja Kamasen, who patronizes arts and music at the foothills of the shrine.",
+      detailedDesc: "Raja Kamasen, the grandson of Raja Veersen, was a great patron of arts. Under his rule, the city of Kamavati became an artistic oasis. Worshippers and artists alike visited the hilltop shrine of Maa Bamleshwari to seek blessings for creativity and prosperity, spreading the temple's fame throughout ancient India.",
+      fact: "Ancient Kamavati was known for its highly structured palaces, ponds, and hilltop watchtowers.",
       icon: <Landmark className="w-5 h-5" />,
       color: "from-yellow-600 to-amber-700",
-      imgUrl: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop"
+      imgUrl: "/assets/gallery-festival.png"
     },
     {
       id: 3,
-      year: "746 AD",
-      dynasty: "Chavda Dynasty",
-      title: "Founding of Champaner",
-      event: "Vanraj Chavda founds the base settlement",
-      importance: "Named in honor of Champa, the trusted general and minister of the Chavda kingdom.",
-      culturalImpact: "Linked the sacred hill with trade routes and defensive royal installations.",
-      shortDesc: "King Vanraj Chavda establishes a fortified settlement at the foot of Pavagadh Hill.",
-      detailedDesc: "King Vanraj Chavda, the founder of the Chavda Dynasty in Gujarat, established Champaner at the base of Pavagadh. This royal patronage integrated the hilltop shrine with the administrative kingdom, leading to the construction of fortified pathways up the mountain.",
-      fact: "The name 'Champaner' is inspired by the yellow igneous rocks of Pavagadh resembling the Champa flower.",
-      icon: <History className="w-5 h-5" />,
+      year: "1st Century BC",
+      dynasty: "Imperial Era",
+      title: "Love & Legend of Kamkandla",
+      event: "The tragic love story between Madhavnal (court musician) and Kamkandla (court dancer) unfolds.",
+      importance: "Leading to a massive clash of empires between King Kamasen and Emperor Vikramaditya of Ujjain.",
+      culturalImpact: "A tale of devotion and sacrifice that forever links Dongargarh with Ujjain's royal lore.",
+      shortDesc: "The musical love story between a court musician and a dancer leads to a historic intervention.",
+      detailedDesc: "In the court of King Kamasen, a talented musician named Madhavnal fell in love with Kamkandla, a beautiful court dancer. Suspecting treason, King Kamasen banished Madhavnal. Madhavnal sought help from the legendary Emperor Vikramaditya of Ujjain, who marched to Kamavati with his forces, leading to a destructive war.",
+      fact: "Local folk plays (Chhattisgarhi Lok Natya) still narrate the epic romance of Madhavnal and Kamkandla.",
+      icon: <BookOpen className="w-5 h-5" />,
       color: "from-blue-600 to-indigo-700",
       imgUrl: "/assets/hero-bg.png"
     },
     {
       id: 4,
-      year: "10th-12th Century",
-      dynasty: "Solanki Period",
-      title: "Golden Age of Architecture",
-      event: "Royal construction of fortification gates",
-      importance: "Solanki kings built massive stone walls, ponds, and gateways along the pilgrim paths.",
-      culturalImpact: "Pilgrimage numbers rose dramatically as pathways became safer and protected.",
-      shortDesc: "A period of architectural flourish with intricate temples, gates, and water reservoirs.",
-      detailedDesc: "Under the Solanki Empire, Pavagadh was heavily fortified. Elegant stone gates like Atak Gate and Budhiya Gate were built. The temple itself was expanded with decorative carvings, and large stone water tanks (talaos) were constructed to sustain pilgrims and military garrisons.",
-      fact: "The Lakulisa Temple on the hill is a classic specimen of 10th-century Solanki stone craftsmanship.",
+      year: "57 BC",
+      dynasty: "Paramara Dynasty",
+      title: "Vikramaditya's Penance",
+      event: "Emperor Vikramaditya prays to Maa Bamleshwari to end the bloodshed and revive the fallen.",
+      importance: "Maa Bamleshwari appears in person, resolves the conflict, and blesses the lovers.",
+      culturalImpact: "Ujjain's Emperor expands the temple, establishing the stone stairs and a grand gateway.",
+      shortDesc: "Emperor Vikramaditya performs intense penance to Maa Bamleshwari, who appears to bring peace and revive the dead.",
+      detailedDesc: "Realizing the massive loss of life during the war, Emperor Vikramaditya felt deep remorse. He sat on the hilltop and performed intense penance, offering his own head. Maa Bamleshwari appeared, stopped him, and revived both Madhavnal and the fallen soldiers. She established peace between the two kingdoms and blessed the region.",
+      fact: "Legend holds that Vikramaditya established the Badi Bamleshwari idol at the top and Chhoti Bamleshwari at the base.",
       icon: <Award className="w-5 h-5" />,
       color: "from-emerald-600 to-teal-700",
-      imgUrl: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop"
+      imgUrl: "/assets/about-bg.png"
     },
     {
       id: 5,
-      year: "1484 AD",
-      dynasty: "Gujarat Sultanate",
-      title: "Conquest of Mahmud Begada",
-      event: "Fall of Pavagadh Fort & shifts in city status",
-      importance: "Sultan Mahmud Begada captured the fortress after a 20-month siege, damaging the temple dome.",
-      culturalImpact: "Champaner was made the capital of Gujarat, resulting in a unique synthesis of Indo-Islamic structures.",
-      shortDesc: "Sultan Mahmud Begada conquers the fort, shifting the capital and altering the hilltop.",
-      detailedDesc: "Following a prolonged siege against the Khichi Chauhan Rajputs, Sultan Mahmud Begada conquered the Pavagadh fortress. He shifted his capital to Champaner, naming it Muhammadabad, and constructed a grand palace, mosques, and new outer fortifications.",
-      fact: "A shrine of Sadanshah Peer was established on top of the temple dome during this era to prevent further damage.",
+      year: "12th Century",
+      dynasty: "Gond Kingdom",
+      title: "Gond and Kalachuri Patronage",
+      event: "Local Gond kings and Kalachuris of Ratanpur preserve and fortify the hilltop shrine.",
+      importance: "The fortress of Dongargarh ('Hill Fort') becomes an important strategic and spiritual outpost.",
+      culturalImpact: "Integration of tribal and Vedic rites of worship at the shrine, defining local culture.",
+      shortDesc: "Gond rulers and the Kalachuri dynasty safeguard the mountain pathways, preserving the shrine as a local sanctuary.",
+      detailedDesc: "During the medieval period, Chhattisgarh was ruled by the Kalachuris and Gond chieftains. The fortress of Dongargarh served as a military outpost. The rulers patronized the temple, maintaining the rocky paths and recognizing Maa Bamleshwari as the supreme protector of the forest lands.",
+      fact: "The name Dongargarh itself combines Gondi/Chhattisgarhi 'Dongar' (mountain) and 'Garh' (fort).",
       icon: <ShieldAlert className="w-5 h-5" />,
       color: "from-red-700 to-rose-900",
       imgUrl: "/assets/gallery-festival.png"
     },
     {
       id: 6,
-      year: "1535 AD",
-      dynasty: "Mughal Period",
-      title: "Mughal Annexation & Survival",
-      event: "Emperor Humayun captures Champaner",
-      importance: "Mughal forces took control, but the capital eventually shifted back to Ahmedabad.",
-      culturalImpact: "The temple survived in isolation, maintained by local tribal devotees and forest hermits.",
-      shortDesc: "Despite regional political instability, the hill remained a vital refuge for Hindu worshippers.",
-      detailedDesc: "Mughal Emperor Humayun captured Champaner in 1535. Over the next decades, as the Mughal capital moved to Ahmedabad, the grand palaces of Champaner fell into ruin, but the hilltop temple remained a sacred focal point for local tribal communities who kept worship active.",
-      fact: "Abul Fazl's Ain-i-Akbari mentions Pavagadh as a major fortress and spiritual landmark in Gujarat.",
+      year: "1750 AD",
+      dynasty: "Maratha Empire",
+      title: "Maratha Revival",
+      event: "The Bhonsle rulers of Nagpur annex Chhattisgarh and renovate the temple.",
+      importance: "Pujas are standardized, and the temple undergoes structural expansion with stone steps.",
+      culturalImpact: "The practice of lighting 'Jyoti Kalash' (oil lamps) during Navratri gains state-level patronship.",
+      shortDesc: "The Nagpur Marathas renovate the temple, paving pathways and establishing regular priestly customs.",
+      detailedDesc: "When the Maratha Bhonsle dynasty of Nagpur took control of the Chhattisgarh region, they actively supported the temple. They built permanent steps up the hill, established lodging shelters for travelers, and organized formal administrative support for the Navratri fairs.",
+      fact: "The Bhonsle kings sent special brass lamps and silk garments to the deity during Navratri.",
       icon: <BookOpen className="w-5 h-5" />,
       color: "from-amber-700 to-yellow-800",
-      imgUrl: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop"
+      imgUrl: "/assets/hero-bg.png"
     },
     {
       id: 7,
-      year: "1727 AD",
-      dynasty: "Maratha Era",
-      title: "Renoration & Religious Revival",
-      event: "Gaekwad & Peshwa patronage",
-      importance: "Maratha forces reclaimed the hill, carrying out extensive repairs of the steps and shrine.",
-      culturalImpact: "Re-established Navratri celebrations as a public state-sponsored festival.",
-      shortDesc: "The Marathas restore the temple, rebuilding the pathways and establishing proper trust systems.",
-      detailedDesc: "With the rise of the Maratha Empire, the Peshwas and Gaekwads of Baroda took control of the region. They renovated the main sanctuary, built new resting houses, and established dedicated administrative units to manage the pilgrimage tax and security.",
-      fact: "The Scindia and Gaekwad royal families regularly sent gold ornaments for the Goddess.",
+      year: "1888 AD",
+      dynasty: "British Raj",
+      title: "Introduction of Railways",
+      event: "The Bengal Nagpur Railway (BNR) line opens, passing through Dongargarh Station.",
+      importance: "Dongargarh becomes a key transit point, opening easy access for pilgrims from central and eastern India.",
+      culturalImpact: "Pilgrimage numbers grow exponentially as train travel connects Dongargarh to major cities.",
+      shortDesc: "The construction of the Bengal Nagpur Railway connects Dongargarh, transforming the remote hill shrine into a major pilgrimage hub.",
+      detailedDesc: "The opening of the railway line in 1888 changed the accessibility of Dongargarh. The British established a railway colony and terminal here. Devotees from Bengal, Maharashtra, and Madhya Pradesh could now easily reach the temple, elevating it to one of Central India's premier pilgrim sites.",
+      fact: "Dongargarh Railway Station still has ancient steam-locomotive water towers dating back to the late 19th century.",
       icon: <Landmark className="w-5 h-5" />,
       color: "from-orange-600 to-red-800",
-      imgUrl: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 8,
-      year: "1803 AD",
-      dynasty: "British Period",
-      title: "British Mapping & Surveys",
-      event: "Archaeological records by James Forbes",
-      importance: "British surveyors mapped the forest-covered ruins of Champaner and the pathways of Pavagadh.",
-      culturalImpact: "Drew global academic attention to the historical values of the site.",
-      shortDesc: "Scientific recording of the monuments begins, documenting the historic structures.",
-      detailedDesc: "During the British Raj, administrators and historians like James Forbes documented the overgrown ruins in their travelogues. The British repaired the lower roads to Machi to ensure safe passage for pilgrims during annual festivals.",
-      fact: "Early British sketches from 1800 show the Pavagadh hill completely covered in dense teak forests.",
-      icon: <History className="w-5 h-5" />,
-      color: "from-zinc-700 to-neutral-900",
-      imgUrl: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-      id: 9,
-      year: "1953 AD",
-      dynasty: "Post-Independence",
-      title: "Formation of Mandir Trust",
-      event: "Shree Kalika Mataji Mandir Trust formed",
-      importance: "A public charitable trust is formed to manage pilgrim facilities and donations.",
-      culturalImpact: "Structured development projects, clean water stations, and resting sheds are built.",
-      shortDesc: "The establishment of the formal trust to administer temple affairs and assist pilgrims.",
-      detailedDesc: "Following India's independence, the Shree Kalika Mataji Mandir Trust was legally constituted. The trust assumed full responsibility for daily aartis, building rest houses (dharmashalas) at Machi base camp, and paving the stone stairs for safer climbs.",
-      fact: "The trust is registered under the Bombay Public Trusts Act, 1950.",
-      icon: <Landmark className="w-5 h-5" />,
-      color: "from-teal-600 to-emerald-700",
       imgUrl: "/assets/about-bg.png"
     },
     {
+      id: 8,
+      year: "1964 AD",
+      dynasty: "Independent India",
+      title: "Shri Bamleshwari Mandir Trust",
+      event: "Formation of the Shri Bamleshwari Mandir Trust Samiti to administer temple operations.",
+      importance: "Ensures transparent management, pilgrim safety, and systematic infrastructure expansion.",
+      culturalImpact: "Organized massive Navratri fairs and established standard security, water, and hygiene facilities.",
+      shortDesc: "A dedicated public trust is legally formed to systematically manage the expanding pilgrim facilities and resources.",
+      detailedDesc: "To handle the growing influx of pilgrims, local community leaders and government representatives formed the Shri Bamleshwari Mandir Trust Samiti. The trust replaced unstructured private management, directing donations towards stairs maintenance, water pipelines, and modern sanitation.",
+      fact: "The trust manages one of the largest free community kitchens (Annakshetra) in the Rajnandgaon district.",
+      icon: <History className="w-5 h-5" />,
+      color: "from-zinc-700 to-neutral-900",
+      imgUrl: "/assets/gallery-festival.png"
+    },
+    {
+      id: 9,
+      year: "1995 AD",
+      dynasty: "Cultural Renaissance",
+      title: "Establishment of Pragyagiri",
+      event: "Consecration of the massive golden Lord Buddha statue on the neighboring Pragyagiri hill.",
+      importance: "Expands Dongargarh's spiritual profile to include major Buddhist heritage.",
+      culturalImpact: "Fosters inter-faith harmony, drawing international Buddhist pilgrims to Dongargarh.",
+      shortDesc: "Dongargarh establishes a multi-faith spiritual landscape with a grand Buddhist monument on the adjacent Pragyagiri hill.",
+      detailedDesc: "Under the guidance of Buddhist monks, the adjacent Pragyagiri hill was developed. A 30-foot tall golden statue of Lord Buddha facing east was constructed, accessible by 225 steps. It became a venue for the annual International Buddhist Conclave, adding a serene layer of cultural heritage to Dongargarh.",
+      fact: "The Pragyagiri hill offers a stunning panoramic view of Badi Bamleshwari Temple and Chhirpani lake.",
+      icon: <Landmark className="w-5 h-5" />,
+      color: "from-teal-600 to-emerald-700",
+      imgUrl: "/assets/hero-bg.png"
+    },
+    {
       id: 10,
-      year: "2004 AD",
-      dynasty: "UNESCO Inscription",
-      title: "UNESCO World Heritage Site",
-      event: "UNESCO designates Champaner-Pavagadh Park",
-      importance: "The entire park is declared a protected World Heritage site for its complete archaeological landscape.",
-      culturalImpact: "Elevated the temple and surrounding monuments onto the global tourism stage.",
-      shortDesc: "The historical park gains international recognition, bringing global heritage preservation.",
-      detailedDesc: "UNESCO designated the Champaner-Pavagadh Archaeological Park as a World Heritage Site. It represents the only complete, unaltered Islamic pre-Mughal city in India, blending temples, mosques, fortresses, and water structures from the 8th to 16th centuries.",
-      fact: "The site contains over 114 registered archaeological monuments spread across 3,280 acres.",
+      year: "2005 AD",
+      dynasty: "Modern Infrastructure",
+      title: "Inauguration of the Ropeway",
+      event: "Construction of the passenger ropeway system to Badi Bamleshwari temple.",
+      importance: "Chhattisgarh's only ropeway, reducing the ascent to just under 5 minutes.",
+      culturalImpact: "Allows elderly, disabled, and children to experience the hilltop darshan without physical strain.",
+      shortDesc: "The installation of the passenger cable car system makes the 1,600-foot climb accessible to all devotees.",
+      detailedDesc: "In response to the physically demanding 1,000-step climb, the trust and state government collaborated to install a modern passenger ropeway. Spanning from the foothills to the summit, it became a pioneering engineering feat in the state and a major tourist attraction, transporting hundreds of pilgrims hourly.",
+      fact: "The ropeway offers a thrilling view of the surrounding Satpura mountain range and Dongargarh town.",
       icon: <Globe className="w-5 h-5" />,
       color: "from-indigo-600 to-blue-800",
-      imgUrl: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop"
+      imgUrl: "/assets/about-bg.png"
     },
     {
       id: 11,
-      year: "2022 AD",
-      dynasty: "Modern Redevelopment",
-      title: "The Great Reconstruction",
-      event: "PM Modi hoists the flag after 500 years",
-      importance: "A ₹359 crore expansion expanded the temple plaza and installed a gold-plated peak (*Shikhar*).",
-      culturalImpact: "Devotees can now worship in a spacious complex with modern ropeway elevators.",
-      shortDesc: "Comprehensive master plan execution, restoring the historical spire and creating vast plazas.",
-      detailedDesc: "Under a grand redevelopment plan by the Gujarat Government and Trust, the ancient temple was restructured using heavy sandstone without shifting the deity. On June 18, 2022, Prime Minister Narendra Modi hoisted the sacred red flag (Dhwaja) atop the newly completed golden peak, ending a 500-year hiatus.",
-      fact: "The temple courtyard area was expanded from a tiny 545 sq meters to over 3,000 sq meters.",
+      year: "2020 AD",
+      dynasty: "National Heritage",
+      title: "PRASHAD Development Project",
+      event: "Dongargarh selected under the Central Government's PRASHAD scheme for mega tourism development.",
+      importance: "Inclusion in the national pilgrimage scheme brings funds for major infrastructure upgrades.",
+      culturalImpact: "Development of a unified tourism corridor, heritage interpretation centers, and pilgrim plazas.",
+      shortDesc: "The Ministry of Tourism selects Dongargarh under the PRASHAD scheme, funding world-class facilities and corridor upgrades.",
+      detailedDesc: "Recognizing Dongargarh's national pilgrimage value, the Ministry of Tourism, Government of India, included it in the PRASHAD scheme. This initiated major development projects, including massive pilgrim facilitation centers, parking bays, light-and-sound shows, and eco-tourism trails around the hills.",
+      fact: "The PRASHAD project funds over ₹43 Crore of holistic tourist amenities in the Dongargarh temple precinct.",
       icon: <Award className="w-5 h-5" />,
       color: "from-amber-600 to-yellow-600",
+      imgUrl: "/assets/gallery-festival.png"
+    },
+    {
+      id: 12,
+      year: "Present Day",
+      dynasty: "Active Devotion",
+      title: "The Devotional Beacon",
+      event: "Hosting over 50 Lakh pilgrims annually with millions lighting Jyoti Kalash during Navratri.",
+      importance: "Dongargarh stands as one of Central India's most modern and highly managed holy destinations.",
+      culturalImpact: "Integrates ancient rituals, multi-faith pilgrimage, digital live darshan, and green tourism.",
+      shortDesc: "Welcoming millions of pilgrims annually, the temple remains a focal point of intense devotion and modern management.",
+      detailedDesc: "Today, Dongargarh Maa Bamleshwari Temple is a thriving center of spiritual and cultural life. Managed by the trust and supported by Chhattisgarh Tourism, it provides digital services, eco-friendly pathways, ropeways, and free meals, standing as a proud beacon of Central Indian heritage.",
+      fact: "During Navratri, more than 8,000 Jyoti Kalash (oil and ghee lamps) are lit by devotees in the temple galleries.",
+      icon: <Sparkles className="w-5 h-5" />,
+      color: "from-red-600 to-orange-600",
       imgUrl: "/assets/hero-bg.png"
     }
   ];
 
-  // Map markers
   const mapPoints = [
     {
-      id: "champaner",
-      title: "Champaner Base",
-      desc: "UNESCO heritage ruins, ancient mosques, and city fortification walls dating back to the 8th century.",
+      id: "foothills",
+      title: "Chhoti Bamleshwari Temple",
+      desc: "The sacred temple located at the base of the hill. Pilgrims traditionally start their journey by seeking blessings here.",
       x: "20%",
       y: "85%"
     },
     {
-      id: "gates",
-      title: "Historical Gates",
-      desc: "Atak Gate, Halol Gate, and Budhiya Gate built by Solanki and Rajput kings to guard the mountain path.",
+      id: "stairs",
+      title: "The 1,000-Step Pathway",
+      desc: "A fully covered stone staircase ascending 1,600 feet to the top, equipped with drinking water stalls and safety railings.",
       x: "42%",
       y: "65%"
     },
     {
-      id: "machi",
-      title: "Machi Base Camp",
-      desc: "Middle plateau containing the ropeway lower station, pilgrim dormitories, parking, and security desks.",
+      id: "ropeway",
+      title: "Passenger Ropeway Station",
+      desc: "Chhattisgarh's only passenger ropeway, offering a scenic 5-minute cable car ride up to the Badi Bamleshwari temple.",
       x: "55%",
       y: "50%"
     },
     {
-      id: "ropeway",
-      title: "Udan Khatola Ropeway",
-      desc: "Cable car link ascending 762 meters in under 6 minutes, connecting Machi with the temple base.",
+      id: "pragyagiri",
+      title: "Pragyagiri Hill",
+      desc: "Adjacent hill hosting a magnificent 30-foot tall golden statue of Lord Buddha, accessed via 225 steps.",
       x: "70%",
       y: "35%"
     },
     {
       id: "temple",
-      title: "Shree Mahakali Mandir",
-      desc: "The sacred hilltop temple containing the main sanctum and the newly redeveloped golden spire peak.",
+      title: "Badi Bamleshwari Temple",
+      desc: "The historical hilltop sanctuary housing the main deity of Maa Bamleshwari Devi, offering panoramic views of Rajnandgaon.",
       x: "88%",
       y: "15%"
     }
   ];
 
-  // History Gallery Images
   const galleryImages = [
-    { url: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop", title: "Intricate Stone Carvings", desc: "10th-century carvings on the pillars of Lakulisa temple." },
-    { url: "/assets/about-bg.png", title: "Temple Courtyard", desc: "Devotees gathering in the redeveloped spacious sanctuary plaza." },
-    { url: "/assets/hero-bg.png", title: "Spire View", desc: "Aerial view of the golden peak crowning the volcanic cliffs." },
-    { url: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop", title: "Machi Resthouse", desc: "Resthouse options managed by the Kalika Mataji Mandir Trust." },
-    { url: "/assets/gallery-festival.png", title: "Red Flag Procession", desc: "Devotees carrying the sacred red flag to hoist atop the शिखर." },
-    { url: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop", title: "Devotional Aarti Fire", desc: "Maha Aarti lit during the auspicious Navratri festival." }
+    { url: "/assets/about-bg.png", title: "Badi Bamleshwari Entrance", desc: "The entrance to the hilltop temple at 1,600 feet." },
+    { url: "/assets/about-bg.png", title: "Temple Courtyard Plaza", desc: "Devotees gathering in the spacious hilltop courtyard." },
+    { url: "/assets/hero-bg.png", title: "Lord Buddha at Pragyagiri", desc: "The majestic 30-foot golden Buddha statue on Pragyagiri hill." },
+    { url: "/assets/hero-bg.png", title: "Trust Dharamshala complex", desc: "Accommodation buildings managed by the Shri Bamleshwari Mandir Trust." },
+    { url: "/assets/gallery-festival.png", title: "Navratri Jyoti Kalash", desc: "Hundreds of sacred oil lamps lit by devotees in the temple halls." },
+    { url: "/assets/gallery-festival.png", title: "Passenger Cable Cars", desc: "Ropeway service carrying pilgrims to the summit of Dongargarh hill." }
   ];
 
-  // Track scroll position to update active index
-  const handleScroll = () => {
-    if (!containerRef.current) return;
-    const scrollPosition = window.scrollY + window.innerHeight / 2;
-    const elements = containerRef.current.querySelectorAll('.timeline-era-section');
-    
-    elements.forEach((el, idx) => {
-      const top = (el as HTMLElement).offsetTop;
-      const height = (el as HTMLElement).offsetHeight;
-      if (scrollPosition >= top && scrollPosition < top + height) {
-        setActiveEraIdx(idx);
-      }
-    });
+  const handleRightScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollTop = e.currentTarget.scrollTop;
+    const clientHeight = e.currentTarget.clientHeight;
+    if (clientHeight === 0) return;
+    const newIdx = Math.round(scrollTop / clientHeight);
+    if (newIdx >= 0 && newIdx < milestones.length && newIdx !== activeEraIdx) {
+      setActiveEraIdx(newIdx);
+    }
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const scrollToIdx = (idx: number) => {
+    const target = document.getElementById(`milestone-card-${idx}`);
+    if (target) {
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+      setActiveEraIdx(idx);
+    }
+  };
+
+  const handleContinue = () => {
+    const nextSection = document.getElementById('gallery-section') || document.getElementById('services-section') || document.getElementById('footer-section');
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Mobile Swipe Handlers
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > 50) {
+      if (activeEraIdx < milestones.length - 1) {
+        setActiveEraIdx(prev => prev + 1);
+      }
+    }
+    if (diff < -50) {
+      if (activeEraIdx > 0) {
+        setActiveEraIdx(prev => prev - 1);
+      }
+    }
+  };
 
   return (
-    <div ref={containerRef} className="bg-[#FAF6F0] min-h-screen text-text-dark font-sans relative">
-      {/* Immersive Scroll progress bar */}
-      <div className="fixed top-[76px] left-0 right-0 h-1.5 bg-light-gold-border/20 z-[99]">
-        <div 
-          className="h-full bg-gradient-to-r from-primary-gold to-deep-maroon transition-all duration-300 shadow-[0_0_10px_rgba(212,175,55,0.8)]"
-          style={{ width: `${((activeEraIdx + 1) / milestones.length) * 100}%` }}
-        />
+    <section id="timeline-section" className="bg-[#FAF6F0] relative z-20">
+      
+      {/* Immersive Dashboard Header (Map/Timeline/Gallery Switcher) */}
+      <div className="py-8 px-6 md:px-12 max-w-[1440px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 border-b border-light-gold-border/20">
+        <div>
+          <span className="text-xs uppercase tracking-widest text-primary-gold font-bold">Museum Exhibits</span>
+          <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Dongargarh Heritage</h2>
+        </div>
+        <div className="flex bg-white/70 backdrop-blur-xs p-1 rounded-full border border-light-gold-border/30 shadow-sm">
+          <button
+            onClick={() => setActiveTab('chronicle')}
+            className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all focus:outline-none ${
+              activeTab === 'chronicle' ? 'bg-deep-maroon text-white shadow-md' : 'text-text-muted hover:text-deep-maroon'
+            }`}
+          >
+            Chronicle Timeline
+          </button>
+          <button
+            onClick={() => setActiveTab('map')}
+            className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all focus:outline-none ${
+              activeTab === 'map' ? 'bg-deep-maroon text-white shadow-md' : 'text-text-muted hover:text-deep-maroon'
+            }`}
+          >
+            Historical Map
+          </button>
+          <button
+            onClick={() => setActiveTab('gallery')}
+            className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all focus:outline-none ${
+              activeTab === 'gallery' ? 'bg-deep-maroon text-white shadow-md' : 'text-text-muted hover:text-deep-maroon'
+            }`}
+          >
+            Museum Archives
+          </button>
+        </div>
       </div>
 
-      {/* Hero Section of History Page */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden border-b border-light-gold-border/20">
-        <div 
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('/assets/hero-bg.png')` }}
-        />
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-xs" />
-        
-        <div className="relative z-10 text-center max-w-4xl px-6 space-y-6">
-          <span className="text-xs md:text-sm uppercase tracking-widest text-[#E8D7A5] font-bold block animate-pulse">
-            A Chronology of Devotion & Heritage
-          </span>
-          <h1 className="font-serif font-extrabold text-4xl md:text-7xl text-white drop-shadow-lg leading-tight">
-            Interactive Historical Journey
-          </h1>
-          <div className="w-24 h-1.5 bg-primary-gold mx-auto rounded-full" />
-          <p className="text-white/80 text-sm md:text-lg max-w-2xl mx-auto leading-relaxed">
-            Traverse over fifteen centuries of volcanic geography, royal dynasties, invasions, UNESCO recognition, and modern redevelopment of Pavagadh Hill.
-          </p>
-        </div>
-      </section>
+      <AnimatePresence mode="wait">
+        {/* Tab 1: Internally Scrollable Immersive Chronicle */}
+        {activeTab === 'chronicle' && (
+          <motion.div
+            key="chronicle"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full relative h-[80vh] min-h-[600px] lg:h-[90vh] overflow-hidden flex flex-col lg:flex-row bg-[#FAF6F0]"
+          >
+            {/* Desktop View Layout */}
+            {!isMobileOrTablet ? (
+              <>
+                {/* Left Panel: Sticky Information & Quick Navigation */}
+                <div className="w-[35%] h-full p-8 border-r border-light-gold-border/20 flex flex-col justify-between overflow-y-auto no-scrollbar bg-white/40">
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between">
+                      <span className="text-3xl font-serif font-extrabold text-primary-gold bg-primary-gold/10 px-4 py-1.5 rounded-2xl">
+                        {milestones[activeEraIdx].year}
+                      </span>
+                      <span className="text-xs font-bold text-text-muted bg-gray-100 px-3 py-1 rounded-full uppercase">
+                        {milestones[activeEraIdx].dynasty}
+                      </span>
+                    </div>
 
-      {/* Historical Statistics Dashboard */}
-      <section className="py-12 bg-white border-b border-light-gold-border/10 relative z-25">
-        <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-2 md:grid-cols-6 gap-6 text-center">
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">{historyYears}+</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">Years of History</span>
-          </div>
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">{pilgrims}M+</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">Annual Pilgrims</span>
-          </div>
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">{elevation}m</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">Peak Elevation</span>
-          </div>
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">2004</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">UNESCO Year</span>
-          </div>
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">6+</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">Major Festivals</span>
-          </div>
-          <div>
-            <span className="block font-serif font-extrabold text-2xl md:text-4xl text-deep-maroon">3,000㎡</span>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-text-muted">Temple Plaza</span>
-          </div>
-        </div>
-      </section>
+                    <div className="space-y-4">
+                      <h4 className="text-[10px] uppercase tracking-widest font-bold text-primary-gold">Active Chapter</h4>
+                      <h3 className="font-serif font-extrabold text-2xl text-deep-maroon leading-snug">
+                        {milestones[activeEraIdx].title}
+                      </h3>
+                      <div className="h-0.5 w-12 bg-primary-gold rounded" />
+                    </div>
 
-      {/* Interactive Map Section */}
-      <section className="py-20 px-6 md:px-12 max-w-[1440px] mx-auto space-y-12">
-        <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs uppercase tracking-widest text-primary-gold font-bold">Spatial Heritage</span>
-          <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Interactive Historical Map</h2>
-          <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
-          <p className="text-text-muted text-sm">
-            Click on the historical markers along the Pavagadh pilgrimage route to reveal information about each key location.
-          </p>
-        </div>
+                    {/* Metadata details */}
+                    <div className="space-y-3.5 text-xs text-text-dark font-sans pt-2">
+                      <div className="pb-2 border-b border-light-gold-border/10 flex flex-col space-y-1">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-primary-gold">📍 Major Event</span>
+                        <span className="leading-relaxed">{milestones[activeEraIdx].event}</span>
+                      </div>
+                      <div className="pb-2 border-b border-light-gold-border/10 flex flex-col space-y-1">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-primary-gold">📖 Historical Importance</span>
+                        <span className="leading-relaxed">{milestones[activeEraIdx].importance}</span>
+                      </div>
+                      <div className="flex flex-col space-y-1">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-primary-gold">🌍 Cultural Impact</span>
+                        <span className="leading-relaxed">{milestones[activeEraIdx].culturalImpact}</span>
+                      </div>
+                    </div>
+                  </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
-          {/* Map Image SVG */}
-          <div className="lg:col-span-8 bg-[#EFE9DF] rounded-[28px] border border-light-gold-border/30 p-6 relative min-h-[400px] flex items-center justify-center shadow-inner overflow-hidden select-none">
-            {/* Custom styled Hand-drawn Mountain Path SVG */}
-            <svg viewBox="0 0 800 500" className="w-full h-full opacity-90">
-              {/* Mountain Shape */}
-              <path d="M 50 480 Q 200 480 350 400 T 550 250 T 750 80 L 800 500 L 0 500 Z" fill="url(#mountainGrad)" opacity="0.15" />
-              {/* Path connector line */}
-              <path d="M 160 425 Q 336 325 440 325 T 640 175 T 704 75" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="8 6" className="animate-[dash_20s_linear_infinite]" />
-              
-              {/* Gradients */}
-              <defs>
-                <linearGradient id="mountainGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#8c7853" />
-                  <stop offset="100%" stopColor="#4a1515" />
-                </linearGradient>
-              </defs>
-            </svg>
+                  {/* Floating Vertical Navigation / Quick Jump */}
+                  <div className="mt-8 pt-6 border-t border-light-gold-border/20 flex items-stretch space-x-4 h-44">
+                    {/* Left: Progress line with active dots */}
+                    <div className="relative w-2 flex flex-col justify-between items-center py-2 shrink-0">
+                      <div className="absolute top-0 bottom-0 w-0.5 bg-light-gold-border/30" />
+                      <div 
+                        className="absolute top-0 w-0.5 bg-primary-gold transition-all duration-500 shadow-[0_0_8px_rgba(212,175,55,0.7)]" 
+                        style={{ height: `${(activeEraIdx / (milestones.length - 1)) * 90}%` }}
+                      />
+                      {milestones.map((m, idx) => (
+                        <div 
+                          key={m.id} 
+                          className={`w-2.5 h-2.5 rounded-full z-10 transition-all duration-300 ${
+                            idx <= activeEraIdx ? 'bg-primary-gold scale-125' : 'bg-light-gold-border/60 scale-100'
+                          }`}
+                        />
+                      ))}
+                    </div>
 
-            {/* Clickable markers */}
-            {mapPoints.map((point) => (
-              <button
-                key={point.id}
-                onClick={() => setSelectedMapPoint(point.id)}
-                style={{ left: point.x, top: point.y }}
-                className={`absolute w-10 h-10 -ml-5 -mt-5 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none z-20 ${
-                  selectedMapPoint === point.id
-                    ? 'bg-deep-maroon text-white scale-125 ring-4 ring-primary-gold/50 shadow-lg'
-                    : 'bg-white text-deep-maroon hover:bg-primary-gold hover:text-white border-2 border-primary-gold scale-100 shadow-md'
-                }`}
-                aria-label={`Show info for ${point.title}`}
-              >
-                <MapPin className="w-5 h-5" />
-                <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-deep-maroon/90 text-white text-[9px] font-bold px-2 py-0.5 rounded whitespace-nowrap opacity-0 hover:opacity-100 transition-opacity">
-                  {point.title}
-                </span>
-              </button>
-            ))}
-          </div>
+                    {/* Right: Quick jump buttons */}
+                    <div className="flex-1 overflow-y-auto custom-gold-scrollbar pr-2 space-y-1.5">
+                      {milestones.map((m, idx) => (
+                        <button
+                          key={m.id}
+                          onClick={() => scrollToIdx(idx)}
+                          className={`w-full text-left text-[11px] font-bold tracking-wide uppercase transition-colors block ${
+                            activeEraIdx === idx ? 'text-primary-gold' : 'text-text-muted hover:text-text-dark'
+                          }`}
+                        >
+                          • {m.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-          {/* Map Point Info Card */}
-          <div className="lg:col-span-4 flex flex-col justify-center">
-            <AnimatePresence mode="wait">
-              {selectedMapPoint && (
-                <motion.div
-                  key={selectedMapPoint}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="glass-card rounded-[28px] p-8 border border-light-gold-border/30 space-y-4 shadow-xl h-full flex flex-col justify-center"
+                {/* Right Panel: Scrollable cards with scroll-snap */}
+                <div
+                  ref={rightPanelRef}
+                  onScroll={handleRightScroll}
+                  className="w-[65%] h-full overflow-y-auto scroll-smooth snap-y snap-mandatory custom-gold-scrollbar relative bg-[#FAF6F0]"
                 >
-                  <span className="text-xs uppercase font-bold tracking-widest text-primary-gold">Pilgrim Landmark</span>
-                  <h3 className="font-serif font-extrabold text-2xl md:text-3xl text-deep-maroon">
-                    {mapPoints.find(p => p.id === selectedMapPoint)?.title}
-                  </h3>
-                  <div className="w-16 h-0.5 bg-primary-gold rounded" />
-                  <p className="text-xs md:text-sm text-text-dark/95 leading-relaxed font-sans">
-                    {mapPoints.find(p => p.id === selectedMapPoint)?.desc}
-                  </p>
-                  <div className="pt-4 border-t border-light-gold-border/20 flex items-center justify-between text-xs text-text-muted">
-                    <span>Route Point</span>
-                    <span className="font-bold text-primary-gold uppercase">Active Marker</span>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </section>
+                  {milestones.map((era, idx) => {
+                    const isLast = idx === milestones.length - 1;
+                    return (
+                      <div
+                        key={era.id}
+                        id={`milestone-card-${idx}`}
+                        className="h-full w-full flex items-center justify-center snap-start shrink-0 relative p-8 lg:p-12"
+                      >
+                        <div className="glass-card rounded-[28px] p-6 lg:p-8 border border-light-gold-border/20 shadow-md space-y-4 bg-white w-full max-w-xl mx-auto flex flex-col justify-between">
+                          <div className="flex items-center justify-between border-b border-light-gold-border/10 pb-3">
+                            <span className="text-[10px] uppercase font-bold tracking-widest text-primary-gold">
+                              Milestone {idx + 1} of {milestones.length}
+                            </span>
+                            <span className="text-xs text-text-muted">{era.year}</span>
+                          </div>
 
-      {/* Main Split Viewport Timeline */}
-      <section className="max-w-[1440px] mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 py-12 relative items-start">
-        
-        {/* Left Sticky Sidebar: Dynasty & Era details */}
-        <div className="hidden lg:block lg:col-span-4 sticky top-28 space-y-6">
-          <div className="glass-card rounded-[28px] p-8 border border-light-gold-border/30 shadow-xl space-y-6 bg-white/70">
-            <div className="flex items-center space-x-2 text-primary-gold">
-              <History className="w-5 h-5" />
-              <span className="text-xs uppercase font-bold tracking-widest">Active Era Data</span>
-            </div>
-            
-            <div className="space-y-4 text-xs font-sans text-text-dark">
-              <div className="flex items-center space-x-2.5 pb-3 border-b border-light-gold-border/10">
-                <span className="w-6 text-center text-base">📍</span>
-                <span className="text-text-muted font-medium w-24">Year:</span>
-                <span className="font-bold text-deep-maroon text-sm">{milestones[activeEraIdx].year}</span>
-              </div>
-              
-              <div className="flex items-center space-x-2.5 pb-3 border-b border-light-gold-border/10">
-                <span className="w-6 text-center text-base">👑</span>
-                <span className="text-text-muted font-medium w-24">Dynasty:</span>
-                <span className="font-bold text-text-dark">{milestones[activeEraIdx].dynasty}</span>
-              </div>
+                          <h3 className="font-serif font-extrabold text-2xl text-deep-maroon leading-tight">
+                            {era.title}
+                          </h3>
 
-              <div className="flex items-center space-x-2.5 pb-3 border-b border-light-gold-border/10">
-                <span className="w-6 text-center text-base">🛕</span>
-                <span className="text-text-muted font-medium w-24">Major Event:</span>
-                <span className="font-bold text-text-dark">{milestones[activeEraIdx].event}</span>
-              </div>
+                          <p className="text-xs lg:text-sm text-text-dark/95 leading-relaxed font-sans">
+                            {era.shortDesc}
+                          </p>
 
-              <div className="flex items-start space-x-2.5 pb-3 border-b border-light-gold-border/10">
-                <span className="w-6 text-center text-base">📖</span>
-                <span className="text-text-muted font-medium w-24 mt-0.5">Importance:</span>
-                <span className="font-bold text-text-dark flex-1">{milestones[activeEraIdx].importance}</span>
-              </div>
+                          <div className="rounded-[20px] overflow-hidden aspect-[21/9] border border-light-gold-border/10">
+                            <img src={era.imgUrl} alt={era.title} className="w-full h-full object-cover" />
+                          </div>
 
-              <div className="flex items-start space-x-2.5">
-                <span className="w-6 text-center text-base">🌍</span>
-                <span className="text-text-muted font-medium w-24 mt-0.5">Cultural Impact:</span>
-                <span className="font-bold text-text-dark flex-1">{milestones[activeEraIdx].culturalImpact}</span>
-              </div>
-            </div>
+                          {/* Expansion Panel */}
+                          {expandedEra === era.id && (
+                            <p className="text-xs text-text-muted leading-relaxed font-sans border-t border-light-gold-border/10 pt-3 animate-fade-in">
+                              {era.detailedDesc}
+                            </p>
+                          )}
 
-            <div className="p-4 rounded-xl bg-deep-maroon/5 border border-deep-maroon/10 space-y-1.5">
-              <span className="text-[10px] uppercase font-bold tracking-widest text-primary-gold block">Historical Quote / Fact</span>
-              <p className="text-xs italic text-text-muted leading-relaxed">
-                "{milestones[activeEraIdx].fact}"
-              </p>
-            </div>
-          </div>
-        </div>
+                          <div className="flex items-center justify-between pt-2">
+                            <button
+                              onClick={() => setExpandedEra(expandedEra === era.id ? null : era.id)}
+                              className="text-xs font-bold text-primary-gold hover:text-deep-maroon transition-colors focus:outline-none flex items-center space-x-1"
+                            >
+                              <span>{expandedEra === era.id ? "Show Less" : "Verify Detailed History"}</span>
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expandedEra === era.id ? 'rotate-180' : 'rotate-0'}`} />
+                            </button>
 
-        {/* Right Scrollable Timeline Content */}
-        <div className="lg:col-span-8 space-y-24 relative pl-4 md:pl-10 border-l border-light-gold-border/30">
-          
-          {/* Timeline continuous vertical connector line */}
-          <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary-gold via-deep-maroon to-primary-gold opacity-30" />
+                            {/* Completed Milestone glow badge */}
+                            <div className="flex items-center space-x-1 text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full text-[10px] font-bold">
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Verified</span>
+                            </div>
+                          </div>
 
-          {milestones.map((era, idx) => {
-            const isCurrent = activeEraIdx === idx;
-            const isExpanded = expandedEra === era.id;
-
-            return (
+                          {/* Last slide scroll exit footer */}
+                          {isLast && (
+                            <div className="pt-4 border-t border-light-gold-border/10 flex flex-col items-center space-y-2">
+                              <span className="text-xs font-bold text-text-muted">
+                                You have reached the present day.
+                              </span>
+                              <button
+                                onClick={handleContinue}
+                                className="px-6 py-2 rounded-full bg-deep-maroon text-white text-xs font-bold shadow-md hover:bg-deep-maroon/95 transition-all inline-flex items-center space-x-1"
+                              >
+                                <span>Continue Exploring</span>
+                                <ChevronDown className="w-4 h-4 animate-bounce" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              /* Mobile/Tablet Swipeable Viewport */
               <div 
-                key={era.id} 
-                id={`era-section-${era.id}`}
-                className="timeline-era-section relative space-y-6 scroll-mt-24"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                className="w-full h-full p-6 flex flex-col justify-between bg-[#FAF6F0] relative"
               >
-                {/* Connector Dot */}
-                <div className={`absolute -left-[5px] md:-left-[15px] top-6 w-3 h-3 md:w-8 md:h-8 rounded-full border-4 border-white flex items-center justify-center shadow-md transition-all duration-500 z-10 ${
-                  isCurrent 
-                    ? 'bg-primary-gold scale-125 shadow-[0_0_12px_rgba(212,175,55,0.8)]' 
-                    : 'bg-light-gold-border scale-100'
-                }`} />
-
-                {/* Milestone Card */}
-                <div className={`glass-card rounded-[28px] border p-6 md:p-8 shadow-md hover:shadow-xl transition-all duration-300 ${
-                  isCurrent ? 'border-primary-gold/60 ring-1 ring-primary-gold/30 bg-white' : 'border-light-gold-border/20 bg-white/70'
-                }`}>
-                  <div className="flex flex-wrap items-center justify-between gap-4 mb-4 border-b border-light-gold-border/10 pb-4">
-                    <div className="flex items-center space-x-3">
-                      <span className="text-lg md:text-xl font-bold uppercase tracking-wider text-primary-gold bg-primary-gold/10 px-4 py-1.5 rounded-full">
-                        {era.year}
-                      </span>
-                      <span className="text-xs font-semibold text-text-muted bg-gray-100 px-3 py-1 rounded-full uppercase">
-                        {era.dynasty}
-                      </span>
-                    </div>
-                    <div className="w-10 h-10 rounded-full bg-deep-maroon/5 flex items-center justify-center text-primary-gold">
-                      {era.icon}
-                    </div>
-                  </div>
-
-                  <h3 className="font-serif font-extrabold text-2xl md:text-3xl text-deep-maroon leading-tight mb-4">
-                    {era.title}
-                  </h3>
-
-                  <p className="text-xs md:text-sm text-text-dark/90 leading-relaxed font-sans mb-4">
-                    {era.shortDesc}
-                  </p>
-
-                  {/* Inline Image */}
-                  <div className="rounded-[20px] overflow-hidden aspect-[21/9] border border-light-gold-border/20 mb-4 relative group">
-                    <img 
-                      src={era.imgUrl} 
-                      alt={era.title} 
-                      className="w-full h-full object-cover transition-transform duration-[6000ms] group-hover:scale-105" 
-                      loading="lazy" 
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute bottom-3 left-4 text-white text-[10px] font-bold uppercase tracking-wider">
-                      Historical Illustration
+                {/* Upper active card metadata header */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl font-serif font-extrabold text-primary-gold">
+                      {milestones[activeEraIdx].year}
+                    </span>
+                    <span className="text-[10px] uppercase font-bold text-text-muted bg-gray-100 px-3 py-1 rounded-full">
+                      {milestones[activeEraIdx].dynasty}
                     </span>
                   </div>
+                  <h3 className="font-serif font-bold text-xl text-deep-maroon">
+                    {milestones[activeEraIdx].title}
+                  </h3>
+                </div>
 
-                  {/* Expandable Panel */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden space-y-4 text-xs md:text-sm text-text-muted leading-relaxed font-sans pt-2"
-                      >
-                        <p>{era.detailedDesc}</p>
-                        <div className="p-4 rounded-xl bg-[#FFF9F2] border border-light-gold-border/20 flex items-start space-x-3">
-                          <span className="text-lg">💡</span>
-                          <div>
-                            <span className="font-bold text-deep-maroon block mb-0.5">Did You Know?</span>
-                            <span className="text-xs leading-normal">{era.fact}</span>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  {/* Expand/Collapse Button */}
-                  <button
-                    onClick={() => setExpandedEra(isExpanded ? null : era.id)}
-                    className="mt-4 text-xs font-bold text-primary-gold hover:text-deep-maroon flex items-center space-x-1.5 focus:outline-none transition-colors border-t border-light-gold-border/10 pt-4 w-full justify-between"
+                {/* Main Swipe Deck Active Card */}
+                <div className="flex-grow flex items-center justify-center py-4">
+                  <motion.div
+                    key={activeEraIdx}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="glass-card rounded-[24px] p-5 border border-light-gold-border/20 shadow-md space-y-4 bg-white w-full max-w-md flex flex-col justify-between h-[360px] overflow-y-auto no-scrollbar"
                   >
-                    <span>{isExpanded ? "Show Less" : "Read More & Verify Details"}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`} />
-                  </button>
+                    <div className="space-y-2">
+                      <p className="text-xs text-text-dark/95 leading-relaxed font-sans">
+                        {milestones[activeEraIdx].shortDesc}
+                      </p>
+                      
+                      <div className="p-3 rounded-xl bg-deep-maroon/5 border border-deep-maroon/10">
+                        <p className="text-[10px] italic text-text-muted leading-relaxed">
+                          "{milestones[activeEraIdx].fact}"
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl overflow-hidden h-28 border border-light-gold-border/10 shrink-0">
+                      <img src={milestones[activeEraIdx].imgUrl} alt={milestones[activeEraIdx].title} className="w-full h-full object-cover" />
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Lower Action bar & exit options */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-text-muted">
+                      Chapter {activeEraIdx + 1} of {milestones.length}
+                    </span>
+
+                    {/* Navigation buttons */}
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => activeEraIdx > 0 && setActiveEraIdx(prev => prev - 1)}
+                        disabled={activeEraIdx === 0}
+                        className="w-9 h-9 rounded-full bg-white border border-light-gold-border/30 flex items-center justify-center text-deep-maroon disabled:opacity-40"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={() => activeEraIdx < milestones.length - 1 && setActiveEraIdx(prev => prev + 1)}
+                        disabled={activeEraIdx === milestones.length - 1}
+                        className="w-9 h-9 rounded-full bg-white border border-light-gold-border/30 flex items-center justify-center text-deep-maroon disabled:opacity-40"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Exit Continue explore options */}
+                  {activeEraIdx === milestones.length - 1 && (
+                    <button
+                      onClick={handleContinue}
+                      className="w-full py-3 rounded-xl gold-gradient text-white text-xs font-bold shadow-md flex items-center justify-center space-x-2"
+                    >
+                      <span>Continue Exploring Below</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </section>
+            )}
+          </motion.div>
+        )}
 
-      {/* History Masonry Gallery Section */}
-      <section className="py-20 px-6 md:px-12 bg-white-card/40 border-t border-light-gold-border/20">
-        <div className="max-w-[1440px] mx-auto space-y-12">
-          {/* Header */}
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs uppercase tracking-widest text-primary-gold font-bold">Museum Archives</span>
-            <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">History Photo Gallery</h2>
-            <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
-            <p className="text-text-muted text-sm">
-              Discover historical carvings, temple paintings, excavations, and heritage remains cataloged by archaeologists.
-            </p>
-          </div>
+        {/* Tab 2: Interactive Historical Map */}
+        {activeTab === 'map' && (
+          <motion.div
+            key="map"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full py-12 px-6 md:px-12 max-w-[1440px] mx-auto"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+              <div className="lg:col-span-8 bg-[#EFE9DF] rounded-[28px] border border-light-gold-border/30 p-6 relative min-h-[400px] flex items-center justify-center shadow-inner overflow-hidden select-none">
+                <svg viewBox="0 0 800 500" className="w-full h-full opacity-90">
+                  <path d="M 50 480 Q 200 480 350 400 T 550 250 T 750 80 L 800 500 L 0 500 Z" fill="url(#mountainGrad)" opacity="0.15" />
+                  <path d="M 160 425 Q 336 325 440 325 T 640 175 T 704 75" fill="none" stroke="#D4AF37" strokeWidth="3" strokeDasharray="8 6" />
+                  <defs>
+                    <linearGradient id="mountainGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#8c7853" />
+                      <stop offset="100%" stopColor="#4a1515" />
+                    </linearGradient>
+                  </defs>
+                </svg>
 
-          {/* Masonry Grid */}
-          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-            {galleryImages.map((img, idx) => (
-              <div
-                key={idx}
-                onClick={() => setLightboxImage(img.url)}
-                className="break-inside-avoid bg-white border border-light-gold-border/20 rounded-[24px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group"
-              >
-                <div className="relative overflow-hidden aspect-[4/3]">
-                  <img 
-                    src={img.url} 
-                    alt={img.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Eye className="w-8 h-8 text-white" />
+                {mapPoints.map((point) => (
+                  <button
+                    key={point.id}
+                    onClick={() => setSelectedMapPoint(point.id)}
+                    style={{ left: point.x, top: point.y }}
+                    className={`absolute w-10 h-10 -ml-5 -mt-5 rounded-full flex items-center justify-center transition-all duration-300 focus:outline-none z-20 ${
+                      selectedMapPoint === point.id
+                        ? 'bg-deep-maroon text-white scale-125 ring-4 ring-primary-gold/50 shadow-lg'
+                        : 'bg-white text-deep-maroon hover:bg-primary-gold hover:text-white border-2 border-primary-gold scale-100 shadow-md'
+                    }`}
+                  >
+                    <MapPin className="w-5 h-5" />
+                  </button>
+                ))}
+              </div>
+
+              <div className="lg:col-span-4 flex flex-col justify-center">
+                <AnimatePresence mode="wait">
+                  {selectedMapPoint && (
+                    <motion.div
+                      key={selectedMapPoint}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="glass-card rounded-[28px] p-8 border border-light-gold-border/30 space-y-4 shadow-xl h-full flex flex-col justify-center bg-white"
+                    >
+                      <span className="text-xs uppercase font-bold tracking-widest text-primary-gold">Pilgrim Landmark</span>
+                      <h3 className="font-serif font-extrabold text-2xl md:text-3xl text-deep-maroon">
+                        {mapPoints.find(p => p.id === selectedMapPoint)?.title}
+                      </h3>
+                      <div className="w-16 h-0.5 bg-primary-gold rounded" />
+                      <p className="text-xs md:text-sm text-text-dark/95 leading-relaxed font-sans">
+                        {mapPoints.find(p => p.id === selectedMapPoint)?.desc}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Tab 3: History Masonry Photo Gallery */}
+        {activeTab === 'gallery' && (
+          <motion.div
+            key="gallery"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full py-12 px-6 md:px-12 max-w-[1440px] mx-auto space-y-8"
+          >
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+              {galleryImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => setLightboxImage(img.url)}
+                  className="break-inside-avoid bg-white border border-light-gold-border/20 rounded-[24px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  <div className="relative overflow-hidden aspect-[4/3]">
+                    <img 
+                      src={img.url} 
+                      alt={img.title} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-black/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <Eye className="w-8 h-8 text-white" />
+                    </div>
+                  </div>
+                  <div className="p-5 space-y-1">
+                    <h4 className="font-serif font-bold text-deep-maroon text-base">{img.title}</h4>
+                    <p className="text-[11px] text-text-muted">{img.desc}</p>
                   </div>
                 </div>
-                <div className="p-5 space-y-1">
-                  <h4 className="font-serif font-bold text-deep-maroon text-base">{img.title}</h4>
-                  <p className="text-[11px] text-text-muted">{img.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Lightbox for Gallery */}
       {lightboxImage && (
@@ -645,6 +749,6 @@ export default function Timeline() {
           <img src={lightboxImage} alt="Enlarged heritage view" className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" />
         </div>
       )}
-    </div>
+    </section>
   );
 }

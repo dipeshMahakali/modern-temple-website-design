@@ -65,31 +65,31 @@ export default function Stats() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatItem
           icon={<History className="w-7 h-7" />}
-          label="Temple History"
-          targetValue={1500}
+          label="Years of History"
+          targetValue={2200}
           suffix="+"
-          subtext="Years of Spiritual Legacy"
+          subtext="Spiritual Legacy since 200 BC"
         />
         <StatItem
           icon={<Users className="w-7 h-7" />}
-          label="Daily Devotees"
-          targetValue={2}
-          suffix=" Lakhs+"
-          subtext="Pilgrims visiting daily"
+          label="Temple Elevation"
+          targetValue={1600}
+          suffix=" Ft"
+          subtext="Height of Badi Bamleshwari Hill"
         />
         <StatItem
           icon={<Radio className="w-7 h-7 animate-pulse text-red-600" />}
-          label="Daily Darshan"
-          targetValue={1}
-          suffix=" Live"
-          subtext="Continuous digital broadcast"
+          label="Temple Steps"
+          targetValue={1000}
+          suffix="+"
+          subtext="Steps to the Hilltop Sanctum"
         />
         <StatItem
           icon={<Clock className="w-7 h-7" />}
-          label="Temple Opening"
-          targetValue={13}
-          suffix=".5 Hrs"
-          subtext="6:00 AM to 7:30 PM open"
+          label="Annual Festivals"
+          targetValue={2}
+          suffix=" Grand"
+          subtext="Chaitra & Sharadiya Navratri"
         />
       </div>
     </section>

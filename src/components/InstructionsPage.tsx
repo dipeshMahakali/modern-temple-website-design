@@ -28,7 +28,7 @@ export default function InstructionsPage() {
         <h1 className="font-serif font-extrabold text-4xl md:text-5xl text-deep-maroon">Important Instructions</h1>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          Please review the official guidelines and regulations issued by the Shree Kalika Mataji Mandir Trust before commencing your journey.
+          Please review the official guidelines and regulations issued by the Shri Bamleshwari Mandir Trust Samiti before commencing your journey.
         </p>
       </div>
 
@@ -60,13 +60,13 @@ export default function InstructionsPage() {
           </div>
           
           <p className="text-xs text-text-dark/90 leading-relaxed font-sans">
-            Managed by private coordinators under the trust's oversight, the ropeway transports pilgrims from the Machi plateau directly up to the base stairs of the temple peak in under 6 minutes.
+            Managed by private coordinators under the trust's oversight, the ropeway transports pilgrims from the base station directly up to the Badi Bamleshwari temple peak in under 6 minutes.
           </p>
 
           <ul className="space-y-3.5 text-xs text-text-dark/95 leading-relaxed font-sans">
             <li className="flex items-start space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-gold mt-1.5 shrink-0" />
-              <span><strong>Operational Timings:</strong> 6:00 AM to 6:00 PM (Daily). Timings may vary depending on wind speed.</span>
+              <span><strong>Operational Timings:</strong> 7:00 AM to 7:00 PM on weekdays, and 24 hours during Navratri. Timings may vary depending on weather conditions.</span>
             </li>
             <li className="flex items-start space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-gold mt-1.5 shrink-0" />
@@ -74,7 +74,7 @@ export default function InstructionsPage() {
             </li>
             <li className="flex items-start space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-primary-gold mt-1.5 shrink-0" />
-              <span><strong>Ticket Counter:</strong> Located at Machi Plateau. Online pre-booking is recommended during peak festival days.</span>
+              <span><strong>Ticket Counter:</strong> Located at the hill base station. Online pre-booking is recommended during peak festival days.</span>
             </li>
           </ul>
         </div>
@@ -89,7 +89,7 @@ export default function InstructionsPage() {
           </div>
           
           <p className="text-xs text-text-dark/90 leading-relaxed font-sans">
-            For devotees wishing to ascend the hill on foot, a recently upgraded pathway is available from Machi Chowk containing 2,374 steps.
+            For devotees wishing to ascend the hill on foot, a recently upgraded pathway is available from the base containing 1,000 steps.
           </p>
 
           <ul className="space-y-3.5 text-xs text-text-dark/95 leading-relaxed font-sans">

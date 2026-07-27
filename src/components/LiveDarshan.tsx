@@ -45,7 +45,7 @@ export default function LiveDarshan() {
               <iframe
                 className="w-full h-full absolute inset-0 z-20 border-0"
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
-                title="Pavagadh Temple Live Stream"
+                title="Dongargarh Maa Bamleshwari Temple Live Stream"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
@@ -66,7 +66,7 @@ export default function LiveDarshan() {
               </div>
 
               <p className="text-sm text-text-dark/90 leading-relaxed">
-                Connect with the divine energy of Mata Kalika from anywhere in the world. Our daily high-definition live stream allows devotees to participate in the morning and evening aartis.
+                Connect with the divine energy of Maa Bamleshwari Devi from anywhere in the world. Our daily live darshan stream allows devotees to participate in the morning and evening aartis.
               </p>
 
               {/* Timings summary */}
@@ -77,7 +77,7 @@ export default function LiveDarshan() {
                 </h5>
                 <div className="flex justify-between text-xs font-medium">
                   <span className="text-text-muted">Morning Aarti:</span>
-                  <span className="text-deep-maroon font-bold">6:00 AM – 6:30 AM</span>
+                  <span className="text-deep-maroon font-bold">5:30 AM – 6:00 AM</span>
                 </div>
                 <div className="flex justify-between text-xs font-medium">
                   <span className="text-text-muted">Evening Aarti:</span>

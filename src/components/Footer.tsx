@@ -36,15 +36,15 @@ export default function Footer({ setActivePage }: FooterProps) {
             </div>
             <div>
               <span className="font-serif font-bold text-lg text-white block leading-tight">
-                શ્રી મહાકાળી મંદિર
+                माँ बम्लेश्वरी देवी मंदिर
               </span>
               <span className="text-[10px] uppercase tracking-widest text-[#E8D7A5] font-semibold block">
-                Pavagadh Temple Trust
+                Bamleshwari Temple Trust
               </span>
             </div>
           </button>
           <p className="text-xs leading-relaxed max-w-sm">
-            Preserving and managing the sacred heritage of Pavagadh Hill, a designated UNESCO World Heritage precinct and major Shakti Peeth shrine in Gujarat, India.
+            Preserving and managing the sacred heritage of Dongargarh Hill, the historic Maa Bamleshwari Devi shrine in Rajnandgaon District, Chhattisgarh, India.
           </p>
           {/* Social Icons */}
           <div className="flex space-x-4 pt-2">
@@ -111,8 +111,8 @@ export default function Footer({ setActivePage }: FooterProps) {
           </ul>
           <div className="bg-white/5 border border-white/10 p-3.5 rounded-xl space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-widest text-[#E8D7A5] block">Temple Timings</span>
-            <span className="text-xs text-white block">6:00 AM – 7:30 PM Daily</span>
-            <span className="text-[10px] text-white/50 block">Aarti: 6 AM & 7 PM</span>
+            <span className="text-xs text-white block">4:00 AM – 10:00 PM Daily</span>
+            <span className="text-[10px] text-white/50 block">Aarti: 4:00 AM, 5:30 AM & 7:00 PM</span>
           </div>
         </div>
 
@@ -157,7 +157,7 @@ export default function Footer({ setActivePage }: FooterProps) {
       {/* Bottom Copyright */}
       <div className="max-w-[1440px] mx-auto mt-12 pt-8 border-t border-white/10 text-center flex flex-col md:flex-row items-center justify-between text-xs space-y-4 md:space-y-0">
         <p className="font-medium">
-          © {new Date().getFullYear()} Shree Kalika Mataji Mandir Trust, Pavagadh. All Rights Reserved.
+          © {new Date().getFullYear()} Shri Bamleshwari Mandir Trust Samiti, Dongargarh. All Rights Reserved.
         </p>
         <p className="text-white/40 text-[10px]">
           Redesigned Premium Heritage Portal & Devotee Services.
