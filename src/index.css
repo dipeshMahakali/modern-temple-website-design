@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-gold: #D4AF37;
+  --color-deep-maroon: #6B1E1E;
+  --color-temple-brown: #5C4033;
+  --color-cream-bg: #FFF9F2;
+  --color-white-card: #FFFFFF;
+  --color-light-gold-border: #E8D7A5;
+  --color-text-dark: #2D2D2D;
+  --color-text-muted: #777777;
+
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+  --font-gujarati: "Noto Sans Gujarati", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #FFF9F2;
+    color: #2D2D2D;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #E8D7A5;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+/* Glassmorphism Cards */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 215, 165, 0.4);
+}
+
+.glass-nav {
+  background: rgba(255, 249, 242, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Text glow effect */
+.gold-text-glow {
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+/* Custom styles for animations and details */
+.gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #B89020 100%);
+}
+
+.maroon-gradient {
+  background: linear-gradient(135deg, #6B1E1E 0%, #4D1212 100%);
+}
+
+.cream-gradient {
+  background: linear-gradient(180deg, #FFF9F2 0%, #FFF3E3 100%);
+}
+
+/* Pinterest Masonry Styling */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 24px;
+}
