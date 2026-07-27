@@ -19,12 +19,11 @@ export default function LiveDarshan() {
             {!isPlaying ? (
               <>
                 {/* Thumbnail Background */}
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] group-hover:scale-105"
                   style={{ backgroundImage: `url('/assets/hero-bg.png')` }}
                 />
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center z-10" />
-                
                 {/* Play Button Overlay */}
                 <button
                   onClick={() => setIsPlaying(true)}
@@ -44,7 +43,7 @@ export default function LiveDarshan() {
             ) : (
               <iframe
                 className="w-full h-full absolute inset-0 z-20 border-0"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                src="https://www.youtube.com/embed/wulPPdw-FUk?autoplay=1"
                 title="Dongargarh Maa Bamleshwari Temple Live Stream"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
