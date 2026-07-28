@@ -403,3 +403,290 @@ class DashboardStats(BaseModel):
     unread_messages: int
     total_users: int
     recent_logins: int
+
+
+# ─── Hero Config Schemas ──────────────────────────────────────────────────────
+class HeroConfigOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    heading: str
+    heading_devanagari: Optional[str]
+    subtitle: Optional[str]
+    description: Optional[str]
+    bg_image_url: Optional[str]
+    bg_video_url: Optional[str]
+    overlay_opacity: float
+    buttons: Optional[List[Dict[str, Any]]]
+    is_active: bool
+    updated_at: datetime
+
+
+class HeroConfigUpdate(BaseModel):
+    heading: Optional[str] = None
+    heading_devanagari: Optional[str] = None
+    subtitle: Optional[str] = None
+    description: Optional[str] = None
+    bg_image_url: Optional[str] = None
+    bg_video_url: Optional[str] = None
+    overlay_opacity: Optional[float] = None
+    buttons: Optional[List[Dict[str, Any]]] = None
+    is_active: Optional[bool] = None
+
+
+# ─── Temple Timing Schemas ────────────────────────────────────────────────────
+class TempleTimingOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    day_type: str
+    season: Optional[str]
+    opening_time: str
+    closing_time: str
+    special_note: Optional[str]
+    display_order: int
+    is_visible: bool
+
+
+class TempleTimingCreate(BaseModel):
+    day_type: str
+    season: Optional[str] = None
+    opening_time: str
+    closing_time: str
+    special_note: Optional[str] = None
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class TempleTimingUpdate(BaseModel):
+    day_type: Optional[str] = None
+    season: Optional[str] = None
+    opening_time: Optional[str] = None
+    closing_time: Optional[str] = None
+    special_note: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Stat Item Schemas ────────────────────────────────────────────────────────
+class StatItemOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    icon: str
+    label: str
+    target_value: int
+    suffix: str
+    subtext: str
+    display_order: int
+    is_visible: bool
+
+
+class StatItemCreate(BaseModel):
+    icon: str
+    label: str
+    target_value: int
+    suffix: str = ""
+    subtext: str = ""
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class StatItemUpdate(BaseModel):
+    icon: Optional[str] = None
+    label: Optional[str] = None
+    target_value: Optional[int] = None
+    suffix: Optional[str] = None
+    subtext: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Trustee Schemas ──────────────────────────────────────────────────────────
+class TrusteeOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    position: Optional[str]
+    desc: Optional[str]
+    display_order: int
+    is_visible: bool
+
+
+class TrusteeCreate(BaseModel):
+    name: str
+    position: Optional[str] = None
+    desc: Optional[str] = None
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class TrusteeUpdate(BaseModel):
+    name: Optional[str] = None
+    position: Optional[str] = None
+    desc: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Testimonial Schemas ──────────────────────────────────────────────────────
+class TestimonialOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    location: str
+    text: str
+    rating: int
+    display_order: int
+    is_visible: bool
+
+
+class TestimonialCreate(BaseModel):
+    name: str
+    location: str
+    text: str
+    rating: int = 5
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class TestimonialUpdate(BaseModel):
+    name: Optional[str] = None
+    location: Optional[str] = None
+    text: Optional[str] = None
+    rating: Optional[int] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Instruction Schemas ──────────────────────────────────────────────────────
+class InstructionRuleOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    icon: str
+    title: str
+    desc: str
+    display_order: int
+    is_visible: bool
+
+
+class InstructionRuleCreate(BaseModel):
+    icon: str
+    title: str
+    desc: str
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class InstructionRuleUpdate(BaseModel):
+    icon: Optional[str] = None
+    title: Optional[str] = None
+    desc: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+class InstructionDetailOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    group_slug: str
+    title: str
+    description: str
+    items: List[str]
+    display_order: int
+    is_visible: bool
+
+
+class InstructionDetailCreate(BaseModel):
+    group_slug: str
+    title: str
+    description: str
+    items: List[str]
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class InstructionDetailUpdate(BaseModel):
+    group_slug: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    items: Optional[List[str]] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Service Item Schemas ─────────────────────────────────────────────────────
+class ServiceItemOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    title: str
+    desc: str
+    icon: str
+    color: str
+    action_page: str
+    display_order: int
+    is_visible: bool
+
+
+class ServiceItemCreate(BaseModel):
+    title: str
+    desc: str
+    icon: str
+    color: str
+    action_page: str
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class ServiceItemUpdate(BaseModel):
+    title: Optional[str] = None
+    desc: Optional[str] = None
+    icon: Optional[str] = None
+    color: Optional[str] = None
+    action_page: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Bank Detail Schemas ──────────────────────────────────────────────────────
+class BankDetailOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    label: str
+    bank_name: str
+    account_number: str
+    ifsc_code: str
+    branch_name: str
+    display_order: int
+    is_visible: bool
+
+
+class BankDetailCreate(BaseModel):
+    label: str
+    bank_name: str
+    account_number: str
+    ifsc_code: str
+    branch_name: str
+    display_order: int = 0
+    is_visible: bool = True
+
+
+class BankDetailUpdate(BaseModel):
+    label: Optional[str] = None
+    bank_name: Optional[str] = None
+    account_number: Optional[str] = None
+    ifsc_code: Optional[str] = None
+    branch_name: Optional[str] = None
+    display_order: Optional[int] = None
+    is_visible: Optional[bool] = None
+
+
+# ─── Version / Revision Schemas ───────────────────────────────────────────────
+class ContentRevisionOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    entity_type: str
+    entity_id: int
+    version: int
+    data: Dict[str, Any]
+    created_by_id: Optional[int]
+    comment: Optional[str]
+    created_at: datetime
+

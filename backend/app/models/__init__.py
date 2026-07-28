@@ -4,6 +4,9 @@ from app.models.content import (
     Page, Section, NavigationItem, TimelineEntry,
     GalleryItem, Event, HeroConfig, TempleInfo,
     TempleTiming, SeoEntry, ContactMessage,
+    StatItem, Trustee, Testimonial, InstructionRule,
+    InstructionDetail, ServiceItem, BankDetail, ContentRevision,
+    FormConfig
 )
 from app.models.media import MediaFile
 from app.models.audit import AuditLog
@@ -13,5 +16,7 @@ __all__ = [
     "Page", "Section", "NavigationItem", "TimelineEntry",
     "GalleryItem", "Event", "HeroConfig", "TempleInfo",
     "TempleTiming", "SeoEntry", "ContactMessage",
-    "MediaFile", "AuditLog",
+    "StatItem", "Trustee", "Testimonial", "InstructionRule",
+    "InstructionDetail", "ServiceItem", "BankDetail", "ContentRevision",
+    "FormConfig", "MediaFile", "AuditLog",
 ]
