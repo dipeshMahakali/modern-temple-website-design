@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
+import { publicApi } from '../api/client';
 
 interface GalleryItem {
   id: number;
@@ -9,68 +10,100 @@ interface GalleryItem {
   desc: string;
 }
 
+const initialGalleryItems: GalleryItem[] = [
+  {
+    id: 1,
+    url: "/assets/hero-bg.png",
+    category: "temple",
+    title: "Dongargarh Hilltop Temple",
+    desc: "An aerial illustration of Maa Bamleshwari Devi Mandir crowning the hill crest at sunrise."
+  },
+  {
+    id: 2,
+    url: "/assets/gallery-festival.png",
+    category: "festivals",
+    title: "Dhwaja Procession",
+    desc: "Devotees carrying a large sacred red flag (dhwaja) to hoist atop the temple spire."
+  },
+  {
+    id: 3,
+    url: "/assets/about-bg.png",
+    category: "aarti",
+    title: "Ganesha Sanctuary Shrine",
+    desc: "Morning prayers inside the temple complex with lit brass oil lamps (diyas)."
+  },
+  {
+    id: 4,
+    url: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop",
+    category: "architecture",
+    title: "Pragyagiri Buddha Statue",
+    desc: "The monumental Buddha statue located on Pragyagiri Hill, a spiritual landmark of Dongargarh."
+  },
+  {
+    id: 5,
+    url: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
+    category: "aarti",
+    title: "Evening Maha Aarti",
+    desc: "High spiritual fire offerings performed by temple priests during sunset."
+  },
+  {
+    id: 6,
+    url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
+    category: "nature",
+    title: "Dongargarh Misty Peaks",
+    desc: "Spectacular view of Dongargarh Hill engulfed in monsoon clouds and lush greenery."
+  },
+  {
+    id: 7,
+    url: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop",
+    category: "temple",
+    title: "Chhoti Bamleshwari Temple",
+    desc: "The beautiful Chhoti Bamleshwari temple located at the base of the hill."
+  },
+  {
+    id: 8,
+    url: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop",
+    category: "festivals",
+    title: "Navratri Celebration",
+    desc: "Thousands of Jyoti Kalash lamps illuminating the temple complex during the Navratri festival."
+  }
+];
+
 export default function Gallery() {
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(initialGalleryItems);
   const [activeFilter, setActiveFilter] = useState<'all' | 'temple' | 'festivals' | 'aarti' | 'architecture' | 'nature'>('all');
   const [selectedImageIdx, setSelectedImageIdx] = useState<number | null>(null);
 
-  const galleryItems: GalleryItem[] = [
-    {
-      id: 1,
-      url: "/assets/hero-bg.png",
-      category: "temple",
-      title: "Dongargarh Hilltop Temple",
-      desc: "An aerial illustration of Maa Bamleshwari Devi Mandir crowning the hill crest at sunrise."
-    },
-    {
-      id: 2,
-      url: "/assets/gallery-festival.png",
-      category: "festivals",
-      title: "Dhwaja Procession",
-      desc: "Devotees carrying a large sacred red flag (dhwaja) to hoist atop the temple spire."
-    },
-    {
-      id: 3,
-      url: "/assets/about-bg.png",
-      category: "aarti",
-      title: "Ganesha Sanctuary Shrine",
-      desc: "Morning prayers inside the temple complex with lit brass oil lamps (diyas)."
-    },
-    {
-      id: 4,
-      url: "https://images.unsplash.com/photo-1600100397608-f010e423b971?q=80&w=800&auto=format&fit=crop",
-      category: "architecture",
-      title: "Pragyagiri Buddha Statue",
-      desc: "The monumental Buddha statue located on Pragyagiri Hill, a spiritual landmark of Dongargarh."
-    },
-    {
-      id: 5,
-      url: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
-      category: "aarti",
-      title: "Evening Maha Aarti",
-      desc: "High spiritual fire offerings performed by temple priests during sunset."
-    },
-    {
-      id: 6,
-      url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop",
-      category: "nature",
-      title: "Dongargarh Misty Peaks",
-      desc: "Spectacular view of Dongargarh Hill engulfed in monsoon clouds and lush greenery."
-    },
-    {
-      id: 7,
-      url: "https://images.unsplash.com/photo-1561361513-2d000a50f0db?q=80&w=800&auto=format&fit=crop",
-      category: "temple",
-      title: "Chhoti Bamleshwari Temple",
-      desc: "The beautiful Chhoti Bamleshwari temple located at the base of the hill."
-    },
-    {
-      id: 8,
-      url: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop",
-      category: "festivals",
-      title: "Navratri Celebration",
-      desc: "Thousands of Jyoti Kalash lamps illuminating the temple complex during the Navratri festival."
-    }
-  ];
+  useEffect(() => {
+    const loadGallery = async () => {
+      try {
+        const res = await publicApi.getGallery();
+        if (res.data && res.data.length > 0) {
+          const mapped = res.data.map((item: any): GalleryItem => {
+            const cat = item.category.toLowerCase();
+            let mappedCat: any = 'temple';
+            if (cat === 'festival' || cat === 'festivals') mappedCat = 'festivals';
+            else if (cat === 'aarti') mappedCat = 'aarti';
+            else if (cat === 'architecture') mappedCat = 'architecture';
+            else if (cat === 'nature') mappedCat = 'nature';
+            else mappedCat = 'temple';
+
+            return {
+              id: item.id,
+              url: item.url.startsWith('/') ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:8000'}${item.url}` : item.url,
+              category: mappedCat,
+              title: item.alt_text || "Dongargarh Divine Sight",
+              desc: item.caption || "A sacred visual captured from Shree Mahakali Mataji Temple precinct."
+            };
+          });
+          setGalleryItems(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to fetch gallery items, using local fallback:", err);
+      }
+    };
+    loadGallery();
+  }, []);
 
   const filteredItems = activeFilter === 'all'
     ? galleryItems
@@ -127,7 +160,6 @@ export default function Gallery() {
       {/* Pinterest Masonry Grid */}
       <div className="masonry-grid">
         {filteredItems.map((item, idx) => {
-          // Find original index in filtered array for lightbox navigation
           return (
             <div
               key={item.id}

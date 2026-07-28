@@ -103,3 +103,25 @@
   scrollbar-width: none;
 }
 
+/* Admin Panel Scrollbar */
+.custom-admin-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-admin-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-admin-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 10px;
+}
+.custom-admin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* Placeholder image fallback */
+img[src=""],
+img:not([src]) {
+  visibility: hidden;
+}
+
+

@@ -1,10 +1,36 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import App from './App.tsx'
+import { AuthProvider } from './admin/store/AuthContext.tsx'
+import './index.css'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <AuthProvider>
+        <App />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: '#FFFFFF',
+              border: '1px solid rgba(212,175,55,0.2)',
+              color: '#2D2D2D',
+              fontFamily: 'Inter, sans-serif',
+              fontSize: '13px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)',
+            },
+            success: {
+              iconTheme: { primary: '#D4AF37', secondary: '#FFFFFF' },
+            },
+            error: {
+              iconTheme: { primary: '#6B1E1E', secondary: '#FFFFFF' },
+            },
+          }}
+        />
+      </AuthProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
 )

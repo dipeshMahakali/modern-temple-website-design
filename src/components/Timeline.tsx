@@ -6,6 +6,7 @@ import {
   HelpCircle, Eye, ChevronDown, Check, Globe,
   ChevronLeft, ChevronRight
 } from 'lucide-react';
+import { publicApi } from '../api/client';
 
 interface Milestone {
   id: number;
@@ -39,7 +40,7 @@ export default function Timeline() {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
-  const milestones: Milestone[] = [
+  const initialMilestones: Milestone[] = [
     {
       id: 0,
       year: "Ancient Origins",
@@ -237,6 +238,69 @@ export default function Timeline() {
     }
   ];
 
+  const [milestones, setMilestones] = useState<Milestone[]>(initialMilestones);
+
+  useEffect(() => {
+    const loadTimeline = async () => {
+      try {
+        const res = await publicApi.getTimeline();
+        if (res.data && res.data.length > 0) {
+          const mapped = res.data.map((entry: any, index: number): Milestone => {
+            const icons = [
+              <Sparkles className="w-4 h-4" />,
+              <Award className="w-4 h-4" />,
+              <Landmark className="w-4 h-4" />,
+              <BookOpen className="w-4 h-4" />,
+              <ShieldAlert className="w-4 h-4" />,
+              <History className="w-4 h-4" />,
+              <Globe className="w-4 h-4" />
+            ];
+            const gradients = [
+              "from-orange-500 to-amber-600",
+              "from-red-600 to-rose-700",
+              "from-yellow-600 to-amber-700",
+              "from-blue-600 to-indigo-700",
+              "from-emerald-600 to-teal-700",
+              "from-red-700 to-rose-900",
+              "from-amber-700 to-yellow-800",
+              "from-orange-600 to-red-800",
+              "from-zinc-700 to-neutral-900",
+              "from-teal-600 to-emerald-700",
+              "from-indigo-600 to-blue-800",
+              "from-amber-600 to-yellow-600",
+              "from-red-600 to-orange-600"
+            ];
+            const imageFallbacks = [
+              "/assets/hero-bg.png",
+              "/assets/about-bg.png",
+              "/assets/gallery-festival.png"
+            ];
+
+            return {
+              id: entry.id,
+              year: entry.year || `Year ${index + 1}`,
+              dynasty: entry.period || "Historical Era",
+              title: entry.title,
+              event: entry.description,
+              importance: entry.quote || "A significant moment in the temple's history.",
+              culturalImpact: entry.quote || "Enriched the cultural fabric of the region.",
+              shortDesc: entry.description,
+              detailedDesc: entry.description,
+              fact: entry.quote || "A preserved record of spiritual devotion.",
+              icon: icons[index % icons.length],
+              color: gradients[index % gradients.length],
+              imgUrl: entry.image_url ? (entry.image_url.startsWith('/') ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:8000'}${entry.image_url}` : entry.image_url) : imageFallbacks[index % imageFallbacks.length]
+            };
+          });
+          setMilestones(mapped);
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic timeline, using local fallbacks:", err);
+      }
+    };
+    loadTimeline();
+  }, []);
+
   const mapPoints = [
     {
       id: "foothills",
@@ -331,7 +395,7 @@ export default function Timeline() {
     const timer = setInterval(() => {
       const nextIdx = (activeEraIdx + 1) % milestones.length;
       scrollToMilestone(nextIdx);
-    }, 5000); // 5 seconds
+    }, 3000); // 3 seconds
 
     return () => clearInterval(timer);
   }, [activeEraIdx, activeTab, isHovered, isDraggingTimeline]);

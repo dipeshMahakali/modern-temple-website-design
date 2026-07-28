@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { publicApi } from './api/client';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Public Components
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Stats from './components/Stats';
@@ -17,10 +21,38 @@ import Footer from './components/Footer';
 import DonatePage from './components/DonatePage';
 import InstructionsPage from './components/InstructionsPage';
 import PrivacyTerms from './components/PrivacyTerms';
-import { Compass, BookOpen, Clock, Heart, Award } from 'lucide-react';
 
-function App() {
+// Admin Components
+import LoginPage from './admin/pages/LoginPage';
+import AdminLayout from './admin/components/AdminLayout';
+import DashboardPage from './admin/pages/DashboardPage';
+import PagesPage from './admin/pages/PagesPage';
+import TimelinePage from './admin/pages/TimelinePage';
+import GalleryPage from './admin/pages/GalleryPage';
+import NavigationPage from './admin/pages/NavigationPage';
+import SeoPage from './admin/pages/SeoPage';
+import TempleInfoPage from './admin/pages/TempleInfoPage';
+import ContactMessagesPage from './admin/pages/ContactMessagesPage';
+import PlaceholderPage from './admin/pages/PlaceholderPage';
+
+// ─── Public Website ────────────────────────────────────────────────────────────
+function PublicWebsite() {
   const [activePage, setActivePage] = useState<string>('home');
+  const [sectionVisibility, setSectionVisibility] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const loadSections = async () => {
+      try {
+        const res = await publicApi.getSections();
+        if (res.data) {
+          setSectionVisibility(res.data);
+        }
+      } catch (err) {
+        console.error("Failed to load sections visibility:", err);
+      }
+    };
+    loadSections();
+  }, []);
 
   const pageVariants = {
     initial: { opacity: 0, y: 15 },
@@ -33,16 +65,16 @@ function App() {
       case 'home':
         return (
           <motion.div key="home" variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-0">
-            <Hero setActivePage={setActivePage} />
-            <Stats />
-            <About setActivePage={setActivePage} />
-            <Timings />
-            <LiveDarshan />
-            <Services setActivePage={setActivePage} />
-            <Timeline />
-            <Trustees />
-            <Testimonials />
-            <Contact />
+            {sectionVisibility['hero'] !== false && <Hero setActivePage={setActivePage} />}
+            {sectionVisibility['stats'] !== false && <Stats />}
+            {sectionVisibility['about'] !== false && <About setActivePage={setActivePage} />}
+            {sectionVisibility['timings'] !== false && <Timings />}
+            {sectionVisibility['live-darshan'] !== false && <LiveDarshan />}
+            {sectionVisibility['services'] !== false && <Services setActivePage={setActivePage} />}
+            {sectionVisibility['timeline'] !== false && <Timeline />}
+            {sectionVisibility['trustees'] !== false && <Trustees />}
+            {sectionVisibility['testimonials'] !== false && <Testimonials />}
+            {sectionVisibility['contact'] !== false && <Contact />}
           </motion.div>
         );
       case 'about':
@@ -53,7 +85,6 @@ function App() {
               <h1 className="font-serif font-extrabold text-4xl md:text-5xl text-deep-maroon">Divine Sanctum</h1>
               <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
             </div>
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6">
                 <img src="/assets/about-bg.png" alt="Inner Shrine Sanctum" className="rounded-[28px] shadow-xl w-full h-[400px] object-cover" />
@@ -144,20 +175,116 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Sticky Header Navigation */}
       <Navbar activePage={activePage} setActivePage={setActivePage} />
-
-      {/* Main Pages Content Area */}
       <main className="flex-grow pt-[76px]">
         <AnimatePresence mode="wait">
           {renderContent()}
         </AnimatePresence>
       </main>
-
-      {/* Footer Area */}
       <Footer setActivePage={setActivePage} />
     </div>
   );
 }
 
-export default App;
+// ─── Admin Section Router ──────────────────────────────────────────────────────
+function AdminSection() {
+  return (
+    <Routes>
+      <Route path="login" element={<LoginPage />} />
+      <Route path="dashboard" element={
+        <AdminLayout activePage="dashboard">
+          <DashboardPage />
+        </AdminLayout>
+      } />
+      <Route path="pages" element={
+        <AdminLayout activePage="pages">
+          <PagesPage />
+        </AdminLayout>
+      } />
+      <Route path="timeline" element={
+        <AdminLayout activePage="timeline">
+          <TimelinePage />
+        </AdminLayout>
+      } />
+      <Route path="gallery" element={
+        <AdminLayout activePage="gallery">
+          <GalleryPage />
+        </AdminLayout>
+      } />
+      <Route path="sections" element={
+        <AdminLayout activePage="sections">
+          <PlaceholderPage title="Section Management" description="Control visibility and ordering of every homepage section." />
+        </AdminLayout>
+      } />
+      <Route path="navigation" element={
+        <AdminLayout activePage="navigation">
+          <NavigationPage />
+        </AdminLayout>
+      } />
+      <Route path="events" element={
+        <AdminLayout activePage="events">
+          <PlaceholderPage title="Events Management" description="Create, edit and schedule temple events and festivals." />
+        </AdminLayout>
+      } />
+      <Route path="media" element={
+        <AdminLayout activePage="media">
+          <PlaceholderPage title="Media Library" description="Browse and manage all uploaded media files." />
+        </AdminLayout>
+      } />
+      <Route path="temple-info" element={
+        <AdminLayout activePage="temple-info">
+          <TempleInfoPage />
+        </AdminLayout>
+      } />
+      <Route path="timings" element={
+        <AdminLayout activePage="timings">
+          <PlaceholderPage title="Timings Management" description="Configure daily temple opening hours, dynamic aarti times, and special seasonal timings." />
+        </AdminLayout>
+      } />
+      <Route path="services" element={
+        <AdminLayout activePage="services">
+          <PlaceholderPage title="Services & Pujas" description="Add, edit, and categorize services and pujas available to devotees." />
+        </AdminLayout>
+      } />
+      <Route path="contact" element={
+        <AdminLayout activePage="contact">
+          <ContactMessagesPage />
+        </AdminLayout>
+      } />
+      <Route path="seo" element={
+        <AdminLayout activePage="seo">
+          <SeoPage />
+        </AdminLayout>
+      } />
+      <Route path="users" element={
+        <AdminLayout activePage="users">
+          <PlaceholderPage title="User Management" description="Create admin accounts, assign roles, and manage permissions." />
+        </AdminLayout>
+      } />
+      <Route path="audit-logs" element={
+        <AdminLayout activePage="audit-logs">
+          <PlaceholderPage title="Audit Logs" description="View a complete log of all admin actions and changes." />
+        </AdminLayout>
+      } />
+      <Route path="settings" element={
+        <AdminLayout activePage="settings">
+          <TempleInfoPage />
+        </AdminLayout>
+      } />
+      <Route path="" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+    </Routes>
+  );
+}
+
+// ─── Root App ─────────────────────────────────────────────────────────────────
+export default function App() {
+  return (
+    <Routes>
+      {/* Admin routes */}
+      <Route path="/admin/*" element={<AdminSection />} />
+      {/* Public website */}
+      <Route path="/*" element={<PublicWebsite />} />
+    </Routes>
+  );
+}
