@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, Eye, EyeOff, GripVertical, Save, X, Clock, Loader2 } from 'lucide-react';
 import api from '../../api/client';
 import toast from 'react-hot-toast';
+import ImageUploader from '../components/ImageUploader';
 
 interface Entry {
   id: number;
@@ -112,27 +113,24 @@ function EntryForm({ entry, onSave, onCancel }: EntryFormProps) {
           style={{ border: '1px solid rgba(212,175,55,0.2)', background: '#FFFFFF', color: '#2D2D2D' }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider text-gray-500">Image URL</label>
-          <input
-            value={form.image_url}
-            onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))}
-            placeholder="/uploads/timeline/..."
-            className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border transition-all"
-            style={{ border: '1px solid rgba(212,175,55,0.2)', background: '#FFFFFF', color: '#2D2D2D' }}
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider text-gray-500">Pull Quote</label>
-          <input
-            value={form.quote}
-            onChange={e => setForm(f => ({ ...f, quote: e.target.value }))}
-            placeholder="Historic quote..."
-            className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border transition-all"
-            style={{ border: '1px solid rgba(212,175,55,0.2)', background: '#FFFFFF', color: '#2D2D2D' }}
-          />
-        </div>
+      <div>
+        <ImageUploader
+          label="Timeline Entry Image"
+          folder="timeline"
+          value={form.image_url}
+          onChange={(url) => setForm(f => ({ ...f, image_url: url }))}
+          placeholder="/assets/hero-bg.png or upload image"
+        />
+      </div>
+      <div>
+        <label className="block text-xs font-medium mb-1.5 uppercase tracking-wider text-gray-500">Pull Quote</label>
+        <input
+          value={form.quote}
+          onChange={e => setForm(f => ({ ...f, quote: e.target.value }))}
+          placeholder="Historic quote..."
+          className="w-full px-4 py-2.5 rounded-xl text-sm outline-none border transition-all"
+          style={{ border: '1px solid rgba(212,175,55,0.2)', background: '#FFFFFF', color: '#2D2D2D' }}
+        />
       </div>
       <div className="flex items-center justify-between pt-2 border-t border-amber-800/10">
         <label className="flex items-center gap-2.5 cursor-pointer">

@@ -40,27 +40,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // On mount: attempt to refresh token
+  // On mount: single init check to prevent double execution
   useEffect(() => {
+    let isMounted = true;
     const init = async () => {
+      const path = typeof window !== 'undefined' ? window.location.pathname : '';
+      const hasSession = localStorage.getItem('remember_admin') === 'true' || path.startsWith('/admin');
+
+      if (!hasSession) {
+        if (isMounted) setIsLoading(false);
+        return;
+      }
+
       try {
         const res = await api.post('/auth/refresh');
-        setAccessToken(res.data.access_token);
-        await refreshUser();
+        if (isMounted) {
+          setAccessToken(res.data.access_token);
+          const userRes = await api.get('/auth/me');
+          setUser(userRes.data);
+        }
       } catch {
-        setUser(null);
+        if (isMounted) {
+          setUser(null);
+          localStorage.removeItem('remember_admin');
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
+
     init();
-  }, [refreshUser]);
+    return () => { isMounted = false; };
+  }, []);
 
   // Listen for forced logout events
   useEffect(() => {
     const handle = () => {
       setUser(null);
       setAccessToken(null);
+      localStorage.removeItem('remember_admin');
     };
     window.addEventListener('auth:logout', handle);
     return () => window.removeEventListener('auth:logout', handle);
@@ -69,6 +87,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string, rememberMe = false) => {
     const res = await api.post('/auth/login', { email, password, remember_me: rememberMe });
     setAccessToken(res.data.access_token);
+    localStorage.setItem('remember_admin', 'true');
     await refreshUser();
   };
 
@@ -76,6 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await api.post('/auth/logout');
     } finally {
+      localStorage.removeItem('remember_admin');
       setAccessToken(null);
       setUser(null);
     }
@@ -85,6 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await api.post('/auth/logout-all');
     } finally {
+      localStorage.removeItem('remember_admin');
       setAccessToken(null);
       setUser(null);
     }

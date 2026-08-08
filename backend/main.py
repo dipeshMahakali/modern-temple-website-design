@@ -29,9 +29,28 @@ from app.api.v1.router import api_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
-    # Startup: create tables and seed data
+    # Startup: create tables and migrate missing columns if needed
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+        def _migrate_columns(sync_conn):
+            from sqlalchemy import inspect, text
+            inspector = inspect(sync_conn)
+            tables = inspector.get_table_names()
+            if "trustees" in tables:
+                cols = {c["name"] for c in inspector.get_columns("trustees")}
+                new_cols = [
+                    ("title", "VARCHAR(200)"),
+                    ("role", "VARCHAR(200)"),
+                    ("bio", "TEXT"),
+                    ("photo_url", "VARCHAR(500)")
+                ]
+                for col_name, col_type in new_cols:
+                    if col_name not in cols:
+                        sync_conn.execute(text(f"ALTER TABLE trustees ADD COLUMN {col_name} {col_type}"))
+
+        await conn.run_sync(_migrate_columns)
+
     await seed_initial_data()
     yield
     # Shutdown: cleanup

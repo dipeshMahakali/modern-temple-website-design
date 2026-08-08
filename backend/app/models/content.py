@@ -257,7 +257,11 @@ class Trustee(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(200), nullable=False)
     position: Mapped[Optional[str]] = mapped_column(String(150))  # President, Secretary, etc.
+    title: Mapped[Optional[str]] = mapped_column(String(200))
+    role: Mapped[Optional[str]] = mapped_column(String(200))
     desc: Mapped[Optional[str]] = mapped_column(Text)
+    bio: Mapped[Optional[str]] = mapped_column(Text)
+    photo_url: Mapped[Optional[str]] = mapped_column(String(500))
     display_order: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
     is_visible: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

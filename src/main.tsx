@@ -4,12 +4,13 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import App from './App.tsx'
 import { AuthProvider } from './admin/store/AuthContext.tsx'
+import { LanguageProvider } from './context/LanguageContext.tsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
+  <BrowserRouter>
+    <AuthProvider>
+      <LanguageProvider>
         <App />
         <Toaster
           position="top-right"
@@ -30,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             },
           }}
         />
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+      </LanguageProvider>
+    </AuthProvider>
+  </BrowserRouter>,
 )
