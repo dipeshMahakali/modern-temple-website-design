@@ -75,8 +75,8 @@ Designed with rich aesthetics, glassmorphism, dynamic micro-animations, and full
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/your-username/Pavagarh-Web.git
-cd Pavagarh-Web
+git clone https://github.com/dipeshMahakali/modern-temple-website-design.git
+cd modern-temple-website-design
 
 # Frontend dependencies
 npm install
@@ -120,7 +120,7 @@ cd ..
 
 ## 🚀 Lifetime Free Deployment
 
-For step-by-step instructions on hosting this application for **100% free forever** on **Render**, **Vercel**, and **Supabase**, refer to the [DEPLOYMENT.md](file:///var/www/html/dipesh/Pavagarh-Web/DEPLOYMENT.md) guide.
+For step-by-step instructions on hosting this application for **100% free forever** on **Render**, **Vercel**, and **Supabase**, refer to the [DEPLOYMENT.md](file:///var/www/html/dipesh/modern-temple-website-design/DEPLOYMENT.md) guide.
 
 ---
 

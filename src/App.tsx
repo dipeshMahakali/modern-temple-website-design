@@ -135,10 +135,11 @@ function PublicWebsite() {
     { slug: 'timings', is_visible: true, display_order: 3 },
     { slug: 'live-darshan', is_visible: true, display_order: 4 },
     { slug: 'services', is_visible: true, display_order: 5 },
-    { slug: 'timeline', is_visible: true, display_order: 6 },
-    { slug: 'trustees', is_visible: true, display_order: 7 },
-    { slug: 'testimonials', is_visible: true, display_order: 8 },
-    { slug: 'contact', is_visible: true, display_order: 9 }
+    { slug: 'gallery', is_visible: true, display_order: 6 },
+    { slug: 'timeline', is_visible: true, display_order: 7 },
+    { slug: 'trustees', is_visible: true, display_order: 8 },
+    { slug: 'testimonials', is_visible: true, display_order: 9 },
+    { slug: 'contact', is_visible: true, display_order: 10 }
   ];
 
   const currentSections = sections.length > 0 ? sections : defaultSections;
@@ -165,7 +166,7 @@ function PublicWebsite() {
                     }}
                     className={sec.animation || ""}
                   >
-                    <Component setActivePage={setActivePage} />
+                    <Component setActivePage={setActivePage} isHomePage={sec.slug === 'gallery'} />
                   </div>
                 );
               })}
@@ -223,7 +224,7 @@ function PublicWebsite() {
       case 'gallery':
         return (
           <motion.div key="gallery" variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-0">
-            <Gallery />
+            <Gallery setActivePage={setActivePage} isHomePage={false} />
           </motion.div>
         );
       case 'trust':
