@@ -7,7 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, FileText, Layers, Navigation, Clock, Image, Calendar,
   FolderOpen, Info, Clock3, Star, PhoneCall, Search, Users, ScrollText,
-  Settings, LogOut, ChevronLeft, ChevronRight, Shield, Globe, Menu, X
+  Settings, LogOut, ChevronLeft, ChevronRight, Shield, Globe, Menu, X,
+  BarChart3, UserCheck, MessageSquareQuote, BookOpen, CreditCard, Layout, Sparkles
 } from 'lucide-react';
 import { useAuth } from '../store/AuthContext';
 import toast from 'react-hot-toast';
@@ -28,14 +29,20 @@ const NAV_ITEMS: NavItem[] = [
   { icon: <Layers size={18} />, label: 'Sections', id: 'sections' },
   { icon: <Navigation size={18} />, label: 'Navigation', id: 'navigation' },
 
-  { icon: <Clock size={18} />, label: 'Timeline', id: 'timeline', dividerBefore: true },
+  { icon: <Sparkles size={18} />, label: 'Hero Banner', id: 'hero', dividerBefore: true },
+  { icon: <BarChart3 size={18} />, label: 'Statistics', id: 'stats' },
+  { icon: <Clock size={18} />, label: 'Timeline', id: 'timeline' },
   { icon: <Image size={18} />, label: 'Gallery', id: 'gallery' },
   { icon: <Calendar size={18} />, label: 'Events', id: 'events' },
   { icon: <FolderOpen size={18} />, label: 'Media Library', id: 'media' },
 
   { icon: <Info size={18} />, label: 'Temple Info', id: 'temple-info', dividerBefore: true },
   { icon: <Clock3 size={18} />, label: 'Timings', id: 'timings' },
-  { icon: <Star size={18} />, label: 'Services', id: 'services' },
+  { icon: <Star size={18} />, label: 'Services & Pujas', id: 'services' },
+  { icon: <UserCheck size={18} />, label: 'Trustees', id: 'trustees' },
+  { icon: <MessageSquareQuote size={18} />, label: 'Testimonials', id: 'testimonials' },
+  { icon: <BookOpen size={18} />, label: 'Instructions', id: 'instructions' },
+  { icon: <CreditCard size={18} />, label: 'Bank Details', id: 'bank-details' },
   { icon: <PhoneCall size={18} />, label: 'Contact', id: 'contact' },
 
   { icon: <Search size={18} />, label: 'SEO', id: 'seo', dividerBefore: true },

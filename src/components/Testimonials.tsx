@@ -1,10 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { publicApi } from '../api/client';
+
+interface TestimonialData {
+  id: number;
+  name: string;
+  location: string;
+  text: string;
+  rating: number;
+}
 
 export default function Testimonials() {
+  const [testimonials, setTestimonials] = useState<TestimonialData[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const reviews = [
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await publicApi.getTestimonials();
+        if (res.data && res.data.length > 0) {
+          setTestimonials(res.data);
+        }
+      } catch (err) {
+        console.error('Failed to load testimonials:', err);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const defaultReviews = [
     {
       name: "Rajesh Sahu",
       location: "Raipur, Chhattisgarh",
@@ -25,7 +49,10 @@ export default function Testimonials() {
     }
   ];
 
+  const reviews = testimonials.length > 0 ? testimonials : defaultReviews;
+
   useEffect(() => {
+    if (reviews.length <= 1) return;
     const timer = setInterval(() => {
       setActiveIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
     }, 6000);
@@ -39,6 +66,8 @@ export default function Testimonials() {
   const handleNext = () => {
     setActiveIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
   };
+
+  if (reviews.length === 0) return null;
 
   return (
     <section className="py-20 px-6 md:px-12 bg-gradient-to-b from-[#FFF9F2] via-white to-[#FFF9F2] relative overflow-hidden">
@@ -57,13 +86,15 @@ export default function Testimonials() {
         {/* Testimonial Card Slider */}
         <div className="max-w-4xl mx-auto relative px-6 md:px-16">
           {/* Left Arrow */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-light-gold-border/20 flex items-center justify-center text-deep-maroon hover:bg-light-gold-border/20 transition-all shadow-md focus:outline-none z-20"
-            aria-label="Previous review"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+          {reviews.length > 1 && (
+            <button
+              onClick={handlePrev}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-light-gold-border/20 flex items-center justify-center text-deep-maroon hover:bg-light-gold-border/20 transition-all shadow-md focus:outline-none z-20"
+              aria-label="Previous review"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          )}
 
           {/* Slider content */}
           <div className="glass-card rounded-[28px] p-8 md:p-12 shadow-xl border border-light-gold-border/30 relative overflow-hidden">
@@ -72,51 +103,55 @@ export default function Testimonials() {
             <div className="flex flex-col items-center text-center space-y-6">
               {/* Rating */}
               <div className="flex space-x-1">
-                {[...Array(reviews[activeIndex].rating)].map((_, i) => (
+                {[...Array(reviews[activeIndex]?.rating || 5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-primary-gold text-primary-gold" />
                 ))}
               </div>
 
               {/* Review Text */}
               <p className="font-serif italic text-lg md:text-xl text-text-dark/90 leading-relaxed max-w-2xl">
-                "{reviews[activeIndex].text}"
+                "{reviews[activeIndex]?.text}"
               </p>
 
               {/* Devotee Info */}
               <div>
                 <h4 className="font-bold text-deep-maroon text-base">
-                  {reviews[activeIndex].name}
+                  {reviews[activeIndex]?.name}
                 </h4>
                 <p className="text-xs text-text-muted mt-1 uppercase tracking-wider">
-                  {reviews[activeIndex].location}
+                  {reviews[activeIndex]?.location}
                 </p>
               </div>
             </div>
           </div>
 
           {/* Right Arrow */}
-          <button
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-light-gold-border/20 flex items-center justify-center text-deep-maroon hover:bg-light-gold-border/20 transition-all shadow-md focus:outline-none z-20"
-            aria-label="Next review"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          {reviews.length > 1 && (
+            <button
+              onClick={handleNext}
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-light-gold-border/20 flex items-center justify-center text-deep-maroon hover:bg-light-gold-border/20 transition-all shadow-md focus:outline-none z-20"
+              aria-label="Next review"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Bullet Indicators */}
-        <div className="flex justify-center space-x-2 mt-8">
-          {reviews.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIndex(idx)}
-              className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                activeIndex === idx ? 'bg-primary-gold w-6' : 'bg-light-gold-border/65'
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
-        </div>
+        {reviews.length > 1 && (
+          <div className="flex justify-center space-x-2 mt-8">
+            {reviews.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveIndex(idx)}
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  activeIndex === idx ? 'bg-primary-gold w-6' : 'bg-light-gold-border/65'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

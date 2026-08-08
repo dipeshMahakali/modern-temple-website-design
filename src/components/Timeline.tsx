@@ -7,6 +7,7 @@ import {
   ChevronLeft, ChevronRight
 } from 'lucide-react';
 import { publicApi } from '../api/client';
+import { getImageUrl } from '../utils/image';
 
 interface Milestone {
   id: number;
@@ -289,7 +290,7 @@ export default function Timeline() {
               fact: entry.quote || "A preserved record of spiritual devotion.",
               icon: icons[index % icons.length],
               color: gradients[index % gradients.length],
-              imgUrl: entry.image_url ? (entry.image_url.startsWith('/') ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:8000'}${entry.image_url}` : entry.image_url) : imageFallbacks[index % imageFallbacks.length]
+              imgUrl: entry.image_url ? getImageUrl(entry.image_url, imageFallbacks[index % imageFallbacks.length]) : imageFallbacks[index % imageFallbacks.length]
             };
           });
           setMilestones(mapped);

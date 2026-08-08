@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, Eye, EyeOff, Trash2, Star, StarOff, Filter, X, Image as ImageIcon, Plus, Loader2, Save } from 'lucide-react';
 import api from '../../api/client';
 import toast from 'react-hot-toast';
+import { getImageUrl } from '../../utils/image';
 
 const CATEGORIES = ['All', 'Temple', 'Festival', 'Nature', 'Pilgrims', 'Architecture'];
 const UPLOAD_CATEGORIES = ['Temple', 'Festival', 'Nature', 'Pilgrims', 'Architecture', 'General'];
@@ -220,10 +221,10 @@ export default function GalleryPage() {
               {/* Image */}
               <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #4A4A4A 100%)' }}>
                 <img
-                  src={item.url.startsWith('/') ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:8000'}${item.url}` : item.url}
+                  src={getImageUrl(item.url)}
                   alt={item.alt_text}
                   className="w-full h-full object-cover"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  onError={(e) => { (e.target as HTMLImageElement).src = '/assets/hero-bg.png'; }}
                 />
               </div>
 

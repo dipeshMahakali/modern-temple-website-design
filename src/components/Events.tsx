@@ -1,30 +1,91 @@
-import React from 'react';
-import { Calendar, Clock, MapPin, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, Clock, MapPin, Sparkles, Loader2 } from 'lucide-react';
+import { publicApi } from '../api/client';
+import { getImageUrl } from '../utils/image';
+
+interface EventData {
+  id?: number;
+  title: string;
+  event_date: string;
+  end_date?: string;
+  description: string;
+  banner_url?: string;
+  location?: string;
+  category: string;
+  is_featured: boolean;
+}
 
 export default function Events() {
-  const events = [
+  const [events, setEvents] = useState<EventData[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const res = await publicApi.getEvents(50);
+        if (res.data && res.data.length > 0) {
+          setEvents(res.data);
+        }
+      } catch (err) {
+        console.error("Failed to load events:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchEvents();
+  }, []);
+
+  const defaultEvents = [
     {
       title: "Sharadiya Navratri Mahotsav",
-      date: "Oct 12 - Oct 20, 2026",
-      desc: "The largest annual festival at Dongargarh. The temple is kept open 24 hours for darshan. Millions of pilgrims visit, lighting thousands of Jyoti Kalash. Special trains, security, and medical camps are arranged by the Chhattisgarh Government and the Trust.",
-      image: "/assets/gallery-festival.png",
-      tag: "Mega Event"
+      event_date: "2026-10-12",
+      end_date: "2026-10-20",
+      description: "The largest annual festival at Dongargarh. The temple is kept open 24 hours for darshan. Millions of pilgrims visit, lighting thousands of Jyoti Kalash. Special trains, security, and medical camps are arranged by the Chhattisgarh Government and the Trust.",
+      banner_url: "/assets/gallery-festival.png",
+      category: "Mega Event",
+      location: "Dongargarh Hill",
+      is_featured: true
     },
     {
       title: "Chaitra Navratri Utsav",
-      date: "Mar 28 - Apr 05, 2026",
-      desc: "Celebrate the sacred spring Navratri with Jyoti Kalash lighting, special Maha Aarti, and Shringar ceremonies performed daily on the hilltop shrine of Maa Bamleshwari.",
-      image: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
-      tag: "Vasant Utsav"
+      event_date: "2026-03-28",
+      end_date: "2026-04-05",
+      description: "Celebrate the sacred spring Navratri with Jyoti Kalash lighting, special Maha Aarti, and Shringar ceremonies performed daily on the hilltop shrine of Maa Bamleshwari.",
+      banner_url: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
+      category: "Vasant Utsav",
+      location: "Dongargarh Hill",
+      is_featured: false
     },
     {
       title: "Mandir Patotsav (Foundation Day)",
-      date: "Jyeshtha Sud Pancham",
-      desc: "Annual Patotsav festival commemorating the temple's sacred foundation. Features special flag-hoisting (Dhwaj Arohan) atop the Badi Bamleshwari temple spire and grand Mahaprasad distribution.",
-      image: "/assets/hero-bg.png",
-      tag: "Annual Ritual"
+      event_date: "2026-06-20",
+      description: "Annual Patotsav festival commemorating the temple's sacred foundation. Features special flag-hoisting (Dhwaj Arohan) atop the Badi Bamleshwari temple spire and grand Mahaprasad distribution.",
+      banner_url: "/assets/hero-bg.png",
+      category: "Annual Ritual",
+      location: "Dongargarh Hill",
+      is_featured: false
     }
   ];
+
+  const currentEvents = events.length > 0 ? events : defaultEvents;
+
+  const formatDate = (dateStr: string, endDateStr?: string) => {
+    try {
+      const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' };
+      const start = new Date(dateStr).toLocaleDateString('en-US', options);
+      if (endDateStr) {
+        const end = new Date(endDateStr).toLocaleDateString('en-US', options);
+        return `${start} - ${end}`;
+      }
+      return start;
+    } catch {
+      return dateStr;
+    }
+  };
+
+  const getEventImage = (item: EventData) => {
+    return getImageUrl(item.banner_url, "/assets/hero-bg.png");
+  };
 
   return (
     <section id="events-section" className="py-20 px-6 md:px-12 bg-white-card/20 relative z-20">
@@ -41,17 +102,17 @@ export default function Events() {
 
         {/* Events Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {events.map((event, idx) => (
+          {currentEvents.map((event, idx) => (
             <div
               key={idx}
               className="bg-white rounded-[28px] overflow-hidden border border-light-gold-border/20 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full"
             >
               {/* Event Image */}
               <div className="relative h-60 overflow-hidden">
-                <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
+                <img src={getEventImage(event)} alt={event.title} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <span className="absolute top-4 left-4 bg-primary-gold text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-md">
-                  {event.tag}
+                  {event.category}
                 </span>
               </div>
 
@@ -61,13 +122,13 @@ export default function Events() {
                   {/* Date & Details */}
                   <div className="flex items-center space-x-2 text-primary-gold text-xs font-bold">
                     <Calendar className="w-4 h-4" />
-                    <span>{event.date}</span>
+                    <span>{formatDate(event.event_date, event.end_date)}</span>
                   </div>
                   <h3 className="font-serif font-bold text-deep-maroon text-xl md:text-2xl leading-snug">
                     {event.title}
                   </h3>
                   <p className="text-xs text-text-muted leading-relaxed font-sans">
-                    {event.desc}
+                    {event.description}
                   </p>
                 </div>
 
@@ -78,7 +139,7 @@ export default function Events() {
                   </div>
                   <div className="flex items-center space-x-1">
                     <MapPin className="w-3.5 h-3.5" />
-                    <span>Dongargarh Hill</span>
+                    <span>{event.location || "Dongargarh Hill"}</span>
                   </div>
                 </div>
               </div>

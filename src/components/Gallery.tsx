@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 import { publicApi } from '../api/client';
+import { getImageUrl } from '../utils/image';
 
 interface GalleryItem {
   id: number;
@@ -90,7 +91,7 @@ export default function Gallery() {
 
             return {
               id: item.id,
-              url: item.url.startsWith('/') ? `${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api/v1', '') : 'http://localhost:8000'}${item.url}` : item.url,
+              url: getImageUrl(item.url),
               category: mappedCat,
               title: item.alt_text || "Dongargarh Divine Sight",
               desc: item.caption || "A sacred visual captured from Shree Mahakali Mataji Temple precinct."
@@ -166,12 +167,17 @@ export default function Gallery() {
               onClick={() => setSelectedImageIdx(idx)}
               className="relative group cursor-pointer overflow-hidden rounded-[24px] bg-white border border-light-gold-border/20 shadow-md hover:shadow-xl transition-all duration-500 break-inside-avoid"
             >
-              <img
-                src={item.url}
-                alt={item.title}
-                className="w-full h-auto object-cover max-h-[420px] transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-              />
+              <div className="w-full aspect-[4/3] overflow-hidden bg-stone-100 relative">
+                <img
+                  src={item.url}
+                  alt={item.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
+                  }}
+                />
+              </div>
               
               {/* Overlay with Title & Details */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 z-10">

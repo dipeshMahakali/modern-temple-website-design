@@ -1,8 +1,33 @@
-import React from 'react';
-import { Shield, Mail, Award, Landmark } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Shield, Award, Landmark } from 'lucide-react';
+import { publicApi } from '../api/client';
+
+interface TrusteeData {
+  id: number;
+  name: string;
+  position?: string;
+  desc?: string;
+  display_order: number;
+}
 
 export default function Trustees() {
-  const primaryMembers = [
+  const [trustees, setTrustees] = useState<TrusteeData[]>([]);
+
+  useEffect(() => {
+    const fetchTrustees = async () => {
+      try {
+        const res = await publicApi.getTrustees();
+        if (res.data) {
+          setTrustees(res.data);
+        }
+      } catch (err) {
+        console.error('Failed to load trustees:', err);
+      }
+    };
+    fetchTrustees();
+  }, []);
+
+  const defaultExecutives = [
     {
       name: "Shri Manoj Agarwal",
       position: "President",
@@ -20,16 +45,20 @@ export default function Trustees() {
     }
   ];
 
-  const trusteesList = [
-    "Shri Rameshwar Gupta",
-    "Shri Vinod Kumar Sharma",
-    "Shri Anil Kumar Tiwari",
-    "Shri Santosh Kumar Mishra",
-    "Shri Devendra Kumar Verma",
-    "Shri Dr. Vijay Kumar Patel",
-    "Shri Paras Ram Sahu",
-    "Shri Ghanshyam Das Agrawal"
+  const defaultGeneral = [
+    { name: "Shri Rameshwar Gupta" },
+    { name: "Shri Vinod Kumar Sharma" },
+    { name: "Shri Anil Kumar Tiwari" },
+    { name: "Shri Santosh Kumar Mishra" },
+    { name: "Shri Devendra Kumar Verma" },
+    { name: "Shri Dr. Vijay Kumar Patel" },
+    { name: "Shri Paras Ram Sahu" },
+    { name: "Shri Ghanshyam Das Agrawal" }
   ];
+
+  const hasLoadedData = trustees.length > 0;
+  const executives = hasLoadedData ? trustees.filter(t => t.position) : defaultExecutives;
+  const generalMembers = hasLoadedData ? trustees.filter(t => !t.position) : defaultGeneral;
 
   return (
     <section id="trust-section" className="py-20 px-6 md:px-12 max-w-[1440px] mx-auto">
@@ -39,13 +68,13 @@ export default function Trustees() {
         <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Trust & Management</h2>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          The administration and developmental operations of the Dongargarh temple are managed by the Shri Bamleshwari Mandir Trust Samiti.
+          The administration and developmental operations of the Shree Mahakali Mataji Temple are managed by the official Temple Trust Committee.
         </p>
       </div>
 
       {/* Board Executive Members */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-        {primaryMembers.map((member, idx) => (
+        {executives.map((member, idx) => (
           <div
             key={idx}
             className="bg-white rounded-[28px] border border-light-gold-border/20 p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center flex flex-col justify-between"
@@ -83,14 +112,14 @@ export default function Trustees() {
           Board of Trustees
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {trusteesList.map((trustee, idx) => (
+          {generalMembers.map((trustee, idx) => (
             <div
               key={idx}
               className="bg-white/50 border border-light-gold-border/10 p-5 rounded-[20px] shadow-sm hover:shadow-md transition-shadow text-center flex items-center justify-center"
             >
               <div>
                 <Award className="w-5 h-5 text-primary-gold mx-auto mb-2" />
-                <h5 className="font-serif font-bold text-text-dark text-sm">{trustee}</h5>
+                <h5 className="font-serif font-bold text-text-dark text-sm">{trustee.name}</h5>
                 <p className="text-[10px] text-text-muted uppercase tracking-widest mt-1">Trustee Member</p>
               </div>
             </div>

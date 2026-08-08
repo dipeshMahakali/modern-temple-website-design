@@ -33,22 +33,90 @@ import NavigationPage from './admin/pages/NavigationPage';
 import SeoPage from './admin/pages/SeoPage';
 import TempleInfoPage from './admin/pages/TempleInfoPage';
 import ContactMessagesPage from './admin/pages/ContactMessagesPage';
-import PlaceholderPage from './admin/pages/PlaceholderPage';
+import SectionsPage from './admin/pages/SectionsPage';
+import EventsPage from './admin/pages/EventsPage';
+import TimingsPage from './admin/pages/TimingsPage';
+import ServicesPage from './admin/pages/ServicesPage';
+import StatsPage from './admin/pages/StatsPage';
+import TrusteesPage from './admin/pages/TrusteesPage';
+import TestimonialsPage from './admin/pages/TestimonialsPage';
+import InstructionsAdminPage from './admin/pages/InstructionsPage';
+import BankDetailsPage from './admin/pages/BankDetailsPage';
+import HeroPage from './admin/pages/HeroPage';
+import MediaPage from './admin/pages/MediaPage';
+import UsersPage from './admin/pages/UsersPage';
+import AuditLogsPage from './admin/pages/AuditLogsPage';
+
+import { Landmark } from 'lucide-react';
+
+const sectionComponents: Record<string, React.ComponentType<any>> = {
+  'hero': Hero,
+  'stats': Stats,
+  'about': About,
+  'timings': Timings,
+  'live-darshan': LiveDarshan,
+  'services': Services,
+  'timeline': Timeline,
+  'trustees': Trustees,
+  'testimonials': Testimonials,
+  'contact': Contact,
+  'gallery': Gallery,
+  'events': Events,
+};
+
+function PageUnavailable({ activePage }: { activePage: string }) {
+  return (
+    <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 py-20 bg-[#FFF9F2]">
+      <div className="w-20 h-20 rounded-full gold-gradient flex items-center justify-center text-white shadow-xl mb-6">
+        <Landmark className="w-10 h-10" />
+      </div>
+      <h2 className="font-serif font-extrabold text-3xl md:text-4xl text-deep-maroon mb-4">
+        Page Temporarily Unavailable
+      </h2>
+      <p className="text-text-muted text-sm max-w-md mb-8 leading-relaxed font-sans">
+        The "{activePage.charAt(0).toUpperCase() + activePage.slice(1)}" page is currently down for maintenance or has been deactivated by the temple administrator.
+      </p>
+      <button
+        onClick={() => { window.location.reload(); }}
+        className="px-8 py-3 rounded-full gold-gradient text-white font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+      >
+        Retry / Refresh
+      </button>
+    </div>
+  );
+}
 
 // ─── Public Website ────────────────────────────────────────────────────────────
 function PublicWebsite() {
   const [activePage, setActivePage] = useState<string>('home');
-  const [sectionVisibility, setSectionVisibility] = useState<Record<string, boolean>>({});
+  const [sections, setSections] = useState<any[]>([]);
+  const [pageAvailable, setPageAvailable] = useState<boolean>(true);
+
+  useEffect(() => {
+    const checkStatus = async () => {
+      if (activePage === 'home') {
+        setPageAvailable(true);
+        return;
+      }
+      try {
+        const res = await publicApi.getPageStatus(activePage);
+        setPageAvailable(res.data?.is_available !== false);
+      } catch (err) {
+        setPageAvailable(true); // default fallback
+      }
+    };
+    checkStatus();
+  }, [activePage]);
 
   useEffect(() => {
     const loadSections = async () => {
       try {
-        const res = await publicApi.getSections();
-        if (res.data) {
-          setSectionVisibility(res.data);
+        const res = await publicApi.getSectionsList();
+        if (res.data && res.data.length > 0) {
+          setSections(res.data);
         }
       } catch (err) {
-        console.error("Failed to load sections visibility:", err);
+        console.error("Failed to load sections list:", err);
       }
     };
     loadSections();
@@ -60,21 +128,47 @@ function PublicWebsite() {
     exit: { opacity: 0, y: -15, transition: { duration: 0.3 } }
   };
 
+  const defaultSections = [
+    { slug: 'hero', is_visible: true, display_order: 0 },
+    { slug: 'stats', is_visible: true, display_order: 1 },
+    { slug: 'about', is_visible: true, display_order: 2 },
+    { slug: 'timings', is_visible: true, display_order: 3 },
+    { slug: 'live-darshan', is_visible: true, display_order: 4 },
+    { slug: 'services', is_visible: true, display_order: 5 },
+    { slug: 'timeline', is_visible: true, display_order: 6 },
+    { slug: 'trustees', is_visible: true, display_order: 7 },
+    { slug: 'testimonials', is_visible: true, display_order: 8 },
+    { slug: 'contact', is_visible: true, display_order: 9 }
+  ];
+
+  const currentSections = sections.length > 0 ? sections : defaultSections;
+
   const renderContent = () => {
+    if (!pageAvailable) {
+      return <PageUnavailable activePage={activePage} />;
+    }
     switch (activePage) {
       case 'home':
         return (
           <motion.div key="home" variants={pageVariants} initial="initial" animate="animate" exit="exit" className="space-y-0">
-            {sectionVisibility['hero'] !== false && <Hero setActivePage={setActivePage} />}
-            {sectionVisibility['stats'] !== false && <Stats />}
-            {sectionVisibility['about'] !== false && <About setActivePage={setActivePage} />}
-            {sectionVisibility['timings'] !== false && <Timings />}
-            {sectionVisibility['live-darshan'] !== false && <LiveDarshan />}
-            {sectionVisibility['services'] !== false && <Services setActivePage={setActivePage} />}
-            {sectionVisibility['timeline'] !== false && <Timeline />}
-            {sectionVisibility['trustees'] !== false && <Trustees />}
-            {sectionVisibility['testimonials'] !== false && <Testimonials />}
-            {sectionVisibility['contact'] !== false && <Contact />}
+            {currentSections
+              .sort((a, b) => a.display_order - b.display_order)
+              .map((sec) => {
+                const Component = sectionComponents[sec.slug];
+                if (!Component) return null;
+                return (
+                  <div
+                    key={sec.slug}
+                    style={{
+                      background: sec.background || undefined,
+                      padding: sec.spacing || undefined,
+                    }}
+                    className={sec.animation || ""}
+                  >
+                    <Component setActivePage={setActivePage} />
+                  </div>
+                );
+              })}
           </motion.div>
         );
       case 'about':
@@ -176,7 +270,7 @@ function PublicWebsite() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar activePage={activePage} setActivePage={setActivePage} />
-      <main className="flex-grow pt-[76px]">
+      <main className={`flex-grow ${activePage === 'home' ? 'pt-0' : 'pt-[88px]'}`}>
         <AnimatePresence mode="wait">
           {renderContent()}
         </AnimatePresence>
@@ -211,44 +305,9 @@ function AdminSection() {
           <GalleryPage />
         </AdminLayout>
       } />
-      <Route path="sections" element={
-        <AdminLayout activePage="sections">
-          <PlaceholderPage title="Section Management" description="Control visibility and ordering of every homepage section." />
-        </AdminLayout>
-      } />
       <Route path="navigation" element={
         <AdminLayout activePage="navigation">
           <NavigationPage />
-        </AdminLayout>
-      } />
-      <Route path="events" element={
-        <AdminLayout activePage="events">
-          <PlaceholderPage title="Events Management" description="Create, edit and schedule temple events and festivals." />
-        </AdminLayout>
-      } />
-      <Route path="media" element={
-        <AdminLayout activePage="media">
-          <PlaceholderPage title="Media Library" description="Browse and manage all uploaded media files." />
-        </AdminLayout>
-      } />
-      <Route path="temple-info" element={
-        <AdminLayout activePage="temple-info">
-          <TempleInfoPage />
-        </AdminLayout>
-      } />
-      <Route path="timings" element={
-        <AdminLayout activePage="timings">
-          <PlaceholderPage title="Timings Management" description="Configure daily temple opening hours, dynamic aarti times, and special seasonal timings." />
-        </AdminLayout>
-      } />
-      <Route path="services" element={
-        <AdminLayout activePage="services">
-          <PlaceholderPage title="Services & Pujas" description="Add, edit, and categorize services and pujas available to devotees." />
-        </AdminLayout>
-      } />
-      <Route path="contact" element={
-        <AdminLayout activePage="contact">
-          <ContactMessagesPage />
         </AdminLayout>
       } />
       <Route path="seo" element={
@@ -256,34 +315,91 @@ function AdminSection() {
           <SeoPage />
         </AdminLayout>
       } />
+      <Route path="temple-info" element={
+        <AdminLayout activePage="temple-info">
+          <TempleInfoPage />
+        </AdminLayout>
+      } />
+      <Route path="messages" element={
+        <AdminLayout activePage="messages">
+          <ContactMessagesPage />
+        </AdminLayout>
+      } />
+      <Route path="sections" element={
+        <AdminLayout activePage="sections">
+          <SectionsPage />
+        </AdminLayout>
+      } />
+      <Route path="events" element={
+        <AdminLayout activePage="events">
+          <EventsPage />
+        </AdminLayout>
+      } />
+      <Route path="timings" element={
+        <AdminLayout activePage="timings">
+          <TimingsPage />
+        </AdminLayout>
+      } />
+      <Route path="services" element={
+        <AdminLayout activePage="services">
+          <ServicesPage />
+        </AdminLayout>
+      } />
+      <Route path="stats" element={
+        <AdminLayout activePage="stats">
+          <StatsPage />
+        </AdminLayout>
+      } />
+      <Route path="trustees" element={
+        <AdminLayout activePage="trustees">
+          <TrusteesPage />
+        </AdminLayout>
+      } />
+      <Route path="testimonials" element={
+        <AdminLayout activePage="testimonials">
+          <TestimonialsPage />
+        </AdminLayout>
+      } />
+      <Route path="instructions" element={
+        <AdminLayout activePage="instructions">
+          <InstructionsAdminPage />
+        </AdminLayout>
+      } />
+      <Route path="bank-details" element={
+        <AdminLayout activePage="bank-details">
+          <BankDetailsPage />
+        </AdminLayout>
+      } />
+      <Route path="hero" element={
+        <AdminLayout activePage="hero">
+          <HeroPage />
+        </AdminLayout>
+      } />
+      <Route path="media" element={
+        <AdminLayout activePage="media">
+          <MediaPage />
+        </AdminLayout>
+      } />
       <Route path="users" element={
         <AdminLayout activePage="users">
-          <PlaceholderPage title="User Management" description="Create admin accounts, assign roles, and manage permissions." />
+          <UsersPage />
         </AdminLayout>
       } />
       <Route path="audit-logs" element={
         <AdminLayout activePage="audit-logs">
-          <PlaceholderPage title="Audit Logs" description="View a complete log of all admin actions and changes." />
+          <AuditLogsPage />
         </AdminLayout>
       } />
-      <Route path="settings" element={
-        <AdminLayout activePage="settings">
-          <TempleInfoPage />
-        </AdminLayout>
-      } />
-      <Route path="" element={<Navigate to="/admin/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="dashboard" replace />} />
     </Routes>
   );
 }
 
-// ─── Root App ─────────────────────────────────────────────────────────────────
+// ─── Main App Entry Point ──────────────────────────────────────────────────────
 export default function App() {
   return (
     <Routes>
-      {/* Admin routes */}
       <Route path="/admin/*" element={<AdminSection />} />
-      {/* Public website */}
       <Route path="/*" element={<PublicWebsite />} />
     </Routes>
   );

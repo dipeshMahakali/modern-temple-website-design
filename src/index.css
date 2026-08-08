@@ -21,7 +21,30 @@
     color: #2D2D2D;
     font-family: "Inter", sans-serif;
     overflow-x: hidden;
+    top: 0px !important;
+    position: static !important;
   }
+}
+
+/* Hide Google Translate top banner frame & prevent body shift */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame,
+iframe.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+
+.goog-text-highlight {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Custom Scrollbar */
@@ -48,80 +71,39 @@
 }
 
 .glass-nav {
-  background: rgba(255, 249, 242, 0.8);
+  background: rgba(255, 249, 242, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
 
-/* Text glow effect */
-.gold-text-glow {
-  text-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
-}
-
-/* Custom styles for animations and details */
 .gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #B89020 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
 }
 
 .maroon-gradient {
-  background: linear-gradient(135deg, #6B1E1E 0%, #4D1212 100%);
+  background: linear-gradient(135deg, #6B1E1E 0%, #3D1010 100%);
 }
 
-.cream-gradient {
-  background: linear-gradient(180deg, #FFF9F2 0%, #FFF3E3 100%);
+.gold-border-glow {
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
 }
 
-/* Pinterest Masonry Styling */
-.masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  grid-gap: 24px;
+.gold-text-glow {
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
 }
 
-/* Custom Luxury Gold Scrollbar */
 .custom-gold-scrollbar::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 .custom-gold-scrollbar::-webkit-scrollbar-track {
-  background: rgba(212, 175, 55, 0.05);
-  border-radius: 10px;
+  background: rgba(255, 249, 242, 0.8);
+  border-radius: 9999px;
 }
 .custom-gold-scrollbar::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #D4AF37, #8c7853);
-  border-radius: 10px;
+  background: #C8A45A;
+  border-radius: 9999px;
 }
 .custom-gold-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37;
+  background: #6B1F1F;
 }
-
-/* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Admin Panel Scrollbar */
-.custom-admin-scrollbar::-webkit-scrollbar {
-  width: 4px;
-}
-.custom-admin-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-admin-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.2);
-  border-radius: 10px;
-}
-.custom-admin-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.4);
-}
-
-/* Placeholder image fallback */
-img[src=""],
-img:not([src]) {
-  visibility: hidden;
-}
-
-

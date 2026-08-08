@@ -101,6 +101,17 @@ export const publicApi = {
   getSeo: (slug: string) => api.get(`/public/seo/${slug}`),
   getSections: () => api.get('/public/all-sections'),
   getPageStatus: (slug: string) => api.get(`/public/page-status/${slug}`),
+  getHero: () => api.get('/public/hero'),
+  getStats: () => api.get('/public/stats'),
+  getTrustees: () => api.get('/public/trustees'),
+  getTestimonials: () => api.get('/public/testimonials'),
+  getInstructions: () => api.get('/public/instructions'),
+  getServices: () => api.get('/public/services'),
+  getBankDetails: () => api.get('/public/bank-details'),
+  getTimings: () => api.get('/public/timings'),
+  getSectionsList: () => api.get('/public/sections-list'),
+  getFormConfig: (slug: string) => api.get(`/public/forms/${slug}`),
+  submitContact: (data: any) => api.post('/admin/contact/messages/submit', data),
 };
 
 export default api;
