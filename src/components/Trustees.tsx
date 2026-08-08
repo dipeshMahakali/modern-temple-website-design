@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Shield, Award, Landmark } from 'lucide-react';
 import { publicApi } from '../api/client';
+import { getImageUrl } from '../utils/image';
 
 interface TrusteeData {
-  id: number;
+  id?: number;
   name: string;
   position?: string;
+  title?: string;
+  role?: string;
   desc?: string;
-  display_order: number;
+  bio?: string;
+  photo_url?: string;
+  image_url?: string;
+  display_order?: number;
 }
 
 export default function Trustees() {
@@ -27,7 +33,7 @@ export default function Trustees() {
     fetchTrustees();
   }, []);
 
-  const defaultExecutives = [
+  const defaultExecutives: TrusteeData[] = [
     {
       name: "Shri Manoj Agarwal",
       position: "President",
@@ -45,7 +51,7 @@ export default function Trustees() {
     }
   ];
 
-  const defaultGeneral = [
+  const defaultGeneral: TrusteeData[] = [
     { name: "Shri Rameshwar Gupta" },
     { name: "Shri Vinod Kumar Sharma" },
     { name: "Shri Anil Kumar Tiwari" },
@@ -57,8 +63,8 @@ export default function Trustees() {
   ];
 
   const hasLoadedData = trustees.length > 0;
-  const executives = hasLoadedData ? trustees.filter(t => t.position) : defaultExecutives;
-  const generalMembers = hasLoadedData ? trustees.filter(t => !t.position) : defaultGeneral;
+  const executives = hasLoadedData ? trustees.filter(t => t.position || t.title) : defaultExecutives;
+  const generalMembers = hasLoadedData ? trustees.filter(t => !t.position && !t.title) : defaultGeneral;
 
   return (
     <section id="trust-section" className="py-20 px-6 md:px-12 max-w-[1440px] mx-auto">
@@ -68,42 +74,62 @@ export default function Trustees() {
         <h2 className="font-serif font-extrabold text-3xl md:text-5xl text-deep-maroon">Trust & Management</h2>
         <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
         <p className="text-text-muted text-sm leading-relaxed">
-          The administration and developmental operations of the Shree Mahakali Mataji Temple are managed by the official Temple Trust Committee.
+          The administration and developmental operations of the Shree Maa Bamleshwari Temple Trust, Dongargarh are managed by the official Temple Trust Committee.
         </p>
       </div>
 
       {/* Board Executive Members */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-        {executives.map((member, idx) => (
-          <div
-            key={idx}
-            className="bg-white rounded-[28px] border border-light-gold-border/20 p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center flex flex-col justify-between"
-          >
-            <div className="space-y-4">
-              {/* Silhouette Avatar */}
-              <div className="w-24 h-24 rounded-full bg-deep-maroon/5 border-2 border-primary-gold flex items-center justify-center mx-auto text-deep-maroon shadow-inner">
-                <Landmark className="w-10 h-10 text-primary-gold" />
+        {executives.map((member, idx) => {
+          const photo = member.photo_url || member.image_url;
+          const positionLabel = member.position || member.title || "Executive Member";
+          const descriptionText = member.desc || member.bio || member.role || "Executive Trustee of Shree Maa Bamleshwari Temple Trust.";
+
+          return (
+            <div
+              key={idx}
+              className="bg-white rounded-[28px] border border-light-gold-border/20 p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 text-center flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                {/* Photo or Silhouette Avatar */}
+                {photo ? (
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary-gold mx-auto shadow-md">
+                    <img
+                      src={getImageUrl(photo)}
+                      alt={member.name}
+                      className="w-full h-full object-cover object-[center_top]"
+                      onError={(e) => {
+                        // Fallback to default avatar if image link fails to load
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-deep-maroon/5 border-2 border-primary-gold flex items-center justify-center mx-auto text-deep-maroon shadow-inner">
+                    <Landmark className="w-10 h-10 text-primary-gold" />
+                  </div>
+                )}
+
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary-gold bg-primary-gold/10 px-3 py-1 rounded-full">
+                    {positionLabel}
+                  </span>
+                  <h4 className="font-serif font-bold text-deep-maroon text-xl mt-3 mb-2">
+                    {member.name}
+                  </h4>
+                  <p className="text-xs text-text-muted leading-relaxed font-sans">
+                    {descriptionText}
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-primary-gold bg-primary-gold/10 px-3 py-1 rounded-full">
-                  {member.position}
-                </span>
-                <h4 className="font-serif font-bold text-deep-maroon text-xl mt-3 mb-2">
-                  {member.name}
-                </h4>
-                <p className="text-xs text-text-muted leading-relaxed font-sans">
-                  {member.desc}
-                </p>
+              <div className="mt-6 pt-6 border-t border-light-gold-border/20 flex items-center justify-center space-x-2 text-xs text-text-muted font-medium">
+                <Shield className="w-4 h-4 text-primary-gold" />
+                <span>Executive Committee Officer</span>
               </div>
             </div>
-
-            <div className="mt-6 pt-6 border-t border-light-gold-border/20 flex items-center justify-center space-x-2 text-xs text-text-muted font-medium">
-              <Shield className="w-4 h-4 text-primary-gold" />
-              <span>Executive Committee Officer</span>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Board of Trustees Grid */}
@@ -112,18 +138,28 @@ export default function Trustees() {
           Board of Trustees
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {generalMembers.map((trustee, idx) => (
-            <div
-              key={idx}
-              className="bg-white/50 border border-light-gold-border/10 p-5 rounded-[20px] shadow-sm hover:shadow-md transition-shadow text-center flex items-center justify-center"
-            >
-              <div>
-                <Award className="w-5 h-5 text-primary-gold mx-auto mb-2" />
-                <h5 className="font-serif font-bold text-text-dark text-sm">{trustee.name}</h5>
-                <p className="text-[10px] text-text-muted uppercase tracking-widest mt-1">Trustee Member</p>
+          {generalMembers.map((trustee, idx) => {
+            const photo = trustee.photo_url || trustee.image_url;
+            return (
+              <div
+                key={idx}
+                className="bg-white/50 border border-light-gold-border/10 p-5 rounded-[20px] shadow-sm hover:shadow-md transition-shadow text-center flex items-center justify-center space-x-3"
+              >
+                {photo ? (
+                  <img
+                    src={getImageUrl(photo)}
+                    alt={trustee.name}
+                    className="w-12 h-12 rounded-full border border-primary-gold object-cover shrink-0"
+                  />
+                ) : null}
+                <div>
+                  {!photo && <Award className="w-5 h-5 text-primary-gold mx-auto mb-2" />}
+                  <h5 className="font-serif font-bold text-text-dark text-sm">{trustee.name}</h5>
+                  <p className="text-[10px] text-text-muted uppercase tracking-widest mt-1">Trustee Member</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -101,7 +101,7 @@ export default function LiveDarshan() {
                   <>
                     {/* Background Thumbnail */}
                     <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-[8000ms] group-hover:scale-105"
+                      className="absolute inset-0 bg-cover bg-[center_top] transition-transform duration-[8000ms] group-hover:scale-105"
                       style={{ backgroundImage: `url('${getImageUrl(activeStream.url, '/assets/hero-bg.png')}')` }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center z-10" />
@@ -211,7 +211,7 @@ export default function LiveDarshan() {
                       <img
                         src={getImageUrl(stream.url, '/assets/hero-bg.png')}
                         alt={stream.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover object-[center_top] group-hover:scale-110 transition-transform duration-500"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
                         }}

@@ -504,8 +504,12 @@ class TrusteeOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
     name: str
-    position: Optional[str]
-    desc: Optional[str]
+    position: Optional[str] = None
+    title: Optional[str] = None
+    role: Optional[str] = None
+    desc: Optional[str] = None
+    bio: Optional[str] = None
+    photo_url: Optional[str] = None
     display_order: int
     is_visible: bool
 
@@ -513,7 +517,11 @@ class TrusteeOut(BaseModel):
 class TrusteeCreate(BaseModel):
     name: str
     position: Optional[str] = None
+    title: Optional[str] = None
+    role: Optional[str] = None
     desc: Optional[str] = None
+    bio: Optional[str] = None
+    photo_url: Optional[str] = None
     display_order: int = 0
     is_visible: bool = True
 
@@ -521,7 +529,11 @@ class TrusteeCreate(BaseModel):
 class TrusteeUpdate(BaseModel):
     name: Optional[str] = None
     position: Optional[str] = None
+    title: Optional[str] = None
+    role: Optional[str] = None
     desc: Optional[str] = None
+    bio: Optional[str] = None
+    photo_url: Optional[str] = None
     display_order: Optional[int] = None
     is_visible: Optional[bool] = None
 

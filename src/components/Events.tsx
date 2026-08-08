@@ -51,7 +51,7 @@ export default function Events() {
       event_date: "2026-03-28",
       end_date: "2026-04-05",
       description: "Celebrate the sacred spring Navratri with Jyoti Kalash lighting, special Maha Aarti, and Shringar ceremonies performed daily on the hilltop shrine of Maa Bamleshwari.",
-      banner_url: "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
+      banner_url: "/assets/about-bg.png",
       category: "Vasant Utsav",
       location: "Dongargarh Hill",
       is_featured: false
@@ -109,7 +109,7 @@ export default function Events() {
             >
               {/* Event Image */}
               <div className="relative h-60 overflow-hidden">
-                <img src={getEventImage(event)} alt={event.title} className="w-full h-full object-cover" />
+                <img src={getEventImage(event)} alt={event.title} className="w-full h-full object-cover object-[center_top]" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <span className="absolute top-4 left-4 bg-primary-gold text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-md">
                   {event.category}

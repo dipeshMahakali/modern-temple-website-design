@@ -10,18 +10,27 @@ interface Event {
   id: number;
   title: string;
   description?: string;
-  start_date: string;
+  event_date?: string;
+  start_date?: string;
   end_date?: string;
   location?: string;
+  banner_url?: string;
   image_url?: string;
   category?: string;
   is_featured?: boolean;
   is_visible: boolean;
-  display_order: number;
+  display_order?: number;
 }
 
 const defaultForm = {
-  title: '', description: '', start_date: '', end_date: '', location: '', image_url: '', category: '', is_featured: false, is_visible: true, display_order: 0
+  title: '', description: '', start_date: '', event_date: '', end_date: '', location: '', image_url: '', banner_url: '', category: 'festival', is_featured: false, is_visible: true, display_order: 0
+};
+
+const getDateStr = (val?: any): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val.substring(0, 10);
+  if (val instanceof Date) return val.toISOString().substring(0, 10);
+  return String(val).substring(0, 10);
 };
 
 export default function EventsPage() {
@@ -43,15 +52,42 @@ export default function EventsPage() {
   const openCreate = () => { setEditing(null); setForm({ ...defaultForm, display_order: items.length }); setIsModalOpen(true); };
   const openEdit = (item: Event) => {
     setEditing(item);
-    setForm({ title: item.title, description: item.description || '', start_date: item.start_date.substring(0, 10), end_date: item.end_date ? item.end_date.substring(0, 10) : '', location: item.location || '', image_url: item.image_url || '', category: item.category || '', is_featured: item.is_featured || false, is_visible: item.is_visible, display_order: item.display_order });
+    const dateVal = getDateStr(item.event_date || item.start_date);
+    const endVal = getDateStr(item.end_date);
+    const imgUrl = item.banner_url || item.image_url || '';
+    setForm({
+      title: item.title || '',
+      description: item.description || '',
+      start_date: dateVal,
+      event_date: dateVal,
+      end_date: endVal,
+      location: item.location || '',
+      image_url: imgUrl,
+      banner_url: imgUrl,
+      category: item.category || 'festival',
+      is_featured: item.is_featured || false,
+      is_visible: item.is_visible,
+      display_order: item.display_order || 0
+    });
     setIsModalOpen(true);
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    const payload = {
+      title: form.title,
+      description: form.description || undefined,
+      event_date: form.event_date || form.start_date || new Date().toISOString().substring(0, 10),
+      end_date: form.end_date || undefined,
+      location: form.location || undefined,
+      banner_url: form.image_url || form.banner_url || undefined,
+      category: form.category || 'festival',
+      is_featured: form.is_featured,
+      is_visible: form.is_visible,
+    };
     try {
-      if (editing) { await api.patch(`/admin/events/${editing.id}`, form); toast.success('Event updated'); }
-      else { await api.post('/admin/events/', form); toast.success('Event created'); }
+      if (editing) { await api.patch(`/admin/events/${editing.id}`, payload); toast.success('Event updated'); }
+      else { await api.post('/admin/events/', payload); toast.success('Event created'); }
       setIsModalOpen(false); load();
     } catch { toast.error('Failed to save'); }
   };
@@ -67,7 +103,8 @@ export default function EventsPage() {
     catch { toast.error('Failed'); }
   };
 
-  const formatDate = (d: string) => {
+  const formatDate = (d?: string) => {
+    if (!d) return '';
     try { return new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(d)); }
     catch { return d; }
   };
@@ -91,37 +128,41 @@ export default function EventsPage() {
         <div className="flex justify-center py-12"><Loader2 className="animate-spin text-primary-gold" size={32} /></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {items.map(item => (
-            <div key={item.id} className={`bg-white rounded-[20px] border ${item.is_visible ? 'border-light-gold-border/20' : 'border-rose-100 opacity-70'} shadow-sm overflow-hidden hover:shadow-md transition-all`}>
-              {item.image_url && (
-                <div className="h-36 overflow-hidden">
-                  <img src={item.image_url} alt={item.title} className="w-full h-full object-cover" />
-                </div>
-              )}
-              <div className="p-4 space-y-2">
-                <div className="flex items-start justify-between">
-                  <h3 className="font-serif font-bold text-deep-maroon text-sm leading-snug">{item.title}</h3>
-                  {item.is_featured && <span className="px-2 py-0.5 rounded-full bg-primary-gold text-white text-xs font-bold shrink-0 ml-2">Featured</span>}
-                </div>
-                {item.category && (
-                  <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-50 text-primary-gold text-xs font-medium">
-                    <Tag size={10} /><span>{item.category}</span>
-                  </span>
+          {items.map(item => {
+            const displayImage = item.banner_url || item.image_url;
+            const displayDate = item.event_date || item.start_date;
+            return (
+              <div key={item.id} className={`bg-white rounded-[20px] border ${item.is_visible ? 'border-light-gold-border/20' : 'border-rose-100 opacity-70'} shadow-sm overflow-hidden hover:shadow-md transition-all`}>
+                {displayImage && (
+                  <div className="h-36 overflow-hidden">
+                    <img src={displayImage} alt={item.title} className="w-full h-full object-cover object-[center_top]" />
+                  </div>
                 )}
-                <div className="space-y-1 text-xs text-text-muted">
-                  <div className="flex items-center space-x-1"><Calendar size={11} /><span>{formatDate(item.start_date)}{item.end_date ? ` – ${formatDate(item.end_date)}` : ''}</span></div>
-                  {item.location && <div className="flex items-center space-x-1"><MapPin size={11} /><span>{item.location}</span></div>}
-                </div>
-                <div className="pt-2 border-t border-light-gold-border/10 flex justify-between items-center">
-                  <button onClick={() => toggleVisibility(item)} className={`p-1.5 rounded-lg text-xs ${item.is_visible ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>{item.is_visible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
-                  <div className="flex space-x-1">
-                    <button onClick={() => openEdit(item)} className="p-1.5 text-primary-gold hover:bg-amber-50 rounded-lg"><Edit2 size={14} /></button>
-                    <button onClick={() => handleDelete(item.id)} className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg"><Trash2 size={14} /></button>
+                <div className="p-4 space-y-2">
+                  <div className="flex items-start justify-between">
+                    <h3 className="font-serif font-bold text-deep-maroon text-sm leading-snug">{item.title}</h3>
+                    {item.is_featured && <span className="px-2 py-0.5 rounded-full bg-primary-gold text-white text-xs font-bold shrink-0 ml-2">Featured</span>}
+                  </div>
+                  {item.category && (
+                    <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-full bg-amber-50 text-primary-gold text-xs font-medium">
+                      <Tag size={10} /><span>{item.category}</span>
+                    </span>
+                  )}
+                  <div className="space-y-1 text-xs text-text-muted">
+                    <div className="flex items-center space-x-1"><Calendar size={11} /><span>{formatDate(displayDate)}{item.end_date ? ` – ${formatDate(item.end_date)}` : ''}</span></div>
+                    {item.location && <div className="flex items-center space-x-1"><MapPin size={11} /><span>{item.location}</span></div>}
+                  </div>
+                  <div className="pt-2 border-t border-light-gold-border/10 flex justify-between items-center">
+                    <button onClick={() => toggleVisibility(item)} className={`p-1.5 rounded-lg text-xs ${item.is_visible ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'}`}>{item.is_visible ? <Eye size={14} /> : <EyeOff size={14} />}</button>
+                    <div className="flex space-x-1">
+                      <button onClick={() => openEdit(item)} className="p-1.5 text-primary-gold hover:bg-amber-50 rounded-lg"><Edit2 size={14} /></button>
+                      <button onClick={() => handleDelete(item.id)} className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg"><Trash2 size={14} /></button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {items.length === 0 && <div className="col-span-3 py-12 text-center text-text-muted text-sm">No events yet. Click "Add Event" to create one.</div>}
         </div>
       )}

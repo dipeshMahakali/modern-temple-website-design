@@ -121,7 +121,7 @@ export default function Hero({ setActivePage }: HeroProps) {
         />
       ) : (
         <div
-          className="absolute inset-0 bg-cover bg-center z-0 scale-105 transition-transform duration-[10000ms]"
+          className="absolute inset-0 bg-cover bg-[center_top] z-0 scale-105 transition-transform duration-[10000ms]"
           style={{
             backgroundImage: `url('${getImageUrl(current.bg_image_url, '/assets/hero-bg.png')}')`,
           }}

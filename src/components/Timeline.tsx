@@ -615,7 +615,7 @@ export default function Timeline() {
                     <img
                       src={activeEra.imgUrl}
                       alt={activeEra.title}
-                      className="w-full h-full object-cover object-center filter sepia-[0.08] brightness-[1.04] contrast-[1.03]"
+                      className="w-full h-full object-cover object-[center_top] filter sepia-[0.08] brightness-[1.04] contrast-[1.03]"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#FFFDF8]/60 via-transparent to-transparent" />
 

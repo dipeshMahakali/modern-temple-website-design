@@ -37,7 +37,33 @@ async def seed_initial_data():
         await _seed_forms(db)
         await _seed_gallery(db)
         await _seed_events(db)
+        await _sanitize_legacy_bad_urls(db)
 
+
+async def _sanitize_legacy_bad_urls(db: AsyncSession):
+    from sqlalchemy import update
+    from app.models.content import GalleryItem, Event
+
+    # Clean any legacy nightclub, waistcoat photo, or South Indian gopuram URLs from SQLite DB
+    await db.execute(
+        update(GalleryItem)
+        .where(
+            GalleryItem.url.like("%1566737236500%") | 
+            GalleryItem.url.like("%1545128485%") | 
+            GalleryItem.url.like("%1582510003544%")
+        )
+        .values(
+            url="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=800&auto=format&fit=crop",
+            alt_text="Heritage Temple Shikhara",
+            caption="Sacred temple spire and saffron flag crowning the holy shrine precinct of Maa Bamleshwari."
+        )
+    )
+    await db.execute(
+        update(Event)
+        .where(Event.banner_url.like("%1545128485%") | Event.banner_url.like("%1566737236500%"))
+        .values(banner_url="/assets/about-bg.png")
+    )
+    await db.commit()
 
 
 async def _seed_super_admin(db: AsyncSession):
@@ -641,7 +667,7 @@ async def _seed_gallery(db: AsyncSession):
         },
         {
             "category": "aarti",
-            "url": "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
+            "url": "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?q=80&w=800&auto=format&fit=crop",
             "alt_text": "Evening Maha Aarti",
             "caption": "High spiritual fire offerings performed by temple priests during sunset.",
             "is_featured": False,
@@ -665,7 +691,7 @@ async def _seed_gallery(db: AsyncSession):
         },
         {
             "category": "festivals",
-            "url": "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop",
+            "url": "https://images.unsplash.com/photo-1514222709107-a180c68d72b4?q=80&w=800&auto=format&fit=crop",
             "alt_text": "Navratri Celebration",
             "caption": "Thousands of Jyoti Kalash lamps illuminating the temple complex during the Navratri festival.",
             "is_featured": True,
@@ -702,7 +728,7 @@ async def _seed_events(db: AsyncSession):
             "event_date": date(2026, 3, 28),
             "end_date": date(2026, 4, 5),
             "description": "Celebrate the sacred spring Navratri with Jyoti Kalash lighting, special Maha Aarti, and Shringar ceremonies performed daily on the hilltop shrine of Maa Bamleshwari.",
-            "banner_url": "https://images.unsplash.com/photo-1545128485-c400e7702796?q=80&w=800&auto=format&fit=crop",
+            "banner_url": "/assets/about-bg.png",
             "category": "Vasant Utsav",
             "location": "Dongargarh Hill",
             "is_featured": False,

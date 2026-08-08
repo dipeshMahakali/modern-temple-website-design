@@ -86,10 +86,10 @@ const initialGalleryItems: GalleryItem[] = [
   },
   {
     id: 9,
-    url: "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+    url: "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop",
     category: "architecture",
     title: "Heritage Stone Shikhara Architecture",
-    desc: "Intricate temple spires and carved stone pillars showcasing timeless ancient Indian craftsmanship.",
+    desc: "Intricate temple spires and carved stone pillars crowning the sacred precinct.",
     is_featured: false
   },
   {
@@ -108,6 +108,9 @@ const isKnownBadImage = (rawUrl: string) => {
   return (
     rawUrl.includes('1545128485-c400e7702796') ||
     rawUrl.includes('1566737236500-c8ac43014a67') ||
+    rawUrl.includes('1582510003544-4d00b7f74220') ||
+    rawUrl.includes('566737236500') ||
+    rawUrl.includes('545128485') ||
     rawUrl.toLowerCase().includes('party') ||
     rawUrl.toLowerCase().includes('club')
   );
@@ -140,6 +143,8 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                 imageUrl = "https://images.unsplash.com/photo-1609766857041-ed402ea8069a?q=80&w=1200&auto=format&fit=crop";
               } else if (mappedCat === 'festivals') {
                 imageUrl = "https://images.unsplash.com/photo-1514222709107-a180c68d72b4?q=80&w=1200&auto=format&fit=crop";
+              } else if (mappedCat === 'architecture') {
+                imageUrl = "https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1200&auto=format&fit=crop";
               } else {
                 imageUrl = "/assets/hero-bg.png";
               }
@@ -328,7 +333,7 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                 <img
                   src={featuredItem.url}
                   alt={featuredItem.title}
-                  className="w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="eager"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
@@ -379,7 +384,7 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                         <img
                           src={item.url}
                           alt={item.title}
-                          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                          className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
                           loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
@@ -442,7 +447,7 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                       <img
                         src={item.url}
                         alt={item.title}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
                         loading="lazy"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/hero-bg.png';

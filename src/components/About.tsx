@@ -66,7 +66,7 @@ export default function About({ setActivePage }: AboutProps) {
             <img
               src={getImageUrl(current.about_bg_image, '/assets/about-bg.png')}
               alt="Shri Bamleshwari Mandir Sanctuary"
-              className="w-full h-[500px] object-cover transition-transform duration-700 hover:scale-105"
+              className="w-full h-[500px] object-cover object-[center_top] transition-transform duration-700 hover:scale-105"
             />
           </div>
           <div className="absolute bottom-6 left-6 right-6 glass-card p-5 rounded-[20px] shadow-lg flex items-center space-x-4">
