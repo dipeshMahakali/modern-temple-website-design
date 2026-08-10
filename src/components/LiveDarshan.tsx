@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Tv, Sparkles, Video, Radio, Layers, CheckCircle2 } from 'lucide-react';
 import { publicApi } from '../api/client';
 import { getImageUrl } from '../utils/image';
+import CardImage from './CardImage';
 
 interface CameraStream {
   id: number | string;
@@ -100,11 +101,13 @@ export default function LiveDarshan() {
                 {!isPlaying ? (
                   <>
                     {/* Background Thumbnail */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-[center_top] transition-transform duration-[8000ms] group-hover:scale-105"
-                      style={{ backgroundImage: `url('${getImageUrl(activeStream.url, '/assets/hero-bg.png')}')` }}
+                    <CardImage
+                      src={getImageUrl(activeStream.url, '/assets/hero-bg.png')}
+                      alt={activeStream.title}
+                      className="absolute inset-0 w-full h-full"
+                      imgClassName="transition-transform duration-[8000ms] group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center z-10 pointer-events-none" />
 
                     {/* Play Button Overlay */}
                     <div className="absolute inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
@@ -208,15 +211,16 @@ export default function LiveDarshan() {
                       onClick={() => handleStreamSelect(stream.id)}
                       className="relative aspect-video rounded-xl overflow-hidden border border-light-gold-border/40 shadow-sm focus:outline-none group transition-all"
                     >
-                      <img
+                      <CardImage
                         src={getImageUrl(stream.url, '/assets/hero-bg.png')}
                         alt={stream.title}
-                        className="w-full h-full object-cover object-[center_top] group-hover:scale-110 transition-transform duration-500"
+                        className="absolute inset-0 w-full h-full"
+                        imgClassName="group-hover:scale-110 transition-transform duration-500"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-2.5 transition-opacity group-hover:opacity-90">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-2.5 transition-opacity group-hover:opacity-90 z-20 pointer-events-none">
                         <div className="flex items-center space-x-1.5">
                           <Video className="w-3 h-3 text-primary-gold shrink-0" />
                           <span className="text-[10px] font-bold text-white truncate w-full">

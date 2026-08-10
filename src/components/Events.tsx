@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Sparkles, Loader2 } from 'lucide-react';
 import { publicApi } from '../api/client';
 import { getImageUrl } from '../utils/image';
+import CardImage from './CardImage';
 
 interface EventData {
   id?: number;
@@ -109,9 +110,9 @@ export default function Events() {
             >
               {/* Event Image */}
               <div className="relative h-60 overflow-hidden">
-                <img src={getEventImage(event)} alt={event.title} className="w-full h-full object-cover object-[center_top]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <span className="absolute top-4 left-4 bg-primary-gold text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-md">
+                <CardImage src={getEventImage(event)} alt={event.title} className="w-full h-full" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10" />
+                <span className="absolute top-4 left-4 bg-primary-gold text-white text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-md z-20">
                   {event.category}
                 </span>
               </div>

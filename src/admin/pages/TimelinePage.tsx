@@ -8,6 +8,7 @@ import { Plus, Edit2, Trash2, Eye, EyeOff, GripVertical, Save, X, Clock, Loader2
 import api from '../../api/client';
 import toast from 'react-hot-toast';
 import ImageUploader from '../components/ImageUploader';
+import CardImage from '../../components/CardImage';
 
 interface Entry {
   id: number;
@@ -317,7 +318,7 @@ export default function TimelinePage() {
                     </p>
                     {entry.image_url && (
                       <div className="mt-2 relative rounded-lg overflow-hidden w-24 h-16 border bg-amber-50">
-                        <img src={entry.image_url} alt={entry.title} className="w-full h-full object-cover" />
+                        <CardImage src={entry.image_url} alt={entry.title} className="w-full h-full" />
                       </div>
                     )}
                   </div>

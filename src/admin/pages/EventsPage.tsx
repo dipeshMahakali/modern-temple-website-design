@@ -5,6 +5,7 @@ import api from '../../api/client';
 import toast from 'react-hot-toast';
 
 import ImageUploader from '../components/ImageUploader';
+import CardImage from '../../components/CardImage';
 
 interface Event {
   id: number;
@@ -135,7 +136,7 @@ export default function EventsPage() {
               <div key={item.id} className={`bg-white rounded-[20px] border ${item.is_visible ? 'border-light-gold-border/20' : 'border-rose-100 opacity-70'} shadow-sm overflow-hidden hover:shadow-md transition-all`}>
                 {displayImage && (
                   <div className="h-36 overflow-hidden">
-                    <img src={displayImage} alt={item.title} className="w-full h-full object-cover object-[center_top]" />
+                    <CardImage src={displayImage} alt={item.title} className="w-full h-full" />
                   </div>
                 )}
                 <div className="p-4 space-y-2">

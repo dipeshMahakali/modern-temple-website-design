@@ -8,6 +8,7 @@ import { Upload, Eye, EyeOff, Trash2, Star, StarOff, Filter, X, Image as ImageIc
 import api from '../../api/client';
 import toast from 'react-hot-toast';
 import { getImageUrl } from '../../utils/image';
+import CardImage from '../../components/CardImage';
 
 const CATEGORIES = ['All', 'Temple', 'Festival', 'Nature', 'Pilgrims', 'Architecture'];
 const UPLOAD_CATEGORIES = ['Temple', 'Festival', 'Nature', 'Pilgrims', 'Architecture', 'General'];
@@ -219,11 +220,11 @@ export default function GalleryPage() {
               }}
             >
               {/* Image */}
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #2D2D2D 0%, #4A4A4A 100%)' }}>
-                <img
+              <div className="absolute inset-0">
+                <CardImage
                   src={getImageUrl(item.url)}
-                  alt={item.alt_text}
-                  className="w-full h-full object-cover"
+                  alt={item.alt_text || ''}
+                  className="w-full h-full"
                   onError={(e) => { (e.target as HTMLImageElement).src = '/assets/hero-bg.png'; }}
                 />
               </div>

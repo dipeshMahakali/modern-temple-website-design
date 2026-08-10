@@ -21,6 +21,7 @@ import Footer from './components/Footer';
 import DonatePage from './components/DonatePage';
 import InstructionsPage from './components/InstructionsPage';
 import PrivacyTerms from './components/PrivacyTerms';
+import CardImage from './components/CardImage';
 
 // Admin Components
 import LoginPage from './admin/pages/LoginPage';
@@ -181,8 +182,8 @@ function PublicWebsite() {
               <div className="w-24 h-1 bg-primary-gold mx-auto rounded-full" />
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              <div className="lg:col-span-6">
-                <img src="/assets/about-bg.png" alt="Inner Shrine Sanctum" className="rounded-[28px] shadow-xl w-full h-[400px] object-cover" />
+              <div className="lg:col-span-6 h-[400px]">
+                <CardImage src="/assets/about-bg.png" alt="Inner Shrine Sanctum" className="rounded-[28px] shadow-xl w-full h-full" />
               </div>
               <div className="lg:col-span-6 space-y-5">
                 <h3 className="font-serif font-bold text-2xl text-deep-maroon">The Legend of King Veersen</h3>

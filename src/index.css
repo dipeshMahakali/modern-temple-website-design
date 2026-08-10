@@ -119,3 +119,33 @@ iframe.skiptranslate,
   scrollbar-width: none !important;
 }
 
+/* Card Image Containment & Two-Layer Blur Background Utilities */
+.card-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.card-image-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: blur(12px) brightness(0.75);
+  transform: scale(1.1);
+  pointer-events: none;
+}
+
+.card-image {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+
