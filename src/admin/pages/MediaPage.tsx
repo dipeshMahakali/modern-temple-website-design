@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Upload, FolderOpen, Trash2, Copy, Check, Search, Filter, Loader2, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import api from '../../api/client';
 import toast from 'react-hot-toast';
+import CardImage from '../../components/CardImage';
 
 interface MediaItem {
   id: number;
@@ -264,15 +265,16 @@ export default function MediaPage() {
               className="group bg-white rounded-2xl border border-light-gold-border/20 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col"
             >
               <div className="aspect-square bg-stone-100 relative overflow-hidden">
-                <img
+                <CardImage
                   src={resolveUrl(item.url)}
                   alt={item.original_filename}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full"
+                  imgClassName="group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
                   }}
                 />
-                <div className="absolute top-2 left-2">
+                <div className="absolute top-2 left-2 z-20">
                   <span className="px-2 py-0.5 rounded-full bg-black/60 text-white text-[10px] font-mono uppercase font-bold backdrop-blur-sm">
                     {item.folder}
                   </span>

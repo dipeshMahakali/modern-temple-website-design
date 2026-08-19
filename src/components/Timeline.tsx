@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { publicApi } from '../api/client';
 import { getImageUrl } from '../utils/image';
+import CardImage from './CardImage';
 
 interface Milestone {
   id: number;
@@ -612,15 +613,16 @@ export default function Timeline() {
 
                   {/* Header / Image Top Banner */}
                   <div className="relative h-44 md:h-56 w-full shrink-0 overflow-hidden border-b border-[rgba(107,31,31,0.08)]">
-                    <img
+                    <CardImage
                       src={activeEra.imgUrl}
                       alt={activeEra.title}
-                      className="w-full h-full object-cover object-[center_top] filter sepia-[0.08] brightness-[1.04] contrast-[1.03]"
+                      className="w-full h-full"
+                      imgClassName="filter sepia-[0.08] brightness-[1.04] contrast-[1.03]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#FFFDF8]/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#FFFDF8]/60 via-transparent to-transparent pointer-events-none z-10" />
 
                     {/* Inner gold line accent */}
-                    <div className="absolute bottom-2 left-2 right-2 border-t border-[#C8A45A]/30 pointer-events-none" />
+                    <div className="absolute bottom-2 left-2 right-2 border-t border-[#C8A45A]/30 pointer-events-none z-10" />
                   </div>
 
                   {/* Title and Badge Metadata Row */}
@@ -905,12 +907,13 @@ export default function Timeline() {
                     }}
                   />
                   <div className="relative overflow-hidden aspect-[4/3] rounded-lg">
-                    <img
+                    <CardImage
                       src={img.url}
                       alt={img.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-103"
+                      className="w-full h-full"
+                      imgClassName="transition-transform duration-500 group-hover:scale-103"
                     />
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20 pointer-events-none">
                       <Eye className="w-7 h-7 text-white" />
                     </div>
                   </div>

@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { publicApi } from '../api/client';
 import DynamicIcon from './DynamicIcon';
 import { getImageUrl } from '../utils/image';
+import CardImage from './CardImage';
 
 interface AboutProps {
   setActivePage: (page: string) => void;
@@ -62,11 +63,12 @@ export default function About({ setActivePage }: AboutProps) {
         <div className="lg:col-span-6 relative">
           <div className="absolute -top-4 -left-4 w-32 h-32 border-t-2 border-l-2 border-primary-gold rounded-tl-[28px] pointer-events-none" />
           <div className="absolute -bottom-4 -right-4 w-32 h-32 border-b-2 border-r-2 border-primary-gold rounded-br-[28px] pointer-events-none" />
-          <div className="overflow-hidden rounded-[28px] shadow-2xl">
-            <img
+          <div className="overflow-hidden rounded-[28px] shadow-2xl h-[500px]">
+            <CardImage
               src={getImageUrl(current.about_bg_image, '/assets/about-bg.png')}
               alt="Shri Bamleshwari Mandir Sanctuary"
-              className="w-full h-[500px] object-cover object-[center_top] transition-transform duration-700 hover:scale-105"
+              className="w-full h-full"
+              imgClassName="transition-transform duration-700 hover:scale-105"
             />
           </div>
           <div className="absolute bottom-6 left-6 right-6 glass-card p-5 rounded-[20px] shadow-lg flex items-center space-x-4">

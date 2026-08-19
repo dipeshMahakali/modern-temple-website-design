@@ -4,6 +4,7 @@ import { Plus, Edit2, Trash2, Eye, EyeOff, Loader2, RefreshCw, X, ArrowUp, Arrow
 import api from '../../api/client';
 import toast from 'react-hot-toast';
 import ImageUploader from '../components/ImageUploader';
+import CardImage from '../../components/CardImage';
 
 interface Trustee {
   id: number;
@@ -101,9 +102,9 @@ export default function TrusteesPage() {
           {items.map((item, idx) => (
             <div key={item.id} className="bg-white rounded-[20px] border border-light-gold-border/20 p-5 shadow-sm hover:shadow-md transition-all space-y-3">
               <div className="flex items-start space-x-3">
-                <div className="w-14 h-14 rounded-full overflow-hidden bg-amber-50 border-2 border-primary-gold/30 shrink-0">
+                <div className="w-14 h-14 rounded-full overflow-hidden bg-amber-50 border-2 border-primary-gold/30 shrink-0 relative">
                   {item.photo_url ? (
-                    <img src={item.photo_url} alt={item.name} className="w-full h-full object-cover" />
+                    <CardImage src={item.photo_url} alt={item.name} className="w-full h-full" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-primary-gold font-bold text-xl">{item.name.charAt(0)}</div>
                   )}

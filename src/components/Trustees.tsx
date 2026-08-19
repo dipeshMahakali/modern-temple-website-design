@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Shield, Award, Landmark } from 'lucide-react';
 import { publicApi } from '../api/client';
 import { getImageUrl } from '../utils/image';
+import CardImage from './CardImage';
 
 interface TrusteeData {
   id?: number;
@@ -93,15 +94,11 @@ export default function Trustees() {
               <div className="space-y-4">
                 {/* Photo or Silhouette Avatar */}
                 {photo ? (
-                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary-gold mx-auto shadow-md">
-                    <img
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary-gold mx-auto shadow-md relative">
+                    <CardImage
                       src={getImageUrl(photo)}
                       alt={member.name}
-                      className="w-full h-full object-cover object-[center_top]"
-                      onError={(e) => {
-                        // Fallback to default avatar if image link fails to load
-                        (e.target as HTMLImageElement).style.display = 'none';
-                      }}
+                      className="w-full h-full"
                     />
                   </div>
                 ) : (
@@ -146,11 +143,13 @@ export default function Trustees() {
                 className="bg-white/50 border border-light-gold-border/10 p-5 rounded-[20px] shadow-sm hover:shadow-md transition-shadow text-center flex items-center justify-center space-x-3"
               >
                 {photo ? (
-                  <img
-                    src={getImageUrl(photo)}
-                    alt={trustee.name}
-                    className="w-12 h-12 rounded-full border border-primary-gold object-cover shrink-0"
-                  />
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-primary-gold shrink-0 relative">
+                    <CardImage
+                      src={getImageUrl(photo)}
+                      alt={trustee.name}
+                      className="w-full h-full"
+                    />
+                  </div>
                 ) : null}
                 <div>
                   {!photo && <Award className="w-5 h-5 text-primary-gold mx-auto mb-2" />}

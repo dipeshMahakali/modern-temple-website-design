@@ -3,6 +3,7 @@ import { X, ZoomIn, ChevronLeft, ChevronRight, ArrowRight, Camera } from 'lucide
 import { publicApi } from '../api/client';
 import { getImageUrl } from '../utils/image';
 import { useLanguage } from '../context/LanguageContext';
+import CardImage from './CardImage';
 
 export interface GalleryItem {
   id: number;
@@ -330,10 +331,11 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                 }`}
               >
                 {/* Image */}
-                <img
+                <CardImage
                   src={featuredItem.url}
                   alt={featuredItem.title}
-                  className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full"
+                  imgClassName="transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="eager"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
@@ -381,10 +383,11 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                         onClick={() => setSelectedImageIdx(realIdx)}
                         className="relative group cursor-pointer overflow-hidden rounded-[16px] bg-stone-100 border border-[#E8D7A5]/30 shadow-xs hover:shadow-lg transition-all duration-500 h-[160px] sm:h-[190px] lg:h-[225px]"
                       >
-                        <img
+                        <CardImage
                           src={item.url}
                           alt={item.title}
-                          className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
+                          className="absolute inset-0 w-full h-full"
+                          imgClassName="transition-transform duration-700 ease-out group-hover:scale-105"
                           loading="lazy"
                           onError={(e) => {
                             (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
@@ -397,7 +400,7 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                         </div>
 
                         {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-85 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-85 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
 
                         {/* Text Overlay */}
                         <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 z-20 flex items-end justify-between">
@@ -444,10 +447,11 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
                       onClick={() => setSelectedImageIdx(realIdx)}
                       className={`relative group cursor-pointer overflow-hidden rounded-[16px] bg-white border border-[#E8D7A5]/30 shadow-xs hover:shadow-lg transition-all duration-500 ${spanClass}`}
                     >
-                      <img
+                      <CardImage
                         src={item.url}
                         alt={item.title}
-                        className="w-full h-full object-cover object-[center_top] transition-transform duration-700 ease-out group-hover:scale-105"
+                        className="absolute inset-0 w-full h-full"
+                        imgClassName="transition-transform duration-700 ease-out group-hover:scale-105"
                         loading="lazy"
                         onError={(e) => {
                           (e.target as HTMLImageElement).src = '/assets/hero-bg.png';
