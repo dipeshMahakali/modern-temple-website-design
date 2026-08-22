@@ -5,8 +5,13 @@ Main entry point
 import sys
 import os
 
+# Ensure backend directory is in sys.path for Vercel Serverless Function imports
+backend_dir = os.path.dirname(os.path.abspath(__file__))
+if backend_dir not in sys.path:
+    sys.path.insert(0, backend_dir)
+
 # Add backend venv packages to path if exists
-venv_pkgs = os.path.join(os.path.dirname(__file__), "venv_packages")
+venv_pkgs = os.path.join(backend_dir, "venv_packages")
 if os.path.exists(venv_pkgs):
     sys.path.insert(0, venv_pkgs)
 
