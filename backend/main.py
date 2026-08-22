@@ -5,8 +5,10 @@ Main entry point
 import sys
 import os
 
-# Add backend venv packages to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "venv_packages"))
+# Add backend venv packages to path if exists
+venv_pkgs = os.path.join(os.path.dirname(__file__), "venv_packages")
+if os.path.exists(venv_pkgs):
+    sys.path.insert(0, venv_pkgs)
 
 from contextlib import asynccontextmanager
 import uvicorn
@@ -29,32 +31,38 @@ from app.api.v1.router import api_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
-    # Startup: create tables and migrate missing columns if needed
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
 
-        def _migrate_columns(sync_conn):
-            from sqlalchemy import inspect, text
-            inspector = inspect(sync_conn)
-            tables = inspector.get_table_names()
-            if "trustees" in tables:
-                cols = {c["name"] for c in inspector.get_columns("trustees")}
-                new_cols = [
-                    ("title", "VARCHAR(200)"),
-                    ("role", "VARCHAR(200)"),
-                    ("bio", "TEXT"),
-                    ("photo_url", "VARCHAR(500)")
-                ]
-                for col_name, col_type in new_cols:
-                    if col_name not in cols:
-                        sync_conn.execute(text(f"ALTER TABLE trustees ADD COLUMN {col_name} {col_type}"))
+            def _migrate_columns(sync_conn):
+                from sqlalchemy import inspect, text
+                inspector = inspect(sync_conn)
+                tables = inspector.get_table_names()
+                if "trustees" in tables:
+                    cols = {c["name"] for c in inspector.get_columns("trustees")}
+                    new_cols = [
+                        ("title", "VARCHAR(200)"),
+                        ("role", "VARCHAR(200)"),
+                        ("bio", "TEXT"),
+                        ("photo_url", "VARCHAR(500)")
+                    ]
+                    for col_name, col_type in new_cols:
+                        if col_name not in cols:
+                            sync_conn.execute(text(f"ALTER TABLE trustees ADD COLUMN {col_name} {col_type}"))
 
-        await conn.run_sync(_migrate_columns)
+            await conn.run_sync(_migrate_columns)
 
-    await seed_initial_data()
+        await seed_initial_data()
+    except Exception as e:
+        print(f"Lifespan startup warning: {e}")
+
     yield
-    # Shutdown: cleanup
-    await engine.dispose()
+
+    try:
+        await engine.dispose()
+    except Exception:
+        pass
 
 
 def create_app() -> FastAPI:
@@ -76,7 +84,7 @@ def create_app() -> FastAPI:
     # CORS
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.CORS_ORIGINS,
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -96,8 +104,15 @@ def create_app() -> FastAPI:
 
     # Static file serving for uploads
     upload_path = os.path.join(os.path.dirname(__file__), settings.UPLOAD_DIR)
-    os.makedirs(upload_path, exist_ok=True)
-    app.mount("/uploads", StaticFiles(directory=upload_path), name="uploads")
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        upload_path = "/tmp/uploads"
+
+    try:
+        os.makedirs(upload_path, exist_ok=True)
+        if os.path.exists(upload_path):
+            app.mount("/uploads", StaticFiles(directory=upload_path), name="uploads")
+    except Exception as e:
+        print(f"Uploads mount warning: {e}")
 
     # API Routes
     app.include_router(api_router, prefix="/api/v1")

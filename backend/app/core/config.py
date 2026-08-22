@@ -2,9 +2,32 @@
 Application Configuration
 Uses Pydantic Settings for environment variable management
 """
+import os
 import json
+import shutil
 from typing import List
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def get_default_database_url() -> str:
+    env_db = os.environ.get("DATABASE_URL")
+    if env_db:
+        return env_db
+    
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    seed_db = os.path.join(base_dir, "temple.db")
+
+    # On Vercel serverless / AWS Lambda (read-only root), copy temple.db to /tmp
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        tmp_db = "/tmp/temple.db"
+        if not os.path.exists(tmp_db):
+            if os.path.exists(seed_db):
+                shutil.copy2(seed_db, tmp_db)
+        return f"sqlite+aiosqlite:///{tmp_db}"
+
+    if os.path.exists(seed_db):
+        return f"sqlite+aiosqlite:///{seed_db}"
+    return "sqlite+aiosqlite:///./temple.db"
 
 
 class Settings(BaseSettings):
@@ -26,11 +49,11 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
 
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://temple_user:temple_pass@localhost:5432/temple_db"
-    DATABASE_URL_SYNC: str = "postgresql+psycopg2://temple_user:temple_pass@localhost:5432/temple_db"
+    DATABASE_URL: str = get_default_database_url()
+    DATABASE_URL_SYNC: str = "sqlite:///./temple.db"
 
     # JWT
-    SECRET_KEY: str = "change_this_in_production"
+    SECRET_KEY: str = "pavagarh_temple_super_secret_key_change_in_production_256bit_strong"
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
@@ -39,8 +62,8 @@ class Settings(BaseSettings):
     COOKIE_SECURE: bool = False
     COOKIE_SAMESITE: str = "lax"
 
-    # CORS - stored as JSON string in env
-    CORS_ORIGINS: List[str] = ["http://localhost:5173", "http://localhost:3000"]
+    # CORS
+    CORS_ORIGINS: List[str] = ["*"]
 
     # File Upload
     UPLOAD_DIR: str = "uploads"
