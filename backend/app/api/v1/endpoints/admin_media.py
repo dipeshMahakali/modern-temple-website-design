@@ -53,8 +53,17 @@ async def upload_media(
 
     ext = file.filename.split(".")[-1].lower() if file.filename else "bin"
     filename = f"{uuid.uuid4().hex}.{ext}"
-    upload_folder = os.path.join(settings.UPLOAD_DIR, folder)
-    os.makedirs(upload_folder, exist_ok=True)
+
+    upload_dir = settings.UPLOAD_DIR
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        upload_dir = "/tmp/uploads"
+
+    upload_folder = os.path.join(upload_dir, folder)
+    try:
+        os.makedirs(upload_folder, exist_ok=True)
+    except Exception:
+        upload_folder = os.path.join("/tmp/uploads", folder)
+        os.makedirs(upload_folder, exist_ok=True)
 
     filepath = os.path.join(upload_folder, filename)
     with open(filepath, "wb") as f:
@@ -87,9 +96,14 @@ async def delete_media(media_id: int, db: AsyncSession = Depends(get_db), curren
 
     # Delete physical file
     if media.url and media.url.startswith("/uploads/"):
-        filepath = media.url.lstrip("/")
-        if os.path.exists(filepath):
-            os.remove(filepath)
+        rel_path = media.url.replace("/uploads/", "")
+        for base in ["/tmp/uploads", os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "uploads")]:
+            filepath = os.path.join(base, rel_path)
+            if os.path.exists(filepath):
+                try:
+                    os.remove(filepath)
+                except Exception:
+                    pass
 
     await db.delete(media)
     await db.commit()

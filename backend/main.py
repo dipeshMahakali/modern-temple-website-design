@@ -17,10 +17,10 @@ if os.path.exists(venv_pkgs):
 
 from contextlib import asynccontextmanager
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -107,17 +107,25 @@ def create_app() -> FastAPI:
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
         return response
 
-    # Static file serving for uploads
-    upload_path = os.path.join(os.path.dirname(__file__), settings.UPLOAD_DIR)
-    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
-        upload_path = "/tmp/uploads"
+    # Dynamic static file serving for uploads across Vercel tmp and backend uploads
+    @app.get("/uploads/{file_path:path}")
+    async def serve_uploads(file_path: str):
+        # 1. Check /tmp/uploads
+        tmp_file = os.path.join("/tmp/uploads", file_path)
+        if os.path.exists(tmp_file) and os.path.isfile(tmp_file):
+            return FileResponse(tmp_file)
 
-    try:
-        os.makedirs(upload_path, exist_ok=True)
-        if os.path.exists(upload_path):
-            app.mount("/uploads", StaticFiles(directory=upload_path), name="uploads")
-    except Exception as e:
-        print(f"Uploads mount warning: {e}")
+        # 2. Check backend/uploads
+        backend_file = os.path.join(backend_dir, "uploads", file_path)
+        if os.path.exists(backend_file) and os.path.isfile(backend_file):
+            return FileResponse(backend_file)
+
+        # 3. Check root uploads
+        root_file = os.path.join(os.path.dirname(backend_dir), "uploads", file_path)
+        if os.path.exists(root_file) and os.path.isfile(root_file):
+            return FileResponse(root_file)
+
+        raise HTTPException(status_code=404, detail="Upload file not found")
 
     # API Routes
     app.include_router(api_router, prefix="/api/v1")
