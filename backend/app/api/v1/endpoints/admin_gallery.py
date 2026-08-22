@@ -49,8 +49,18 @@ async def upload_gallery_image(
     # Save file
     ext = file.filename.split(".")[-1].lower() if file.filename else "jpg"
     filename = f"{uuid.uuid4().hex}.{ext}"
-    folder = os.path.join(settings.UPLOAD_DIR, "gallery")
-    os.makedirs(folder, exist_ok=True)
+
+    upload_dir = settings.UPLOAD_DIR
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        upload_dir = "/tmp/uploads"
+
+    folder = os.path.join(upload_dir, "gallery")
+    try:
+        os.makedirs(folder, exist_ok=True)
+    except Exception:
+        folder = os.path.join("/tmp/uploads", "gallery")
+        os.makedirs(folder, exist_ok=True)
+
     filepath = os.path.join(folder, filename)
 
     with open(filepath, "wb") as f:
@@ -93,9 +103,14 @@ async def delete_gallery_item(
         raise HTTPException(status_code=404, detail="Gallery item not found")
     # Try to delete file
     if item.url and item.url.startswith("/uploads/"):
-        filepath = os.path.join(os.path.dirname(settings.UPLOAD_DIR), item.url.lstrip("/"))
-        if os.path.exists(filepath):
-            os.remove(filepath)
+        rel_path = item.url.replace("/uploads/", "")
+        for base in ["/tmp/uploads", os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "uploads")]:
+            filepath = os.path.join(base, rel_path)
+            if os.path.exists(filepath):
+                try:
+                    os.remove(filepath)
+                except Exception:
+                    pass
     await repo.delete(item_id)
 
 
