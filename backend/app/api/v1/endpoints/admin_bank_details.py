@@ -13,12 +13,14 @@ from app.schemas.schemas import BankDetailOut, BankDetailCreate, BankDetailUpdat
 router = APIRouter()
 
 
+@router.get("", response_model=List[BankDetailOut])
 @router.get("/", response_model=List[BankDetailOut])
 async def list_bank_details(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(BankDetail).where(BankDetail.deleted_at == None).order_by(BankDetail.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=BankDetailOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=BankDetailOut, status_code=status.HTTP_201_CREATED)
 async def create_bank_detail(
     body: BankDetailCreate,

@@ -19,6 +19,7 @@ ALLOWED_TYPES = {
 }
 
 
+@router.get("")
 @router.get("/")
 async def list_media(
     folder: Optional[str] = None,

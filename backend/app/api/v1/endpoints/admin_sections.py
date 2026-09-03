@@ -14,6 +14,7 @@ from app.models.content import Section
 router = APIRouter()
 
 
+@router.get("", response_model=List[SectionOut])
 @router.get("/", response_model=List[SectionOut])
 async def list_sections(
     db: AsyncSession = Depends(get_db),
@@ -23,6 +24,7 @@ async def list_sections(
     return await repo.get_all()
 
 
+@router.post("", response_model=SectionOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=SectionOut, status_code=status.HTTP_201_CREATED)
 async def create_section(
     body: SectionCreate,

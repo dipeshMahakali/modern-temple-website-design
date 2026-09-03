@@ -13,12 +13,14 @@ from app.schemas.schemas import TempleTimingOut, TempleTimingCreate, TempleTimin
 router = APIRouter()
 
 
+@router.get("", response_model=List[TempleTimingOut])
 @router.get("/", response_model=List[TempleTimingOut])
 async def list_timings(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(TempleTiming).where(TempleTiming.deleted_at == None).order_by(TempleTiming.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=TempleTimingOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=TempleTimingOut, status_code=status.HTTP_201_CREATED)
 async def create_timing(
     body: TempleTimingCreate,

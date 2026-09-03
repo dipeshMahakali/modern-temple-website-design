@@ -11,6 +11,7 @@ from app.schemas.schemas import EventOut, EventCreate, EventUpdate
 router = APIRouter()
 
 
+@router.get("", response_model=List[EventOut])
 @router.get("/", response_model=List[EventOut])
 async def list_events(
     skip: int = Query(0, ge=0),
@@ -23,6 +24,7 @@ async def list_events(
     return events
 
 
+@router.post("", response_model=EventOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=EventOut, status_code=status.HTTP_201_CREATED)
 async def create_event(body: EventCreate, db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = EventRepository(db)

@@ -12,6 +12,7 @@ from app.models.content import FormConfig
 router = APIRouter()
 
 
+@router.get("")
 @router.get("/")
 async def list_forms(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(FormConfig).order_by(FormConfig.slug.asc()))

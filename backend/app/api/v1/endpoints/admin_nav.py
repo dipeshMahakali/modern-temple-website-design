@@ -11,12 +11,14 @@ from app.schemas.schemas import NavigationItemOut, NavigationItemCreate, Navigat
 router = APIRouter()
 
 
+@router.get("", response_model=List[NavigationItemOut])
 @router.get("/", response_model=List[NavigationItemOut])
 async def list_nav(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = NavigationRepository(db)
     return await repo.get_all()
 
 
+@router.post("", response_model=NavigationItemOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=NavigationItemOut, status_code=status.HTTP_201_CREATED)
 async def create_nav_item(body: NavigationItemCreate, db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = NavigationRepository(db)

@@ -13,12 +13,14 @@ from app.schemas.schemas import ServiceItemOut, ServiceItemCreate, ServiceItemUp
 router = APIRouter()
 
 
+@router.get("", response_model=List[ServiceItemOut])
 @router.get("/", response_model=List[ServiceItemOut])
 async def list_services(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(ServiceItem).where(ServiceItem.deleted_at == None).order_by(ServiceItem.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=ServiceItemOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=ServiceItemOut, status_code=status.HTTP_201_CREATED)
 async def create_service(
     body: ServiceItemCreate,

@@ -13,12 +13,14 @@ from app.schemas.schemas import TestimonialOut, TestimonialCreate, TestimonialUp
 router = APIRouter()
 
 
+@router.get("", response_model=List[TestimonialOut])
 @router.get("/", response_model=List[TestimonialOut])
 async def list_testimonials(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(Testimonial).where(Testimonial.deleted_at == None).order_by(Testimonial.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=TestimonialOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=TestimonialOut, status_code=status.HTTP_201_CREATED)
 async def create_testimonial(
     body: TestimonialCreate,

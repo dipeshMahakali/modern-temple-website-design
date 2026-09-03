@@ -11,12 +11,14 @@ from app.schemas.schemas import TimelineEntryOut, TimelineEntryCreate, TimelineE
 router = APIRouter()
 
 
+@router.get("", response_model=List[TimelineEntryOut])
 @router.get("/", response_model=List[TimelineEntryOut])
 async def list_entries(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = TimelineRepository(db)
     return await repo.get_all()
 
 
+@router.post("", response_model=TimelineEntryOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=TimelineEntryOut, status_code=status.HTTP_201_CREATED)
 async def create_entry(body: TimelineEntryCreate, db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = TimelineRepository(db)

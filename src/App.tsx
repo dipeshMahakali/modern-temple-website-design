@@ -322,9 +322,19 @@ function AdminSection() {
           <TempleInfoPage />
         </AdminLayout>
       } />
-      <Route path="messages" element={
-        <AdminLayout activePage="messages">
+      <Route path="contact" element={
+        <AdminLayout activePage="contact">
           <ContactMessagesPage />
+        </AdminLayout>
+      } />
+      <Route path="messages" element={
+        <AdminLayout activePage="contact">
+          <ContactMessagesPage />
+        </AdminLayout>
+      } />
+      <Route path="settings" element={
+        <AdminLayout activePage="settings">
+          <SeoPage />
         </AdminLayout>
       } />
       <Route path="sections" element={
@@ -392,7 +402,7 @@ function AdminSection() {
           <AuditLogsPage />
         </AdminLayout>
       } />
-      <Route path="*" element={<Navigate to="dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
     </Routes>
   );
 }

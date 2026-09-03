@@ -11,6 +11,7 @@ from app.schemas.schemas import SeoEntryOut, SeoEntryUpsert
 router = APIRouter()
 
 
+@router.get("", response_model=List[SeoEntryOut])
 @router.get("/", response_model=List[SeoEntryOut])
 async def list_seo(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     repo = SeoRepository(db)

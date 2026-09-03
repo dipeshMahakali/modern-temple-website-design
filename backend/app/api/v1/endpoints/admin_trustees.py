@@ -13,12 +13,14 @@ from app.schemas.schemas import TrusteeOut, TrusteeCreate, TrusteeUpdate
 router = APIRouter()
 
 
+@router.get("", response_model=List[TrusteeOut])
 @router.get("/", response_model=List[TrusteeOut])
 async def list_trustees(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(Trustee).where(Trustee.deleted_at == None).order_by(Trustee.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=TrusteeOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=TrusteeOut, status_code=status.HTTP_201_CREATED)
 async def create_trustee(
     body: TrusteeCreate,

@@ -13,12 +13,14 @@ from app.schemas.schemas import StatItemOut, StatItemCreate, StatItemUpdate
 router = APIRouter()
 
 
+@router.get("", response_model=List[StatItemOut])
 @router.get("/", response_model=List[StatItemOut])
 async def list_stats(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(select(StatItem).where(StatItem.deleted_at == None).order_by(StatItem.display_order.asc()))
     return list(result.scalars().all())
 
 
+@router.post("", response_model=StatItemOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=StatItemOut, status_code=status.HTTP_201_CREATED)
 async def create_stat(
     body: StatItemCreate,

@@ -13,6 +13,7 @@ from app.schemas.schemas import AuditLogOut
 router = APIRouter()
 
 
+@router.get("", response_model=List[AuditLogOut])
 @router.get("/", response_model=List[AuditLogOut])
 async def list_audit_logs(
     action: Optional[str] = Query(None),
