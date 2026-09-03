@@ -18,7 +18,7 @@ export default function Testimonials() {
     const fetchTestimonials = async () => {
       try {
         const res = await publicApi.getTestimonials();
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setTestimonials(res.data);
         }
       } catch (err) {

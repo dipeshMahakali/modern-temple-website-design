@@ -132,6 +132,35 @@ def create_app() -> FastAPI:
     # API Routes
     app.include_router(api_router, prefix="/api/v1")
 
+    @app.get("/api/v1/public/init-db")
+    async def initialize_db_endpoint():
+        """Public trigger to initialize database tables and seed initial data if missing"""
+        try:
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+                def _migrate_columns(sync_conn):
+                    from sqlalchemy import inspect, text
+                    inspector = inspect(sync_conn)
+                    tables = inspector.get_table_names()
+                    if "trustees" in tables:
+                        cols = {c["name"] for c in inspector.get_columns("trustees")}
+                        new_cols = [
+                            ("title", "VARCHAR(200)"),
+                            ("role", "VARCHAR(200)"),
+                            ("bio", "TEXT"),
+                            ("photo_url", "VARCHAR(500)")
+                        ]
+                        for col_name, col_type in new_cols:
+                            if col_name not in cols:
+                                sync_conn.execute(text(f"ALTER TABLE trustees ADD COLUMN {col_name} {col_type}"))
+
+                await conn.run_sync(_migrate_columns)
+
+            await seed_initial_data()
+            return {"status": "success", "message": "Database tables created and initial data seeded successfully"}
+        except Exception as err:
+            return {"status": "error", "message": str(err)}
+
     @app.get("/health")
     async def health():
         return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}

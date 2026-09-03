@@ -113,7 +113,7 @@ function PublicWebsite() {
     const loadSections = async () => {
       try {
         const res = await publicApi.getSectionsList();
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setSections(res.data);
         }
       } catch (err) {

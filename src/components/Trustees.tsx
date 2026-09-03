@@ -24,7 +24,7 @@ export default function Trustees() {
     const fetchTrustees = async () => {
       try {
         const res = await publicApi.getTrustees();
-        if (res.data) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setTrustees(res.data);
         }
       } catch (err) {

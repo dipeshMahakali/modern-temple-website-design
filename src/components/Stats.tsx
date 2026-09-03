@@ -76,7 +76,7 @@ export default function Stats() {
     const fetchStats = async () => {
       try {
         const res = await publicApi.getStats();
-        if (res.data) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setStats(res.data);
         }
       } catch (err) {

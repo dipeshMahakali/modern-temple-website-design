@@ -22,7 +22,7 @@ export default function Services({ setActivePage }: ServicesProps) {
     const fetchServices = async () => {
       try {
         const res = await publicApi.getServices();
-        if (res.data) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setServices(res.data);
         }
       } catch (err) {
