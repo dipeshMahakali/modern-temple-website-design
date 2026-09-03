@@ -24,7 +24,7 @@ export default function Events() {
     const fetchEvents = async () => {
       try {
         const res = await publicApi.getEvents(50);
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setEvents(res.data);
         }
       } catch (err) {

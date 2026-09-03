@@ -246,7 +246,7 @@ export default function Timeline() {
     const loadTimeline = async () => {
       try {
         const res = await publicApi.getTimeline();
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           const mapped = res.data.map((entry: any, index: number): Milestone => {
             const icons = [
               <Sparkles className="w-4 h-4" />,

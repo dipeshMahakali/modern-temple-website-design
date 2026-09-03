@@ -127,7 +127,7 @@ export default function Gallery({ setActivePage, isHomePage = false }: GalleryPr
     const loadGallery = async () => {
       try {
         const res = await publicApi.getGallery();
-        if (res.data && res.data.length > 0) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           const mapped = res.data.map((item: any): GalleryItem => {
             const cat = (item.category || 'temple').toLowerCase();
             let mappedCat: 'temple' | 'festivals' | 'aarti' | 'architecture' | 'nature' = 'temple';
