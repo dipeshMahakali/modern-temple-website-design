@@ -10,8 +10,27 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 def get_default_database_url() -> str:
-    env_db = os.environ.get("DATABASE_URL")
+    env_db = (
+        os.environ.get("DATABASE_URL")
+        or os.environ.get("POSTGRES_URL")
+        or os.environ.get("POSTGRES_URL_NON_POOLING")
+        or os.environ.get("POSTGRES_PRISMA_URL")
+    )
     if env_db:
+        # Convert postgres:// or postgresql:// to postgresql+asyncpg:// for SQLAlchemy async engine
+        if env_db.startswith("postgres://"):
+            env_db = "postgresql+asyncpg://" + env_db[len("postgres://"):]
+        elif env_db.startswith("postgresql://") and not env_db.startswith("postgresql+"):
+            env_db = "postgresql+asyncpg://" + env_db[len("postgresql://"):]
+
+        # Normalize query params for asyncpg (e.g. sslmode=require -> ssl=require)
+        if "sslmode=require" in env_db:
+            env_db = env_db.replace("sslmode=require", "ssl=require")
+        elif "sslmode=prefer" in env_db:
+            env_db = env_db.replace("sslmode=prefer", "ssl=prefer")
+        elif "sslmode=disable" in env_db:
+            env_db = env_db.replace("sslmode=disable", "ssl=disable")
+
         return env_db
     
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
