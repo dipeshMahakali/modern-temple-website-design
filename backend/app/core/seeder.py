@@ -12,6 +12,7 @@ from sqlalchemy import select
 
 from app.core.database import AsyncSessionLocal
 from app.core.config import settings
+import app.models
 
 logger = logging.getLogger(__name__)
 

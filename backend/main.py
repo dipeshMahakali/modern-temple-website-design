@@ -28,6 +28,7 @@ from slowapi.middleware import SlowAPIMiddleware
 
 from app.core.config import settings
 from app.core.database import engine, Base
+import app.models  # Crucial: Register all 25 SQLAlchemy models into Base.metadata before create_all
 from app.core.limiter import limiter
 from app.core.seeder import seed_initial_data
 from app.api.v1.router import api_router
