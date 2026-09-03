@@ -87,7 +87,7 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
           publicApi.getNavigation('main'),
           publicApi.getTempleInfo('general')
         ]);
-        if (navRes.data && navRes.data.length > 0) {
+        if (navRes.data && Array.isArray(navRes.data) && navRes.data.length > 0) {
           setNavItems(navRes.data);
         }
         if (infoRes.data) {
@@ -113,7 +113,7 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
     { label: 'Contact', slug: 'contact' },
   ];
 
-  const currentLinks = navItems.length > 0 ? navItems : defaultLinks;
+  const currentLinks = (Array.isArray(navItems) && navItems.length > 0) ? navItems : defaultLinks;
   const normalLinks = currentLinks.filter(l => l.slug !== 'donate');
   const donateLink = currentLinks.find(l => l.slug === 'donate');
 
