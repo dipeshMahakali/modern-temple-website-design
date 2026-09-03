@@ -5,7 +5,8 @@ Uses Pydantic Settings for environment variable management
 import os
 import json
 import shutil
-from typing import List
+from typing import List, Any
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -68,8 +69,45 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:5173"
 
     # Database
-    DATABASE_URL: str = get_default_database_url()
+    DATABASE_URL: str = ""
     DATABASE_URL_SYNC: str = "sqlite:///./temple.db"
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_db_url(cls, v: Any) -> str:
+        # Check non-pooling / unpooled env vars first for serverless Vercel Neon
+        unpooled_env = (
+            os.environ.get("DATABASE_URL_UNPOOLED")
+            or os.environ.get("DATABASE_POSTGRES_URL_NON_POOLING")
+            or os.environ.get("POSTGRES_URL_NON_POOLING")
+        )
+        if unpooled_env:
+            v = unpooled_env
+        elif not v:
+            v = (
+                os.environ.get("DATABASE_POSTGRES_URL")
+                or os.environ.get("DATABASE_URL")
+                or os.environ.get("POSTGRES_URL")
+            )
+
+        if not v or not isinstance(v, str):
+            v = get_default_database_url()
+
+        # Convert postgres:// or postgresql:// scheme to postgresql+asyncpg://
+        if v.startswith("postgres://"):
+            v = "postgresql+asyncpg://" + v[len("postgres://"):]
+        elif v.startswith("postgresql://") and not v.startswith("postgresql+"):
+            v = "postgresql+asyncpg://" + v[len("postgresql://"):]
+
+        # Normalize query params for asyncpg
+        if "sslmode=require" in v:
+            v = v.replace("sslmode=require", "ssl=require")
+        elif "sslmode=prefer" in v:
+            v = v.replace("sslmode=prefer", "ssl=prefer")
+        elif "sslmode=disable" in v:
+            v = v.replace("sslmode=disable", "ssl=disable")
+
+        return v
 
     # JWT
     SECRET_KEY: str = "pavagarh_temple_super_secret_key_change_in_production_256bit_strong"
