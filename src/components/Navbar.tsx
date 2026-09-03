@@ -162,13 +162,13 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
         >
           {/* Sparkling Golden Ring Container */}
           <div className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-[#D4AF37] via-[#FFF9F2] via-[#F3E5AB] to-[#B8860B] shadow-[0_0_14px_rgba(212,175,55,0.75)] group-hover:shadow-[0_0_22px_rgba(212,175,55,0.95)] group-hover:scale-105 transition-all duration-300 shrink-0 ring-1 ring-[#FFD700]/60">
-            <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#1A0606] overflow-hidden flex items-center justify-center p-0.5 border border-[#FFF8DC]/40">
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex items-center justify-center">
               <img
-                src={logoImage ? getImageUrl(logoImage) : "/Shakti-peeth-logo-hd.png"}
+                src={logoImage ? getImageUrl(logoImage) : "/Shakti-peeth-logo-hd-rounded.png"}
                 alt="Shakti Peeth Maa Bamleshwari Logo"
-                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-300"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/Shakti-peeth-logo-hd.png';
+                  (e.target as HTMLImageElement).src = '/Shakti-peeth-logo-hd-rounded.png';
                 }}
               />
             </div>
