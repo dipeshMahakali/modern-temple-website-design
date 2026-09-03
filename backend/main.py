@@ -105,6 +105,8 @@ def create_app() -> FastAPI:
         response.headers["X-XSS-Protection"] = "1; mode=block"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
         response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+        if request.url.path.startswith("/api/v1/public"):
+            response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         return response
 
     # Dynamic static file serving for uploads across Vercel tmp and backend uploads
