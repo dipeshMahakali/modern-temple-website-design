@@ -160,12 +160,20 @@ export default function Navbar({ activePage, setActivePage }: NavbarProps) {
           onClick={() => handleNavClick('home')}
           className="flex items-center space-x-2.5 text-left focus:outline-none group cursor-pointer shrink-0"
         >
-          <div className="w-10 h-10 md:w-11 md:h-11 rounded-full gold-gradient flex items-center justify-center text-white shadow-md transition-transform duration-300 group-hover:scale-105 overflow-hidden shrink-0 ring-2 ring-primary-gold/30">
-            {logoImage ? (
-              <img src={getImageUrl(logoImage)} alt="Logo" className="w-full h-full object-cover" />
-            ) : (
-              <DynamicIcon name={logoIcon || 'Landmark'} className="w-5 h-5 md:w-5.5 md:h-5.5" />
-            )}
+          {/* Sparkling Golden Ring Container */}
+          <div className="relative p-[2.5px] rounded-full bg-gradient-to-tr from-[#D4AF37] via-[#FFF9F2] via-[#F3E5AB] to-[#B8860B] shadow-[0_0_14px_rgba(212,175,55,0.75)] group-hover:shadow-[0_0_22px_rgba(212,175,55,0.95)] group-hover:scale-105 transition-all duration-300 shrink-0 ring-1 ring-[#FFD700]/60">
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-[#1A0606] overflow-hidden flex items-center justify-center p-0.5 border border-[#FFF8DC]/40">
+              <img
+                src={logoImage ? getImageUrl(logoImage) : "/Shakti-peeth-logo-hd.png"}
+                alt="Shakti Peeth Maa Bamleshwari Logo"
+                className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/Shakti-peeth-logo-hd.png';
+                }}
+              />
+            </div>
+            {/* Ambient Golden Sparkle Glow */}
+            <span className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#FFF8DC] opacity-40 blur-[3px] group-hover:opacity-80 transition-opacity duration-300 pointer-events-none" />
           </div>
           <div className="hidden sm:block">
             <span className="font-serif font-extrabold text-base md:text-lg text-deep-maroon block leading-tight tracking-wide">

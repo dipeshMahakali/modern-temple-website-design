@@ -42,4 +42,5 @@ api_router.include_router(admin_timings.router, prefix="/admin/timings", tags=["
 api_router.include_router(admin_hero.router, prefix="/admin/hero", tags=["Admin — Hero"])
 api_router.include_router(admin_forms.router, prefix="/admin/forms", tags=["Admin — Forms"])
 api_router.include_router(admin_audit.router, prefix="/admin/audit-logs", tags=["Admin — Audit Logs"])
+api_router.include_router(admin_audit.router, prefix="/admin/audit", tags=["Admin — Audit Logs"])
 

@@ -45,7 +45,7 @@ export default function AuditLogsPage() {
       const params = new URLSearchParams({ limit: '100' });
       if (filterAction) params.append('action', filterAction);
       if (filterEntity) params.append('entity_type', filterEntity);
-      const res = await api.get(`/admin/audit-logs/?${params}`);
+      const res = await api.get(`/admin/audit-logs?${params}`);
       setLogs(res.data);
     } catch { toast.error('Failed to load audit logs'); }
     finally { setIsLoading(false); }

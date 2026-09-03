@@ -81,14 +81,15 @@ export default function Hero({ setActivePage }: HeroProps) {
   const getButtonStyles = (variant: string) => {
     switch (variant) {
       case 'white':
-        return "bg-white text-deep-maroon hover:bg-white-card/90";
+        return "bg-white text-deep-maroon hover:bg-amber-50 shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:scale-105 transition-all duration-300";
       case 'gold':
-        return "bg-primary-gold text-white hover:bg-primary-gold/90";
+        return "bg-gradient-to-r from-[#D4AF37] via-[#E8D7A5] to-[#B8860B] text-[#3D1414] font-extrabold hover:brightness-110 shadow-[0_8px_25px_rgba(212,175,55,0.4)] hover:scale-105 transition-all duration-300 border border-[#FFF8DC]/40";
       case 'maroon':
-        return "bg-deep-maroon text-white hover:bg-deep-maroon/90 border border-primary-gold/25";
+        return "bg-[#6B1E1E] text-white hover:bg-[#8B2626] border border-[#D4AF37]/40 shadow-[0_8px_25px_rgba(107,30,30,0.4)] hover:scale-105 transition-all duration-300";
       case 'transparent':
+      case 'outline':
       default:
-        return "bg-transparent text-[#E8D7A5] border border-light-gold-border/40 hover:bg-white/10";
+        return "bg-black/50 backdrop-blur-md text-white border-2 border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#3D1414] shadow-[0_8px_25px_rgba(0,0,0,0.4)] hover:scale-105 transition-all duration-300 font-bold";
     }
   };
 

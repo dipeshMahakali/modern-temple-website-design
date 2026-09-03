@@ -32,8 +32,10 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
     // Clean trailing slashes on API endpoints to prevent Vercel 404 / 308 redirect drops
-    if (config.url && config.url.length > 1 && config.url.endsWith('/')) {
-      config.url = config.url.slice(0, -1);
+    if (config.url) {
+      const [pathname, search] = config.url.split('?');
+      const cleanPath = (pathname.length > 1 && pathname.endsWith('/')) ? pathname.slice(0, -1) : pathname;
+      config.url = search ? `${cleanPath}?${search}` : cleanPath;
     }
     if (config.method?.toLowerCase() === 'get') {
       config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
