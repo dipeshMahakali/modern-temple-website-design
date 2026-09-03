@@ -132,13 +132,29 @@ def create_app() -> FastAPI:
     # API Routes
     app.include_router(api_router, prefix="/api/v1")
 
+    # Global flag for lazy database initialization on Vercel Serverless
+    _db_state = {"initialized": False}
+
+    @app.middleware("http")
+    async def auto_init_db_middleware(request: Request, call_next):
+        if not _db_state["initialized"] and request.url.path.startswith("/api/"):
+            try:
+                async with engine.begin() as conn:
+                    await conn.run_sync(Base.metadata.create_all)
+                await seed_initial_data()
+                _db_state["initialized"] = True
+            except Exception as e:
+                logger.error(f"Auto DB init warning: {e}")
+        response = await call_next(request)
+        return response
+
     @app.get("/api/v1/public/init-db")
     async def initialize_db_endpoint():
-        """Public trigger to initialize database tables and seed initial data if missing"""
+        """Public trigger & diagnostic endpoint for database initialization"""
         try:
             async with engine.begin() as conn:
                 await conn.run_sync(Base.metadata.create_all)
-                def _migrate_columns(sync_conn):
+                def _inspect_and_migrate(sync_conn):
                     from sqlalchemy import inspect, text
                     inspector = inspect(sync_conn)
                     tables = inspector.get_table_names()
@@ -153,17 +169,32 @@ def create_app() -> FastAPI:
                         for col_name, col_type in new_cols:
                             if col_name not in cols:
                                 sync_conn.execute(text(f"ALTER TABLE trustees ADD COLUMN {col_name} {col_type}"))
+                    return tables
 
-                await conn.run_sync(_migrate_columns)
+                existing_tables = await conn.run_sync(_inspect_and_migrate)
 
             await seed_initial_data()
-            return {"status": "success", "message": "Database tables created and initial data seeded successfully"}
+            _db_state["initialized"] = True
+
+            db_url = settings.DATABASE_URL
+            db_type = "PostgreSQL" if "postgres" in db_url else ("SQLite" if "sqlite" in db_url else "Unknown")
+            masked_url = db_url.split("@")[-1] if "@" in db_url else db_url[:20] + "..."
+
+            return {
+                "status": "success",
+                "message": "Database schema created and initial data seeded successfully",
+                "database_type": db_type,
+                "database_host": masked_url,
+                "tables_count": len(existing_tables),
+                "tables": existing_tables
+            }
         except Exception as err:
+            logger.error(f"init-db failed: {err}")
             return {"status": "error", "message": str(err)}
 
     @app.get("/health")
     async def health():
-        return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION}
+        return {"status": "ok", "app": settings.APP_NAME, "version": settings.APP_VERSION, "db": settings.DATABASE_URL.split("@")[-1] if "@" in settings.DATABASE_URL else "sqlite"}
 
     return app
 
