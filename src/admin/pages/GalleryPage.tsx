@@ -46,7 +46,9 @@ export default function GalleryPage() {
     setIsLoading(true);
     try {
       const res = await api.get('/admin/gallery/');
-      setItems(res.data);
+      if (res.data && Array.isArray(res.data)) {
+        setItems(res.data);
+      }
     } catch {
       toast.error('Failed to load gallery items');
     } finally {
@@ -58,7 +60,8 @@ export default function GalleryPage() {
     fetchItems();
   }, []);
 
-  const filtered = selectedCategory === 'All' ? items : items.filter(i => i.category.toLowerCase() === selectedCategory.toLowerCase());
+  const currentItems = Array.isArray(items) ? items : [];
+  const filtered = selectedCategory === 'All' ? currentItems : currentItems.filter(i => i.category.toLowerCase() === selectedCategory.toLowerCase());
 
   const toggleVisibility = async (item: GalleryItem) => {
     try {
@@ -144,7 +147,7 @@ export default function GalleryPage() {
         <div>
           <h1 className="text-xl font-bold" style={{ color: '#2D2D2D', fontFamily: '"Playfair Display", serif' }}>Photo Gallery</h1>
           <p className="text-sm mt-1" style={{ color: 'rgba(45,45,45,0.5)', fontFamily: 'Inter, sans-serif' }}>
-            {items.length} images · {items.filter(i => i.is_visible).length} visible · {items.filter(i => i.is_featured).length} featured
+            {currentItems.length} images · {currentItems.filter(i => i.is_visible).length} visible · {currentItems.filter(i => i.is_featured).length} featured
           </p>
         </div>
         <button onClick={() => fileInputRef.current?.click()}

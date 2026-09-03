@@ -19,7 +19,7 @@ export default function Timings() {
     const fetchTimings = async () => {
       try {
         const res = await publicApi.getTimings();
-        if (res.data) {
+        if (res.data && Array.isArray(res.data) && res.data.length > 0) {
           setTimings(res.data);
         }
       } catch (err) {
@@ -63,7 +63,7 @@ export default function Timings() {
     return colorMaps[idx % colorMaps.length].defaultIcon;
   };
 
-  const displayList = timings.length > 0 ? timings : defaultTimings;
+  const displayList = (Array.isArray(timings) && timings.length > 0) ? timings : defaultTimings;
 
   return (
     <section className="py-20 px-6 md:px-12 bg-white-card/40 border-y border-light-gold-border/20">

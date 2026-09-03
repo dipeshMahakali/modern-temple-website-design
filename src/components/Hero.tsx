@@ -51,7 +51,7 @@ export default function Hero({ setActivePage }: HeroProps) {
     const fetchHero = async () => {
       try {
         const res = await publicApi.getHero();
-        if (res.data) {
+        if (res.data && typeof res.data === 'object' && !Array.isArray(res.data) && res.data.heading) {
           setConfig(res.data);
         }
       } catch (err) {
@@ -229,7 +229,7 @@ export default function Hero({ setActivePage }: HeroProps) {
         )}
 
         {/* CTA Actions */}
-        {current.buttons && current.buttons.length > 0 && (
+        {current.buttons && Array.isArray(current.buttons) && current.buttons.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}

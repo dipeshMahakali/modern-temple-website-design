@@ -28,8 +28,8 @@ export default function InstructionsPage() {
       try {
         const res = await publicApi.getInstructions();
         if (res.data) {
-          if (res.data.rules) setRules(res.data.rules);
-          if (res.data.details) setDetails(res.data.details);
+          if (res.data.rules && Array.isArray(res.data.rules)) setRules(res.data.rules);
+          if (res.data.details && Array.isArray(res.data.details)) setDetails(res.data.details);
         }
       } catch (err) {
         console.error('Failed to load instructions:', err);
@@ -79,8 +79,8 @@ export default function InstructionsPage() {
     }
   ];
 
-  const currentRules = rules.length > 0 ? rules : defaultRules;
-  const currentDetails = details.length > 0 ? details : defaultDetails;
+  const currentRules = (Array.isArray(rules) && rules.length > 0) ? rules : defaultRules;
+  const currentDetails = (Array.isArray(details) && details.length > 0) ? details : defaultDetails;
 
   return (
     <div className="py-24 px-6 md:px-12 max-w-[1440px] mx-auto space-y-12">

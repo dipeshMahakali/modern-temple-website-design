@@ -26,7 +26,7 @@ export default function DonatePage() {
           publicApi.getTempleInfo('donate'),
           publicApi.getFormConfig('donate')
         ]);
-        if (bankRes.data) setBankDetails(bankRes.data);
+        if (bankRes.data && Array.isArray(bankRes.data) && bankRes.data.length > 0) setBankDetails(bankRes.data);
         if (infoRes.data) setInfo(infoRes.data);
         if (configRes.data) setFormConfig(configRes.data);
       } catch (err) {
@@ -37,7 +37,7 @@ export default function DonatePage() {
   }, []);
 
   useEffect(() => {
-    if (formConfig?.fields) {
+    if (formConfig?.fields && Array.isArray(formConfig.fields)) {
       const initial: Record<string, string> = {};
       formConfig.fields.forEach((f: any) => {
         initial[f.name] = '';
@@ -73,7 +73,7 @@ export default function DonatePage() {
   ];
 
   const currentInfo = { ...defaultExemption, ...info };
-  const currentBanks = bankDetails.length > 0 ? bankDetails : defaultBanks;
+  const currentBanks = (Array.isArray(bankDetails) && bankDetails.length > 0) ? bankDetails : defaultBanks;
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -168,7 +168,7 @@ export default function DonatePage() {
               }}
               className="space-y-4"
             >
-              {formConfig?.fields ? (
+              {formConfig?.fields && Array.isArray(formConfig.fields) ? (
                 formConfig.fields.map((field: any) => (
                   <div key={field.name} className="flex flex-col space-y-1">
                     <label className="text-xs font-semibold text-text-dark" htmlFor={field.name}>

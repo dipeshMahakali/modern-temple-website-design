@@ -63,14 +63,16 @@ export default function LiveDarshan() {
     return `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1&rel=0`;
   };
 
-  const activeStream = streams.find(s => s.id === activeStreamId) || streams[0] || {
+  const currentStreams = Array.isArray(streams) ? streams : [];
+
+  const activeStream = currentStreams.find(s => s.id === activeStreamId) || currentStreams[0] || {
     id: 1,
     title: 'Main Sanctum',
     videoUrl: 'https://www.youtube.com/watch?v=wulPPdw-FUk',
     url: '/assets/about-bg.png'
   };
 
-  const alternativeStreams = streams.filter(s => s.id !== activeStreamId);
+  const alternativeStreams = currentStreams.filter(s => s.id !== activeStreamId);
 
   const handleStreamSelect = (selectedId: number | string) => {
     setActiveStreamId(selectedId);
