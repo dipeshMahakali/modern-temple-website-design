@@ -16,6 +16,7 @@ router = APIRouter()
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
+@router.get("", response_model=List[GalleryItemOut])
 @router.get("/", response_model=List[GalleryItemOut])
 async def list_gallery(
     category: Optional[str] = None,

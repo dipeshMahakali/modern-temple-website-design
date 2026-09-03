@@ -13,6 +13,7 @@ from app.schemas.schemas import HeroConfigOut, HeroConfigUpdate
 router = APIRouter()
 
 
+@router.get("", response_model=HeroConfigOut)
 @router.get("/", response_model=HeroConfigOut)
 async def get_hero(db: AsyncSession = Depends(get_db), current_user=Depends(require_editor)):
     result = await db.execute(
@@ -40,6 +41,7 @@ async def get_hero(db: AsyncSession = Depends(get_db), current_user=Depends(requ
     return hero
 
 
+@router.patch("", response_model=HeroConfigOut)
 @router.patch("/", response_model=HeroConfigOut)
 async def update_hero(
     body: HeroConfigUpdate,

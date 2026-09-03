@@ -25,11 +25,15 @@ export const setAccessToken = (token: string | null) => {
 
 export const getAccessToken = () => accessToken;
 
-// Request interceptor — attach JWT
+// Request interceptor — attach JWT and clean trailing slashes
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    // Clean trailing slashes on API endpoints to prevent Vercel 404 / 308 redirect drops
+    if (config.url && config.url.length > 1 && config.url.endsWith('/')) {
+      config.url = config.url.slice(0, -1);
     }
     if (config.method?.toLowerCase() === 'get') {
       config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';

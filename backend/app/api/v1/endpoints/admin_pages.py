@@ -11,6 +11,7 @@ from app.schemas.schemas import PageOut, PageCreate, PageUpdate
 router = APIRouter()
 
 
+@router.get("", response_model=List[PageOut])
 @router.get("/", response_model=List[PageOut])
 async def list_pages(
     skip: int = Query(0, ge=0),
@@ -23,6 +24,7 @@ async def list_pages(
     return pages
 
 
+@router.post("", response_model=PageOut, status_code=status.HTTP_201_CREATED)
 @router.post("/", response_model=PageOut, status_code=status.HTTP_201_CREATED)
 async def create_page(
     body: PageCreate,
