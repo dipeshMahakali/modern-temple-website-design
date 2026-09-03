@@ -9,13 +9,9 @@ backend_dir = os.path.join(root_dir, "backend")
 if backend_dir not in sys.path:
     sys.path.insert(0, backend_dir)
 
-try:
-    from main import app
-except Exception as err:
-    import traceback
-    print("❌ VERCEL SERVERLESS STARTUP ERROR:", err, file=sys.stderr)
-    traceback.print_exc()
-    raise err
+from main import app
 
-# Export app for Vercel Serverless Function runtime
-__all__ = ["app"]
+# Explicit top-level definitions for Vercel Python Serverless Function runtime AST parser
+handler = app
+application = app
+
